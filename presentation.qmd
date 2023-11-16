@@ -1,0 +1,945 @@
+---
+title: "Modern Machine Learning in R"
+author: "Jakob Richter, Sebastian Fischer, mlr3 Team"
+format:
+  revealjs:
+    execute:
+        echo: true
+    theme:
+      - simple
+    logo: "figures/logo.png"
+    height: 1080
+    width: 1980
+    code-copy: false
+    slide-number: c/t
+    center-title-slide: false
+    higlight-style: atom-one
+    footer: "Machine Learning in R - Berlin R Users Group "
+
+---
+
+```{r, include = FALSE}
+library("mlr3verse")
+lgr::get_logger("mlr3")$set_threshold("warn")
+```
+
+
+# Intro
+
+## So you want to do ML in R
+
+::: frame
+-   `R` gives you access to many machine learning methods
+-   ... but without a unified interface
+-   things like performance evaluation are cumbersome
+
+Example:
+
+```{r}
+#| eval: false
+# Specify what we want to model in a formula: target \~ features
+svm_model = e1071::svm(Species ~ ., data = iris)
+```
+
+vs.
+
+```{r}
+#| eval: false
+#| results: hide
+#| warning: false
+# Pass the features as a matrix and the target as a vector
+xgb_model = xgboost::xgboost(data = as.matrix(iris[1:4]),
+  label = iris$Species, nrounds = 10)
+```
+:::
+
+## So you want to do ML in R
+
+::: frame
+```{r}
+library("mlr3")
+```
+
+Ingredients:
+
+-   Data / Task
+
+-   Learning Algorithms
+
+-   Performance Evaluation
+
+-   Performance Comparison
+:::
+
+# R6
+
+## R6 -- All you need to know
+
+::: frame
+`mlr3` uses the *R6* class system. Some things may seem unusual if you see them for the first time.
+
+-   Objects are created using <Class>\$new().
+
+```{r}
+task = TaskClassif$new("iris", iris, "Species")
+```
+
+-   Objects have fields that contain information about the object.
+
+```{r}
+task$nrow
+```
+
+-   Objects have methods that are called like functions:
+
+```{r}
+task$filter(rows = 1:10)
+```
+
+-   Methods may change ("mutate") the object (reference semantics)!
+
+```{r}
+task$nrow
+```
+:::
+
+## R6 and Active Bindings
+
+::: frame
+Some fields of R6-objects may be "Active Bindings". Internally they are realized as functions that are called whenever the value is set or retrieved.
+
+-   Active bindings for read-only fields
+
+```{r}
+#| error: true
+task$nrow = 11
+```
+
+-   Active bindings for argument checking
+
+```{r}
+#| error: true
+task$properties = NULL
+task$properties = c("property1", "property2") # works
+```
+:::
+
+## `mlr3` Philosophy
+
+::: frame
+Overcome limitations of S3 with the help of **R6**
+
+-   Truly object-oriented: data and methods live in the same object
+-   Make use of inheritance
+-   Reference semantics
+
+Embrace **data.table**, both for arguments and internally
+
+-   Fast operations for tabular data
+
+-   List columns to arrange complex objects in tabular structure
+
+Be **light on dependencies**:
+
+-   `R6, data.table, lgr, uuid, mlbench, digest, future, evaluate`
+
+-   Plus some of our own packages (`backports`, `checkmate`, . . . )
+:::
+
+
+## `mlr3` Ecosystem
+
+
+```{r}
+#| echo: false
+#| fig-align: "center"
+knitr::include_graphics("figures/mlr3_ecosystem.png")
+```
+
+
+# Data
+
+## Data
+
+-   Tabular data
+
+-   Features
+
+-   Target / outcome to predict
+
+    -   discrete for classification
+    -   continuous for regression
+    -   target determines the machine learning "Task"
+
+```{r}
+penguins = mlr3data::penguins_simple # simplified penguins data
+head(penguins)
+task = TaskClassif$new("penguins", penguins, "species")
+# or
+task = as_task_classif(penguins, target = "species", id = "penguins")
+
+task
+```
+
+## Task API
+
+* `task$ncol` - Get number of columns
+* `task$nrow` - Get number of rows
+* `task$feature_names` - Get number of columns
+* `task$target_names` - Get number of columns
+* `task$head(n = )` -  Get number of columns
+* `task$truth(row_ids = )` - Get number of columns
+* `task$data(rows = , cols = )` - Get number of columns
+* `task$select(cols = )` - Select specific columns
+* `task$filter(rows = )` - Select specific rows
+* `task$cbind(data = )` - Cbind coumns
+* `task$rbind(data = )` - Rbind columns
+
+
+# Dictionaries
+
+## Dictionaries
+
+::: frame
+-   Ordinary constructors: `TaskClassif$new()` / `LearnerClassifRpart$new()`
+
+-   `mlr3` offers *Short Form Constructors* that are less verbose
+
+-   They access `Dictionary` of objects:
+
+| Object       | Dictionary        | Short Form |     |
+|:-------------|:------------------|:-----------|-----|
+| `Task`       | `mlr_tasks`       | `tsk()`    |     |
+| `Learner`    | `mlr_learners`    | `lrn()`    |     |
+| `Measure`    | `mlr_measures`    | `msr()`    |     |
+| `Resampling` | `mlr_resamplings` | `rsmp()`   |     |
+
+Dictionaries can get populated by add-on packages (e.g. `mlr3learners`)
+:::
+
+## Dictionaries
+
+::: frame
+```{r}
+# list items
+tsk()
+
+# retrieve an element
+tsk("penguins_simple")
+```
+:::
+
+## Short forms and Dictionaries
+
+::: frame
+`as.data.table(<DICTIONARY>)` creates a data.table with metadata about objects in dictionaries:
+
+```{r}
+mlr_learners_table = as.data.table(mlr_learners)
+mlr_learners_table[1:10, c("key", "packages", "predict_types")]
+```
+:::
+
+# Learning Algorithms
+
+## Learning Algorithms
+
+```{r}
+#| echo: false
+#| fig-align: "center"
+knitr::include_graphics("figures/mlr3book_figures-2.svg")
+```
+
+## Learning Algorithms
+
+::: frame
+-   Get a Learner provided by `mlr3`
+
+```{r}
+learner = lrn("classif.rpart")
+```
+
+-   Train the `Learner`
+
+```{r}
+learner$train(task)
+```
+
+-   The `$model` is the rpart model: a decision tree
+
+```{r}
+print(learner$model)
+```
+:::
+
+## Hyperparameters
+
+-   Learners have *hyperparameters*
+
+```{r}
+as.data.table(learner$param_set)[, 1:6]
+```
+
+-   Changing them changes the `Learner`'s behavior
+
+```{r}
+learner$param_set$values = list(maxdepth = 1, xval = 0)
+learner$train(task)
+```
+
+-   This gives a smaller decision tree
+
+```{r}
+print(learner$model)
+```
+
+## Prediction
+
+
+::: frame
+-   Let's make a prediction for some new data, e.g.:
+
+    ```{r}
+    #| echo: false
+    new_data = data.frame(
+      bill_depth = c(20, 21), bill_length = c(37, 39), body_mass = c(4000, 3750), flipper_length = c(281, 270),
+      year = c(2007, 2006), island.Biscoe = c(0, 0), island.Dream = c(1, 0), island.Torgersen = c(0, 1),
+      sex.female = c(1, 0), sex.male = c(0, 1)
+    )
+    ```
+
+-   To do so, we call the `$predict_newdata()` method using the new data:
+
+```{r}
+prediction = learner$predict_newdata(new_data)
+```
+
+-   We get a Prediction object:
+
+```{r}
+prediction
+```
+:::
+
+## Prediction
+
+::: frame
+-   We can make the Learner predict *probabilities* when we set `predict_type`:
+
+```{r}
+learner$predict_type = "prob"
+learner$predict_newdata(new_data)
+```
+:::
+
+## Prediction
+
+::: frame
+What exactly is a Prediction object?
+
+-   Contains predictions and offers useful access fields / methods
+-   Use `as.data.table()` to extract data
+
+```{r}
+as.data.table(prediction)
+```
+
+-   Active bindings and functions that give further information: `$response, $truth,` `$confusion` . . .
+
+```{r}
+prediction$response
+```
+
+:::
+
+# Performance
+
+
+## Performance Evaluation
+
+```{r}
+#| echo: false
+#| fig-align: "center"
+#| out.width: 100%
+knitr::include_graphics("figures/mlr3book_figures-4.svg")
+```
+
+## Performance Evaluation
+
+```{r}
+#| include: false
+known_truth_task = as_task_classif(cbind(new_data, data.table(species = factor(c("Gentoo", "Adelie"), levels = c("Gentoo", "Adelie", "Chinstrap")))), target = "species", id = "penguins_simple_predict")
+
+```
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+-   Prediction 'Task' with known data
+
+```{r}
+known_truth_task$data()
+```
+
+-   Predict again
+
+```{r}
+pred = learner$predict(known_truth_task)
+pred
+```
+
+-   Score the prediction
+
+```{r}
+pred$score(msr("classif.ce"))
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+#| echo: false
+#| fig-align: "center"
+knitr::include_graphics("figures/mlr3book_figures-3.svg")
+```
+:::
+
+::::
+
+
+# Resampling
+
+## Resampling
+
+```{r, echo = FALSE}
+knitr::include_graphics("./figures/mlr3book_figures-4.svg")
+```
+
+## Resampling
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+-   Resample description: How to split the data
+
+    ```{r}
+    cv3 = rsmp("cv", folds = 5)
+    ```
+
+-   Use the `resample()` function for resampling:
+
+    ```{r}
+    task = tsk("penguins_simple")
+    learner = lrn("classif.rpart")
+    rr = resample(task, learner, cv3)
+    ```
+
+-   We get a `ResampleResult` object:
+
+    ```{r}
+    rr
+    ```
+:::
+
+::: {.column width="50%"}
+
+```{r}
+#| echo: false
+knitr::include_graphics("figures/mlr3book_figures-8.svg")
+```
+
+:::
+
+::::
+
+## Resample Result
+
+What exactly is a `ResampleResult` object?
+
+Remember `Prediction`:
+
+-   Get a table presentation using `as.data.table()`:
+
+    ```{r}
+    rr_table = as.data.table(rr)
+    print(rr_table)
+    ```
+
+-   Active bindings and functions that make information easily accessible
+
+-   Calculate performance:
+
+    ```{r}
+    rr$aggregate(msr("classif.ce"))
+    ```
+
+-   Get predictions
+
+    ```{r}
+    rr$prediction()
+    ```
+
+## Resampling
+
+-   Predictions of individual folds
+
+    ```{r}
+    predictions = rr$predictions()
+    predictions[[1]]
+    ```
+
+-   Score of individual folds
+
+    ```{r}
+    scores = rr$score()
+    scores[1:3, c("iteration", "classif.ce")]
+    ```
+
+# Benchmark
+
+## Performance Comparison
+
+-   Multiple learners on multiple tasks:
+
+    ```{r}
+    cv5 = rsmp("cv", folds = 5)
+    library("mlr3learners")
+    learners = list(lrn("classif.rpart"), lrn("classif.kknn"))
+    tasks = list(tsk("penguins_simple"), tsk("sonar"), tsk("wine"))
+    ```
+
+-   Setup the *design* and run the benchmark:
+
+    ```{r}
+    design = benchmark_grid(tasks, learners, cv5)
+    design
+    bmr = benchmark(design)
+    ```
+
+-   We get a `BenhmarkResult` object which shows that `knn` outperforms `rpart`:
+
+    ```{r}
+    bmr_ag = bmr$aggregate()
+    bmr_ag[, c("task_id", "learner_id", "classif.ce")]
+    ```
+
+## Benchmark Result
+
+A `BenchmarkResult` is just like a `Prediction` and `ResampleResult`:
+
+- Table representation using `as.data.table()`
+- Active bindings and functiouns that make information easily accessible
+
+
+## Benchmark Result
+
+The mlr3viz package contains `autoplot()` functions for many mlr3
+objects
+
+```{r}
+library(mlr3viz)
+autoplot(bmr)
+```
+
+
+# Control of Execution
+
+Parallelization
+
+```{r, eval = FALSE}
+future::plan("multicore")
+```
+- runs each resampling iteration as a job
+- also allows nested resampling (although not needed here)
+
+Encapsulation
+
+```{r}
+learner$encapsulate = c(train = "callr", predict = "callr")
+```
+
+- Spawns a separate R process to train the learner
+- Learner may segfault without tearing down the session
+- Logs are captured
+- Possibility to have a fallback to create predictions
+
+
+# Machine Learning Pipelines in R
+
+## mlr3pipelines
+
+Machine Learning Workflows:
+
+- **Preprocessing**: Feature extraction, feature election, missing data imputation, ...
+- **Ensemble methods**: Model averaging, model stacking
+- `mlr3`: modular *model fitting*
+
+$\Rightarrow$ `mlr3pipelines`: modular *ML workflows*
+
+
+```{r, echo = FALSE, out.width = "100%"}
+knitr::include_graphics("figures/pipelines_12.png")
+```
+
+
+
+## Machine Learning Workflows
+
+
+::: {.fragment fragment-index=1}
+What do they look like?
+![](figures/pipelines_6.png){.absolute top=450 left=0}
+:::
+
+::: {.fragment fragment-index=2}
+- **Buildings block**: *what* is happening? $\rightarrow$ `PipeOp`
+![](figures/pipelines_7.png){.absolute top=450 left=0}
+:::
+
+::: {.fragment fragment-index=3}
+ - **Structure**: in what *sequence* is it happening? $\rightarrow$ `Graph`
+![](figures/pipelines_8.png){.absolute top=450 left=0}
+:::
+
+::: {.fragment fragment-index=4}
+  $\Rightarrow$ `Graph`: `PipeOp`s as **nodes** with **edges** (data flow) between them
+
+![](figures/pipelines_8.png){.absolute top=450 left=0}
+:::
+
+
+# PipeOps
+
+## PipeOp: Single Unit of Data Operation
+
+
+:::{.fragment fragment-index=1}
+* `pip = po("scale")` to construct
+
+![](figures/pipeline-trim-34.png){.absolute top=400 left=0}
+:::
+
+:::{.fragment fragment-index=2}
+* `pip$train()`: process data and create `pip$state`
+
+![](figures/pipeline-trim-1.png){.absolute top=400 left=0}
+:::
+
+:::{.fragment fragment-index=3}
+* `pip$predict()`: process data depending on the `pip$state`
+
+![](figures/pipeline-trim-2.png){.absolute top=400 left=0}
+:::
+
+:::{.fragment fragment-index=4}
+* Multiple inputs or multiple outputs
+
+![](figures/pipeline-trim-6.png){.absolute top=400 left=0}
+:::
+
+
+## PipeOp: Single Unit of Data Operation
+
+```{r}
+po_scale = po("scale")
+trained = po_scale$train(list(task))
+trained$output$head(3)
+```
+
+```{r}
+head(po_scale$state, 2)
+```
+
+
+## PipeOp: Single Unit of Data Operation
+
+```{r}
+po_scale = po("scale")
+trained = po_scale$train(list(task))
+trained$output$head()
+```
+
+```{r}
+smalltask = task$clone()
+smalltask = smalltask$filter(1:3)
+pred = po_scale$predict(list(smalltask))
+pred$output$data()
+```
+
+## PipeOps
+
+```{r}
+mlr_pipeops$keys()
+```
+
+## PipeOps
+
+- Simple data preprocessing operations (scaling, Box Cox, Yeo Johnson, PCA, ICA)
+- Missing value imputation (sampling, mean, median, mode, new level, ...)
+- Feature selection (by name, by type, using filter methods)
+- Categorical data encoding (one-hot, treatment, impact)
+- Sampling (subsampling for speed, sampling for class balance)
+- Ensemble methods on Predictions (weighted average, possibly learned weights)
+- Branching (simultaneous branching, alternative branching)
+- Combination of data
+- Text processing
+- Date processing
+- **Soon** `mlr3torch`: building of neural networks as graphs in `mlr3torch`
+
+# Graph Operations
+
+## Graph Operations
+
+:::{.fragment fragment-index=1}
+![](figures/pipeline-trim-7.png){.absolute top=450 left=0}
+:::
+
+:::{.fragment fragment-index=2}
+* The `%>>%` operator concatenates `Graph`s and `PipeOp`s
+
+![](figures/pipeline-trim-3.png){.absolute top=450 left=0}
+:::
+
+:::{.fragment fragment-index=3}
+* The `gunion()`-function unites `Graph`s and `PipeOp`s
+![](figures/pipeline-trim-4.png){.absolute top=450 left=0}
+:::
+
+:::{.fragment fragment-index=4}
+* The `pipeline_greplicate()`-function unites copies of `Graph`s and `PipeOp`s
+![](figures/pipeline-trim-5.png){.absolute top=450 left=0}
+:::
+
+## Learners and Graphs
+
+**PipeOpLearner**
+
+* `Learner` as a `PipeOp`
+* Fits a model, output is `Prediction`
+
+
+![](figures/pipeline-trim-11.png){.absolute top=400 left=0}
+
+
+:::{.fragment}
+**GraphLearner**
+
+* `Graph` as a `Learner`
+* All benefits of `mlr3`: **resampling**, **tuning**, **nested resampling**, ...
+
+![](figures/pipeline-trim-12.png){.absolute top=400 left=0}
+:::
+
+# Linear Pipelines
+
+
+## Linear Preprocessing Pipeline
+
+```{r}
+graph_pp = po("scale") %>>%
+  po("encode") %>>%
+  po("imputemedian") %>>%
+  lrn("classif.rpart")
+```
+
+![](figures/pipeline-trim-270.png){.absolute top=400 left=0}
+
+
+## Linear Preprocessing Pipeline
+
+* `train()`ing: Data propagates and creates `$states`
+
+
+```{r}
+glrn = as_learner(graph_pp)
+glrn$train(task)
+```
+
+:::{.fragment fragment-index=1}
+![](figures/pipeline-trim-271.png){.absolute top=400 left=0}
+:::
+
+:::{.fragment fragment-index=2}
+![](figures/pipeline-trim-272.png){.absolute top=400 left=0}
+:::
+
+:::{.fragment fragment-index=3}
+![](figures/pipeline-trim-273.png){.absolute top=400 left=0}
+:::
+
+:::{.fragment fragment-index=4}
+![](figures/pipeline-trim-274.png){.absolute top=400 left=0}
+:::
+
+:::{.fragment fragment-index=5}
+![](figures/pipeline-trim-275.png){.absolute top=400 left=0}
+:::
+
+## Linear Preprocessing Pipeline
+
+* `train()`ing: Data propagates and creates `$states`
+* `predict()`tion: Data propagates, uses `$states`
+
+![](figures/pipeline-trim-276.png){.absolute top=400 left=0}
+
+## Linear Preprocessing Pipeline
+
+```{r}
+#| include: false
+graph_pp$keep_results = TRUE
+graph_pp$train(task)
+```
+
+
+* Setting parameter values: `$param_set`:
+```{r}
+graph_pp$param_set$set_values(
+    scale.center = FALSE
+)
+```
+
+* Retrieving state: `$state`
+
+```{r}
+graph_pp$pipeops$scale$state$scale
+```
+
+* Retrieving intermediate results: `$.result` (set debug option before)
+```{r}
+graph_pp$pipeops$scale$.result[[1]]$head(3)
+```
+
+
+# Tuning
+
+
+:::{.fragment fragent-index=1}
+- Behaviour of most methods depends on *hyperparameters*
+:::
+:::{.fragment fragent-index=2}
+- We want to chose them so our algorithm performs well
+:::
+:::{.fragment fragent-index=3}
+- Good hyperparameters are data-dependent
+:::
+:::{.fragment fragent-index=4}
+$\Rightarrow$ We do *black box optimization* ("Try stuff and see what works")
+:::
+
+:::{.fragment fragent-index=5}
+Tuning toolbox for `mlr3`:
+```{r}
+library("bbotk")
+library("mlr3tuning")
+```
+:::
+
+
+## Tuning
+
+![](figures/tuning-8.png){.absolute top=100 left=50}
+
+## Tuning
+
+![](figures/tuning-9.png){.absolute top=100 left=50}
+
+## Tuning
+
+![](figures/tuning-10.png){.absolute top=100 left=50}
+
+## Tuning
+
+![](figures/tuning-11.png){.absolute top=100 left=50}
+
+## Tuning
+
+![](figures/tuning-12.png){.absolute top=100 left=50}
+
+## Tuning
+
+![](figures/tuning-13.png){.absolute top=100 left=50}
+
+## Tuning
+
+![](figures/tuning-14.png){.absolute top=100 left=50}
+
+## Tuning
+
+![](figures/tuning-15.png){.absolute top=100 left=50}
+
+## Tuning
+![](figures/tuning-16.png){.absolute top=100 left=50}
+
+## Tuning
+![](figures/tuning-17.png){.absolute top=100 left=50}
+
+## Tuning
+![](figures/tuning-18.png){.absolute top=100 left=50}
+
+## Tuning
+![](figures/tuning-19.png){.absolute top=100 left=50}
+
+## Tuning
+![](figures/tuning-20.png){.absolute top=100 left=50}
+
+## Tuning
+![](figures/tuning-21.png){.absolute top=100 left=50}
+
+## Tuning
+![](figures/tuning-22.png){.absolute top=100 left=50}
+
+## Tuning
+![](figures/tuning-23.png){.absolute top=100 left=50}
+
+## Tuning
+![](figures/tuning-24.png){.absolute top=100 left=50}
+
+## Tuning
+![](figures/tuning-25.png){.absolute top=100 left=50}
+
+
+## Tuning
+
+TODO: Simple example for tuning
+
+```{r}
+```
+
+## AutoTuner
+
+TODO: Explain AutoTuner
+
+```{r}
+```
+
+## Nested Resampling
+
+
+TODO: Explain Nested Resampling for unbiased performance evaluation
+
+```{r}
+```
+
+
+
+
+
+
+
+## Where to go from here
+
+**Resources**:
+
+* Read the `mlr3` book: https://mlr3book.mlr-org.com/
+* Browse our website: https://mlr-org.com/
+* Read one of our gallery posts: https://mlr-org.com/gallery.html
+* Check us out on GitHub: https://github.com/mlr-org
+
+**Get in Touch**
+
+* You can email us directly: sebastian.fischer@stat.uni-muenchen.de
+* You our publicly available mattermost channel: https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/
+* We are always looking for new contributors!
+

@@ -1,0 +1,1968 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="presentation_files/libs/quarto-html/tabby.min.js"></script>
+<script src="presentation_files/libs/quarto-html/popper.min.js"></script>
+<script src="presentation_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="presentation_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="presentation_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="presentation_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="presentation_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.3.361">
+
+  <meta name="author" content="Jakob Richter, Sebastian Fischer, mlr3 Team">
+  <title>Modern Machine Learning in R</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="presentation_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="presentation_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="presentation_files/libs/revealjs/dist/theme/quarto.css">
+  <link href="presentation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="presentation_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="presentation_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="presentation_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-titled.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-titled) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-titled .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-titled .callout-title  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-titled.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-titled.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-title {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-title {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-title {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-titled .callout-body > .callout-content > :last-child {
+    margin-bottom: 0.5rem;
+  }
+
+  .callout.callout-titled .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-titled) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-title {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-title {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-title {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-title {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-title {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block">
+  <h1 class="title">Modern Machine Learning in R</h1>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Jakob Richter, Sebastian Fischer, mlr3 Team 
+</div>
+</div>
+</div>
+
+</section>
+<section>
+<section id="intro" class="title-slide slide level1">
+<h1>Intro</h1>
+
+</section>
+<section id="so-you-want-to-do-ml-in-r" class="slide level2">
+<h2>So you want to do ML in R</h2>
+<div class="frame">
+<ul>
+<li><code>R</code> gives you access to many machine learning methods</li>
+<li>… but without a unified interface</li>
+<li>things like performance evaluation are cumbersome</li>
+</ul>
+<p>Example:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Specify what we want to model in a formula: target \~ features</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>svm_model <span class="ot">=</span> e1071<span class="sc">::</span><span class="fu">svm</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> iris)</span></code></pre></div>
+</div>
+<p>vs.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># Pass the features as a matrix and the target as a vector</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>xgb_model <span class="ot">=</span> xgboost<span class="sc">::</span><span class="fu">xgboost</span>(<span class="at">data =</span> <span class="fu">as.matrix</span>(iris[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]),</span>
+<span id="cb2-3"><a href="#cb2-3"></a>  <span class="at">label =</span> iris<span class="sc">$</span>Species, <span class="at">nrounds =</span> <span class="dv">10</span>)</span></code></pre></div>
+</div>
+</div>
+</section>
+<section id="so-you-want-to-do-ml-in-r-1" class="slide level2">
+<h2>So you want to do ML in R</h2>
+<div class="frame">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">library</span>(<span class="st">"mlr3"</span>)</span></code></pre></div>
+</div>
+<p>Ingredients:</p>
+<ul>
+<li><p>Data / Task</p></li>
+<li><p>Learning Algorithms</p></li>
+<li><p>Performance Evaluation</p></li>
+<li><p>Performance Comparison</p></li>
+</ul>
+</div>
+</section></section>
+<section>
+<section id="r6" class="title-slide slide level1">
+<h1>R6</h1>
+
+</section>
+<section id="r6-all-you-need-to-know" class="slide level2">
+<h2>R6 – All you need to know</h2>
+<div class="frame">
+<p><code>mlr3</code> uses the <em>R6</em> class system. Some things may seem unusual if you see them for the first time.</p>
+<ul>
+<li>Objects are created using <class>$new().</class></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>task <span class="ot">=</span> TaskClassif<span class="sc">$</span><span class="fu">new</span>(<span class="st">"iris"</span>, iris, <span class="st">"Species"</span>)</span></code></pre></div>
+</div>
+<ul>
+<li>Objects have fields that contain information about the object.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>task<span class="sc">$</span>nrow</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 150</code></pre>
+</div>
+</div>
+<ul>
+<li>Objects have methods that are called like functions:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>task<span class="sc">$</span><span class="fu">filter</span>(<span class="at">rows =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span></code></pre></div>
+</div>
+<ul>
+<li>Methods may change (“mutate”) the object (reference semantics)!</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>task<span class="sc">$</span>nrow</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 10</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="r6-and-active-bindings" class="slide level2">
+<h2>R6 and Active Bindings</h2>
+<div class="frame">
+<p>Some fields of R6-objects may be “Active Bindings”. Internally they are realized as functions that are called whenever the value is set or retrieved.</p>
+<ul>
+<li>Active bindings for read-only fields</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>task<span class="sc">$</span>nrow <span class="ot">=</span> <span class="dv">11</span></span></code></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in assert_ro_binding(rhs): Field/Binding is read-only</code></pre>
+</div>
+</div>
+<ul>
+<li>Active bindings for argument checking</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>task<span class="sc">$</span>properties <span class="ot">=</span> <span class="cn">NULL</span></span></code></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in assert_set(rhs, .var.name = "properties"): Assertion on 'properties' failed: Must be of type 'character', not 'NULL'.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>task<span class="sc">$</span>properties <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"property1"</span>, <span class="st">"property2"</span>) <span class="co"># works</span></span></code></pre></div>
+</div>
+</div>
+</section>
+<section id="mlr3-philosophy" class="slide level2">
+<h2><code>mlr3</code> Philosophy</h2>
+<div class="frame">
+<p>Overcome limitations of S3 with the help of <strong>R6</strong></p>
+<ul>
+<li>Truly object-oriented: data and methods live in the same object</li>
+<li>Make use of inheritance</li>
+<li>Reference semantics</li>
+</ul>
+<p>Embrace <strong>data.table</strong>, both for arguments and internally</p>
+<ul>
+<li><p>Fast operations for tabular data</p></li>
+<li><p>List columns to arrange complex objects in tabular structure</p></li>
+</ul>
+<p>Be <strong>light on dependencies</strong>:</p>
+<ul>
+<li><p><code>R6, data.table, lgr, uuid, mlbench, digest, future, evaluate</code></p></li>
+<li><p>Plus some of our own packages (<code>backports</code>, <code>checkmate</code>, . . . )</p></li>
+</ul>
+</div>
+</section>
+<section id="mlr3-ecosystem" class="slide level2">
+<h2><code>mlr3</code> Ecosystem</h2>
+
+<img data-src="figures/mlr3_ecosystem.png" width="7500" class="r-stretch quarto-figure-center"></section></section>
+<section>
+<section id="data" class="title-slide slide level1">
+<h1>Data</h1>
+
+</section>
+<section id="data-1" class="slide level2">
+<h2>Data</h2>
+<ul>
+<li><p>Tabular data</p></li>
+<li><p>Features</p></li>
+<li><p>Target / outcome to predict</p>
+<ul>
+<li>discrete for classification</li>
+<li>continuous for regression</li>
+<li>target determines the machine learning “Task”</li>
+</ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>penguins <span class="ot">=</span> mlr3data<span class="sc">::</span>penguins_simple <span class="co"># simplified penguins data</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="fu">head</span>(penguins)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  species bill_depth bill_length body_mass flipper_length year island.Biscoe
+1  Adelie       18.7        39.1      3750            181 2007             0
+2  Adelie       17.4        39.5      3800            186 2007             0
+3  Adelie       18.0        40.3      3250            195 2007             0
+4  Adelie       19.3        36.7      3450            193 2007             0
+5  Adelie       20.6        39.3      3650            190 2007             0
+6  Adelie       17.8        38.9      3625            181 2007             0
+  island.Dream island.Torgersen sex.female sex.male
+1            0                1          0        1
+2            0                1          1        0
+3            0                1          1        0
+4            0                1          1        0
+5            0                1          0        1
+6            0                1          1        0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>task <span class="ot">=</span> TaskClassif<span class="sc">$</span><span class="fu">new</span>(<span class="st">"penguins"</span>, penguins, <span class="st">"species"</span>)</span>
+<span id="cb17-2"><a href="#cb17-2"></a><span class="co"># or</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a>task <span class="ot">=</span> <span class="fu">as_task_classif</span>(penguins, <span class="at">target =</span> <span class="st">"species"</span>, <span class="at">id =</span> <span class="st">"penguins"</span>)</span>
+<span id="cb17-4"><a href="#cb17-4"></a></span>
+<span id="cb17-5"><a href="#cb17-5"></a>task</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;TaskClassif:penguins&gt; (333 x 11)
+* Target: species
+* Properties: multiclass
+* Features (10):
+  - dbl (7): bill_depth, bill_length, island.Biscoe, island.Dream,
+    island.Torgersen, sex.female, sex.male
+  - int (3): body_mass, flipper_length, year</code></pre>
+</div>
+</div>
+</section>
+<section id="task-api" class="slide level2">
+<h2>Task API</h2>
+<ul>
+<li><code>task$ncol</code> - Get number of columns</li>
+<li><code>task$nrow</code> - Get number of rows</li>
+<li><code>task$feature_names</code> - Get number of columns</li>
+<li><code>task$target_names</code> - Get number of columns</li>
+<li><code>task$head(n = )</code> - Get number of columns</li>
+<li><code>task$truth(row_ids = )</code> - Get number of columns</li>
+<li><code>task$data(rows = , cols = )</code> - Get number of columns</li>
+<li><code>task$select(cols = )</code> - Select specific columns</li>
+<li><code>task$filter(rows = )</code> - Select specific rows</li>
+<li><code>task$cbind(data = )</code> - Cbind coumns</li>
+<li><code>task$rbind(data = )</code> - Rbind columns</li>
+</ul>
+</section></section>
+<section>
+<section id="dictionaries" class="title-slide slide level1">
+<h1>Dictionaries</h1>
+
+</section>
+<section id="dictionaries-1" class="slide level2">
+<h2>Dictionaries</h2>
+<div class="frame">
+<ul>
+<li><p>Ordinary constructors: <code>TaskClassif$new()</code> / <code>LearnerClassifRpart$new()</code></p></li>
+<li><p><code>mlr3</code> offers <em>Short Form Constructors</em> that are less verbose</p></li>
+<li><p>They access <code>Dictionary</code> of objects:</p></li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Object</th>
+<th style="text-align: left;">Dictionary</th>
+<th style="text-align: left;">Short Form</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>Task</code></td>
+<td style="text-align: left;"><code>mlr_tasks</code></td>
+<td style="text-align: left;"><code>tsk()</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>Learner</code></td>
+<td style="text-align: left;"><code>mlr_learners</code></td>
+<td style="text-align: left;"><code>lrn()</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>Measure</code></td>
+<td style="text-align: left;"><code>mlr_measures</code></td>
+<td style="text-align: left;"><code>msr()</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>Resampling</code></td>
+<td style="text-align: left;"><code>mlr_resamplings</code></td>
+<td style="text-align: left;"><code>rsmp()</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Dictionaries can get populated by add-on packages (e.g.&nbsp;<code>mlr3learners</code>)</p>
+</div>
+</section>
+<section id="dictionaries-2" class="slide level2">
+<h2>Dictionaries</h2>
+<div class="frame">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co"># list items</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a><span class="fu">tsk</span>()</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;DictionaryTask&gt; with 21 stored values
+Keys: ames_housing, bike_sharing, boston_housing, breast_cancer,
+  german_credit, ilpd, iris, kc_housing, moneyball, mtcars, optdigits,
+  penguins, penguins_simple, pima, ruspini, sonar, spam, titanic,
+  usarrests, wine, zoo</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co"># retrieve an element</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="fu">tsk</span>(<span class="st">"penguins_simple"</span>)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;TaskClassif:penguins&gt; (333 x 11): Simplified Palmer Penguins
+* Target: species
+* Properties: multiclass
+* Features (10):
+  - dbl (7): bill_depth, bill_length, island.Biscoe, island.Dream,
+    island.Torgersen, sex.female, sex.male
+  - int (3): body_mass, flipper_length, year</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="short-forms-and-dictionaries" class="slide level2">
+<h2>Short forms and Dictionaries</h2>
+<div class="frame">
+<p><code>as.data.table(&lt;DICTIONARY&gt;)</code> creates a data.table with metadata about objects in dictionaries:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>mlr_learners_table <span class="ot">=</span> <span class="fu">as.data.table</span>(mlr_learners)</span>
+<span id="cb23-2"><a href="#cb23-2"></a>mlr_learners_table[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="fu">c</span>(<span class="st">"key"</span>, <span class="st">"packages"</span>, <span class="st">"predict_types"</span>)]</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Key: &lt;key&gt;
+                   key                      packages predict_types
+                &lt;char&gt;                        &lt;list&gt;        &lt;list&gt;
+ 1: classif.AdaBoostM1  mlr3,mlr3extralearners,RWeka response,prob
+ 2:        classif.C50    mlr3,mlr3extralearners,C50 response,prob
+ 3:        classif.IBk  mlr3,mlr3extralearners,RWeka response,prob
+ 4:        classif.J48  mlr3,mlr3extralearners,RWeka      response
+ 5:       classif.JRip  mlr3,mlr3extralearners,RWeka response,prob
+ 6:        classif.LMT  mlr3,mlr3extralearners,RWeka response,prob
+ 7:       classif.OneR  mlr3,mlr3extralearners,RWeka response,prob
+ 8:       classif.PART  mlr3,mlr3extralearners,RWeka response,prob
+ 9:      classif.abess                    mlr3,abess response,prob
+10:       classif.bart mlr3,mlr3extralearners,dbarts response,prob</code></pre>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="learning-algorithms" class="title-slide slide level1">
+<h1>Learning Algorithms</h1>
+
+</section>
+<section id="learning-algorithms-1" class="slide level2">
+<h2>Learning Algorithms</h2>
+
+<img data-src="figures/mlr3book_figures-2.svg" class="r-stretch quarto-figure-center"></section>
+<section id="learning-algorithms-2" class="slide level2">
+<h2>Learning Algorithms</h2>
+<div class="frame">
+<ul>
+<li>Get a Learner provided by <code>mlr3</code></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>learner <span class="ot">=</span> <span class="fu">lrn</span>(<span class="st">"classif.rpart"</span>)</span></code></pre></div>
+</div>
+<ul>
+<li>Train the <code>Learner</code></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>learner<span class="sc">$</span><span class="fu">train</span>(task)</span></code></pre></div>
+</div>
+<ul>
+<li>The <code>$model</code> is the rpart model: a decision tree</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">print</span>(learner<span class="sc">$</span>model)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>n= 333 
+
+node), split, n, loss, yval, (yprob)
+      * denotes terminal node
+
+1) root 333 187 Adelie (0.438438438 0.204204204 0.357357357)  
+  2) flipper_length&lt; 206.5 208  64 Adelie (0.692307692 0.302884615 0.004807692)  
+    4) bill_length&lt; 43.35 145   5 Adelie (0.965517241 0.034482759 0.000000000) *
+    5) bill_length&gt;=43.35 63   5 Chinstrap (0.063492063 0.920634921 0.015873016) *
+  3) flipper_length&gt;=206.5 125   7 Gentoo (0.016000000 0.040000000 0.944000000)  
+    6) bill_depth&gt;=17.65 7   2 Chinstrap (0.285714286 0.714285714 0.000000000) *
+    7) bill_depth&lt; 17.65 118   0 Gentoo (0.000000000 0.000000000 1.000000000) *</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="hyperparameters" class="slide level2">
+<h2>Hyperparameters</h2>
+<ul>
+<li>Learners have <em>hyperparameters</em></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="fu">as.data.table</span>(learner<span class="sc">$</span>param_set)[, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>]</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                id    class lower upper      levels nlevels
+            &lt;char&gt;   &lt;char&gt; &lt;num&gt; &lt;num&gt;      &lt;list&gt;   &lt;num&gt;
+ 1:             cp ParamDbl     0     1                 Inf
+ 2:     keep_model ParamLgl    NA    NA  TRUE,FALSE       2
+ 3:     maxcompete ParamInt     0   Inf                 Inf
+ 4:       maxdepth ParamInt     1    30                  30
+ 5:   maxsurrogate ParamInt     0   Inf                 Inf
+ 6:      minbucket ParamInt     1   Inf                 Inf
+ 7:       minsplit ParamInt     1   Inf                 Inf
+ 8: surrogatestyle ParamInt     0     1                   2
+ 9:   usesurrogate ParamInt     0     2                   3
+10:           xval ParamInt     0   Inf                 Inf</code></pre>
+</div>
+</div>
+<ul>
+<li>Changing them changes the <code>Learner</code>’s behavior</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>learner<span class="sc">$</span>param_set<span class="sc">$</span>values <span class="ot">=</span> <span class="fu">list</span>(<span class="at">maxdepth =</span> <span class="dv">1</span>, <span class="at">xval =</span> <span class="dv">0</span>)</span>
+<span id="cb31-2"><a href="#cb31-2"></a>learner<span class="sc">$</span><span class="fu">train</span>(task)</span></code></pre></div>
+</div>
+<ul>
+<li>This gives a smaller decision tree</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="fu">print</span>(learner<span class="sc">$</span>model)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>n= 333 
+
+node), split, n, loss, yval, (yprob)
+      * denotes terminal node
+
+1) root 333 187 Adelie (0.438438438 0.204204204 0.357357357)  
+  2) flipper_length&lt; 206.5 208  64 Adelie (0.692307692 0.302884615 0.004807692) *
+  3) flipper_length&gt;=206.5 125   7 Gentoo (0.016000000 0.040000000 0.944000000) *</code></pre>
+</div>
+</div>
+</section>
+<section id="prediction" class="slide level2">
+<h2>Prediction</h2>
+<div class="frame">
+<ul>
+<li><p>Let’s make a prediction for some new data, e.g.:</p></li>
+<li><p>To do so, we call the <code>$predict_newdata()</code> method using the new data:</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>prediction <span class="ot">=</span> learner<span class="sc">$</span><span class="fu">predict_newdata</span>(new_data)</span></code></pre></div>
+</div>
+<ul>
+<li>We get a Prediction object:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>prediction</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;PredictionClassif&gt; for 2 observations:
+ row_ids truth response
+       1  &lt;NA&gt;   Gentoo
+       2  &lt;NA&gt;   Gentoo</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="prediction-1" class="slide level2">
+<h2>Prediction</h2>
+<div class="frame">
+<ul>
+<li>We can make the Learner predict <em>probabilities</em> when we set <code>predict_type</code>:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a>learner<span class="sc">$</span>predict_type <span class="ot">=</span> <span class="st">"prob"</span></span>
+<span id="cb37-2"><a href="#cb37-2"></a>learner<span class="sc">$</span><span class="fu">predict_newdata</span>(new_data)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;PredictionClassif&gt; for 2 observations:
+ row_ids truth response prob.Adelie prob.Chinstrap prob.Gentoo
+       1  &lt;NA&gt;   Gentoo       0.016           0.04       0.944
+       2  &lt;NA&gt;   Gentoo       0.016           0.04       0.944</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="prediction-2" class="slide level2">
+<h2>Prediction</h2>
+<div class="frame">
+<p>What exactly is a Prediction object?</p>
+<ul>
+<li>Contains predictions and offers useful access fields / methods</li>
+<li>Use <code>as.data.table()</code> to extract data</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a><span class="fu">as.data.table</span>(prediction)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   row_ids  truth response
+     &lt;int&gt; &lt;fctr&gt;   &lt;fctr&gt;
+1:       1   &lt;NA&gt;   Gentoo
+2:       2   &lt;NA&gt;   Gentoo</code></pre>
+</div>
+</div>
+<ul>
+<li>Active bindings and functions that give further information: <code>$response, $truth,</code> <code>$confusion</code> . . .</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a>prediction<span class="sc">$</span>response</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] Gentoo Gentoo
+Levels: Adelie Chinstrap Gentoo</code></pre>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="performance" class="title-slide slide level1">
+<h1>Performance</h1>
+
+</section>
+<section id="performance-evaluation" class="slide level2">
+<h2>Performance Evaluation</h2>
+
+<img data-src="figures/mlr3book_figures-4.svg" style="width:100.0%" class="r-stretch quarto-figure-center"></section>
+<section id="performance-evaluation-1" class="slide level2">
+<h2>Performance Evaluation</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>Prediction ‘Task’ with known data</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a>known_truth_task<span class="sc">$</span><span class="fu">data</span>()</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   species bill_depth bill_length body_mass flipper_length island.Biscoe
+    &lt;fctr&gt;      &lt;num&gt;       &lt;num&gt;     &lt;num&gt;          &lt;num&gt;         &lt;num&gt;
+1:  Gentoo         20          37      4000            281             0
+2:  Adelie         21          39      3750            270             0
+   island.Dream island.Torgersen sex.female sex.male  year
+          &lt;num&gt;            &lt;num&gt;      &lt;num&gt;    &lt;num&gt; &lt;num&gt;
+1:            1                0          1        0  2007
+2:            0                1          0        1  2006</code></pre>
+</div>
+</div>
+<ul>
+<li>Predict again</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a>pred <span class="ot">=</span> learner<span class="sc">$</span><span class="fu">predict</span>(known_truth_task)</span>
+<span id="cb45-2"><a href="#cb45-2"></a>pred</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;PredictionClassif&gt; for 2 observations:
+ row_ids  truth response prob.Gentoo prob.Adelie prob.Chinstrap
+       1 Gentoo   Gentoo       0.944       0.016           0.04
+       2 Adelie   Gentoo       0.944       0.016           0.04</code></pre>
+</div>
+</div>
+<ul>
+<li>Score the prediction</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a>pred<span class="sc">$</span><span class="fu">score</span>(<span class="fu">msr</span>(<span class="st">"classif.ce"</span>))</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>classif.ce 
+       0.5 </code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/mlr3book_figures-3.svg"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="resampling" class="title-slide slide level1">
+<h1>Resampling</h1>
+
+</section>
+<section id="resampling-1" class="slide level2">
+<h2>Resampling</h2>
+
+<img data-src="./figures/mlr3book_figures-4.svg" class="r-stretch"></section>
+<section id="resampling-2" class="slide level2">
+<h2>Resampling</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><p>Resample description: How to split the data</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1"></a>cv3 <span class="ot">=</span> <span class="fu">rsmp</span>(<span class="st">"cv"</span>, <span class="at">folds =</span> <span class="dv">5</span>)</span></code></pre></div>
+</div></li>
+<li><p>Use the <code>resample()</code> function for resampling:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1"></a>task <span class="ot">=</span> <span class="fu">tsk</span>(<span class="st">"penguins_simple"</span>)</span>
+<span id="cb50-2"><a href="#cb50-2"></a>learner <span class="ot">=</span> <span class="fu">lrn</span>(<span class="st">"classif.rpart"</span>)</span>
+<span id="cb50-3"><a href="#cb50-3"></a>rr <span class="ot">=</span> <span class="fu">resample</span>(task, learner, cv3)</span></code></pre></div>
+</div></li>
+<li><p>We get a <code>ResampleResult</code> object:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1"></a>rr</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;ResampleResult&gt; with 5 resampling iterations
+  task_id    learner_id resampling_id iteration warnings errors
+ penguins classif.rpart            cv         1        0      0
+ penguins classif.rpart            cv         2        0      0
+ penguins classif.rpart            cv         3        0      0
+ penguins classif.rpart            cv         4        0      0
+ penguins classif.rpart            cv         5        0      0</code></pre>
+</div>
+</div></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="figures/mlr3book_figures-8.svg"></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="resample-result" class="slide level2">
+<h2>Resample Result</h2>
+<p>What exactly is a <code>ResampleResult</code> object?</p>
+<p>Remember <code>Prediction</code>:</p>
+<ul>
+<li><p>Get a table presentation using <code>as.data.table()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a>rr_table <span class="ot">=</span> <span class="fu">as.data.table</span>(rr)</span>
+<span id="cb53-2"><a href="#cb53-2"></a><span class="fu">print</span>(rr_table)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                task                   learner         resampling iteration
+              &lt;list&gt;                    &lt;list&gt;             &lt;list&gt;     &lt;int&gt;
+1: &lt;TaskClassif[51]&gt; &lt;LearnerClassifRpart[38]&gt; &lt;ResamplingCV[20]&gt;         1
+2: &lt;TaskClassif[51]&gt; &lt;LearnerClassifRpart[38]&gt; &lt;ResamplingCV[20]&gt;         2
+3: &lt;TaskClassif[51]&gt; &lt;LearnerClassifRpart[38]&gt; &lt;ResamplingCV[20]&gt;         3
+4: &lt;TaskClassif[51]&gt; &lt;LearnerClassifRpart[38]&gt; &lt;ResamplingCV[20]&gt;         4
+5: &lt;TaskClassif[51]&gt; &lt;LearnerClassifRpart[38]&gt; &lt;ResamplingCV[20]&gt;         5
+                prediction
+                    &lt;list&gt;
+1: &lt;PredictionClassif[20]&gt;
+2: &lt;PredictionClassif[20]&gt;
+3: &lt;PredictionClassif[20]&gt;
+4: &lt;PredictionClassif[20]&gt;
+5: &lt;PredictionClassif[20]&gt;</code></pre>
+</div>
+</div></li>
+<li><p>Active bindings and functions that make information easily accessible</p></li>
+<li><p>Calculate performance:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1"></a>rr<span class="sc">$</span><span class="fu">aggregate</span>(<span class="fu">msr</span>(<span class="st">"classif.ce"</span>))</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>classif.ce 
+0.06901854 </code></pre>
+</div>
+</div></li>
+<li><p>Get predictions</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1"></a>rr<span class="sc">$</span><span class="fu">prediction</span>()</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;PredictionClassif&gt; for 333 observations:
+    row_ids     truth  response
+          9    Adelie    Adelie
+         29    Adelie    Adelie
+         33    Adelie    Adelie
+---                            
+        290 Chinstrap Chinstrap
+        317 Chinstrap Chinstrap
+        326 Chinstrap Chinstrap</code></pre>
+</div>
+</div></li>
+</ul>
+</section>
+<section id="resampling-3" class="slide level2">
+<h2>Resampling</h2>
+<ul>
+<li><p>Predictions of individual folds</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1"></a>predictions <span class="ot">=</span> rr<span class="sc">$</span><span class="fu">predictions</span>()</span>
+<span id="cb59-2"><a href="#cb59-2"></a>predictions[[<span class="dv">1</span>]]</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;PredictionClassif&gt; for 67 observations:
+    row_ids     truth  response
+          9    Adelie    Adelie
+         29    Adelie    Adelie
+         33    Adelie    Adelie
+---                            
+        327 Chinstrap Chinstrap
+        329 Chinstrap    Gentoo
+        330 Chinstrap    Adelie</code></pre>
+</div>
+</div></li>
+<li><p>Score of individual folds</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1"></a>scores <span class="ot">=</span> rr<span class="sc">$</span><span class="fu">score</span>()</span>
+<span id="cb61-2"><a href="#cb61-2"></a>scores[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="fu">c</span>(<span class="st">"iteration"</span>, <span class="st">"classif.ce"</span>)]</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   iteration classif.ce
+       &lt;int&gt;      &lt;num&gt;
+1:         1 0.07462687
+2:         2 0.01492537
+3:         3 0.13432836</code></pre>
+</div>
+</div></li>
+</ul>
+</section></section>
+<section>
+<section id="benchmark" class="title-slide slide level1">
+<h1>Benchmark</h1>
+
+</section>
+<section id="performance-comparison" class="slide level2">
+<h2>Performance Comparison</h2>
+<ul>
+<li><p>Multiple learners on multiple tasks:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1"></a>cv5 <span class="ot">=</span> <span class="fu">rsmp</span>(<span class="st">"cv"</span>, <span class="at">folds =</span> <span class="dv">5</span>)</span>
+<span id="cb63-2"><a href="#cb63-2"></a><span class="fu">library</span>(<span class="st">"mlr3learners"</span>)</span>
+<span id="cb63-3"><a href="#cb63-3"></a>learners <span class="ot">=</span> <span class="fu">list</span>(<span class="fu">lrn</span>(<span class="st">"classif.rpart"</span>), <span class="fu">lrn</span>(<span class="st">"classif.kknn"</span>))</span>
+<span id="cb63-4"><a href="#cb63-4"></a>tasks <span class="ot">=</span> <span class="fu">list</span>(<span class="fu">tsk</span>(<span class="st">"penguins_simple"</span>), <span class="fu">tsk</span>(<span class="st">"sonar"</span>), <span class="fu">tsk</span>(<span class="st">"wine"</span>))</span></code></pre></div>
+</div></li>
+<li><p>Setup the <em>design</em> and run the benchmark:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1"></a>design <span class="ot">=</span> <span class="fu">benchmark_grid</span>(tasks, learners, cv5)</span>
+<span id="cb64-2"><a href="#cb64-2"></a>design</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       task       learner resampling
+     &lt;list&gt;        &lt;list&gt;     &lt;list&gt;
+1: penguins classif.rpart         cv
+2: penguins  classif.kknn         cv
+3:    sonar classif.rpart         cv
+4:    sonar  classif.kknn         cv
+5:     wine classif.rpart         cv
+6:     wine  classif.kknn         cv</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1"></a>bmr <span class="ot">=</span> <span class="fu">benchmark</span>(design)</span></code></pre></div>
+</div></li>
+<li><p>We get a <code>BenhmarkResult</code> object which shows that <code>knn</code> outperforms <code>rpart</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1"></a>bmr_ag <span class="ot">=</span> bmr<span class="sc">$</span><span class="fu">aggregate</span>()</span>
+<span id="cb67-2"><a href="#cb67-2"></a>bmr_ag[, <span class="fu">c</span>(<span class="st">"task_id"</span>, <span class="st">"learner_id"</span>, <span class="st">"classif.ce"</span>)]</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    task_id    learner_id classif.ce
+     &lt;char&gt;        &lt;char&gt;      &lt;num&gt;
+1: penguins classif.rpart 0.05409317
+2: penguins  classif.kknn 0.01510629
+3:    sonar classif.rpart 0.38013937
+4:    sonar  classif.kknn 0.16306620
+5:     wine classif.rpart 0.12396825
+6:     wine  classif.kknn 0.02809524</code></pre>
+</div>
+</div></li>
+</ul>
+</section>
+<section id="benchmark-result" class="slide level2">
+<h2>Benchmark Result</h2>
+<p>A <code>BenchmarkResult</code> is just like a <code>Prediction</code> and <code>ResampleResult</code>:</p>
+<ul>
+<li>Table representation using <code>as.data.table()</code></li>
+<li>Active bindings and functiouns that make information easily accessible</li>
+</ul>
+</section>
+<section id="benchmark-result-1" class="slide level2">
+<h2>Benchmark Result</h2>
+<p>The mlr3viz package contains <code>autoplot()</code> functions for many mlr3 objects</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1"></a><span class="fu">library</span>(mlr3viz)</span>
+<span id="cb69-2"><a href="#cb69-2"></a><span class="fu">autoplot</span>(bmr)</span></code></pre></div>
+
+</div>
+<img data-src="presentation_files/figure-revealjs/unnamed-chunk-47-1.png" width="960" class="r-stretch"></section></section>
+<section id="control-of-execution" class="title-slide slide level1">
+<h1>Control of Execution</h1>
+<p>Parallelization</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1"></a>future<span class="sc">::</span><span class="fu">plan</span>(<span class="st">"multicore"</span>)</span></code></pre></div>
+</div>
+<ul>
+<li>runs each resampling iteration as a job</li>
+<li>also allows nested resampling (although not needed here)</li>
+</ul>
+<p>Encapsulation</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1"></a>learner<span class="sc">$</span>encapsulate <span class="ot">=</span> <span class="fu">c</span>(<span class="at">train =</span> <span class="st">"callr"</span>, <span class="at">predict =</span> <span class="st">"callr"</span>)</span></code></pre></div>
+</div>
+<ul>
+<li>Spawns a separate R process to train the learner</li>
+<li>Learner may segfault without tearing down the session</li>
+<li>Logs are captured</li>
+<li>Possibility to have a fallback to create predictions</li>
+</ul>
+</section>
+
+<section>
+<section id="machine-learning-pipelines-in-r" class="title-slide slide level1">
+<h1>Machine Learning Pipelines in R</h1>
+
+</section>
+<section id="mlr3pipelines" class="slide level2">
+<h2>mlr3pipelines</h2>
+<p>Machine Learning Workflows:</p>
+<ul>
+<li><strong>Preprocessing</strong>: Feature extraction, feature election, missing data imputation, …</li>
+<li><strong>Ensemble methods</strong>: Model averaging, model stacking</li>
+<li><code>mlr3</code>: modular <em>model fitting</em></li>
+</ul>
+<p><span class="math inline">\(\Rightarrow\)</span> <code>mlr3pipelines</code>: modular <em>ML workflows</em></p>
+
+<img data-src="figures/pipelines_12.png" style="width:100.0%" class="r-stretch"></section>
+<section id="machine-learning-workflows" class="slide level2">
+<h2>Machine Learning Workflows</h2>
+<div class="fragment" data-fragment-index="1">
+<p>What do they look like? <img data-src="figures/pipelines_6.png" class="absolute" style="top: 450px; left: 0px; "></p>
+</div>
+<div class="fragment" data-fragment-index="2">
+<ul>
+<li><strong>Buildings block</strong>: <em>what</em> is happening? <span class="math inline">\(\rightarrow\)</span> <code>PipeOp</code> <img data-src="figures/pipelines_7.png" class="absolute" style="top: 450px; left: 0px; "></li>
+</ul>
+</div>
+<div class="fragment" data-fragment-index="3">
+<ul>
+<li><strong>Structure</strong>: in what <em>sequence</em> is it happening? <span class="math inline">\(\rightarrow\)</span> <code>Graph</code> <img data-src="figures/pipelines_8.png" class="absolute" style="top: 450px; left: 0px; "></li>
+</ul>
+</div>
+<div class="fragment" data-fragment-index="4">
+<p><span class="math inline">\(\Rightarrow\)</span> <code>Graph</code>: <code>PipeOp</code>s as <strong>nodes</strong> with <strong>edges</strong> (data flow) between them</p>
+<p><img data-src="figures/pipelines_8.png" class="absolute" style="top: 450px; left: 0px; "></p>
+</div>
+</section></section>
+<section>
+<section id="pipeops" class="title-slide slide level1">
+<h1>PipeOps</h1>
+
+</section>
+<section id="pipeop-single-unit-of-data-operation" class="slide level2">
+<h2>PipeOp: Single Unit of Data Operation</h2>
+<div class="fragment" data-fragment-index="1">
+<ul>
+<li><code>pip = po("scale")</code> to construct</li>
+</ul>
+<p><img data-src="figures/pipeline-trim-34.png" class="absolute" style="top: 400px; left: 0px; "></p>
+</div>
+<div class="fragment" data-fragment-index="2">
+<ul>
+<li><code>pip$train()</code>: process data and create <code>pip$state</code></li>
+</ul>
+<p><img data-src="figures/pipeline-trim-1.png" class="absolute" style="top: 400px; left: 0px; "></p>
+</div>
+<div class="fragment" data-fragment-index="3">
+<ul>
+<li><code>pip$predict()</code>: process data depending on the <code>pip$state</code></li>
+</ul>
+<p><img data-src="figures/pipeline-trim-2.png" class="absolute" style="top: 400px; left: 0px; "></p>
+</div>
+<div class="fragment" data-fragment-index="4">
+<ul>
+<li>Multiple inputs or multiple outputs</li>
+</ul>
+<p><img data-src="figures/pipeline-trim-6.png" class="absolute" style="top: 400px; left: 0px; "></p>
+</div>
+</section>
+<section id="pipeop-single-unit-of-data-operation-1" class="slide level2">
+<h2>PipeOp: Single Unit of Data Operation</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1"></a>po_scale <span class="ot">=</span> <span class="fu">po</span>(<span class="st">"scale"</span>)</span>
+<span id="cb72-2"><a href="#cb72-2"></a>trained <span class="ot">=</span> po_scale<span class="sc">$</span><span class="fu">train</span>(<span class="fu">list</span>(task))</span>
+<span id="cb72-3"><a href="#cb72-3"></a>trained<span class="sc">$</span>output<span class="sc">$</span><span class="fu">head</span>(<span class="dv">3</span>)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   species bill_depth bill_length  body_mass flipper_length island.Biscoe
+    &lt;fctr&gt;      &lt;num&gt;       &lt;num&gt;      &lt;num&gt;          &lt;num&gt;         &lt;num&gt;
+1:  Adelie  0.7795590  -0.8946955 -0.5676206     -1.4246077     -0.977724
+2:  Adelie  0.1194043  -0.8215515 -0.5055254     -1.0678666     -0.977724
+3:  Adelie  0.4240910  -0.6752636 -1.1885721     -0.4257325     -0.977724
+   island.Dream island.Torgersen sex.female   sex.male      year
+          &lt;num&gt;            &lt;num&gt;      &lt;num&gt;      &lt;num&gt;     &lt;num&gt;
+1:   -0.7641697         2.463094 -0.9895421  0.9895421 -1.281813
+2:   -0.7641697         2.463094  1.0075337 -1.0075337 -1.281813
+3:   -0.7641697         2.463094  1.0075337 -1.0075337 -1.281813</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1"></a><span class="fu">head</span>(po_scale<span class="sc">$</span>state, <span class="dv">2</span>)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$center
+      bill_depth      bill_length        body_mass   flipper_length 
+      17.1648649       43.9927928     4207.0570571      200.9669670 
+   island.Biscoe     island.Dream island.Torgersen       sex.female 
+       0.4894895        0.3693694        0.1411411        0.4954955 
+        sex.male             year 
+       0.5045045     2008.0420420 
+
+$scale
+      bill_depth      bill_length        body_mass   flipper_length 
+       1.9692355        5.4686683      805.2158019       14.0157653 
+   island.Biscoe     island.Dream island.Torgersen       sex.female 
+       0.5006418        0.4833604        0.3486910        0.5007321 
+        sex.male             year 
+       0.5007321        0.8129439 </code></pre>
+</div>
+</div>
+</section>
+<section id="pipeop-single-unit-of-data-operation-2" class="slide level2">
+<h2>PipeOp: Single Unit of Data Operation</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1"></a>po_scale <span class="ot">=</span> <span class="fu">po</span>(<span class="st">"scale"</span>)</span>
+<span id="cb76-2"><a href="#cb76-2"></a>trained <span class="ot">=</span> po_scale<span class="sc">$</span><span class="fu">train</span>(<span class="fu">list</span>(task))</span>
+<span id="cb76-3"><a href="#cb76-3"></a>trained<span class="sc">$</span>output<span class="sc">$</span><span class="fu">head</span>()</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   species bill_depth bill_length  body_mass flipper_length island.Biscoe
+    &lt;fctr&gt;      &lt;num&gt;       &lt;num&gt;      &lt;num&gt;          &lt;num&gt;         &lt;num&gt;
+1:  Adelie  0.7795590  -0.8946955 -0.5676206     -1.4246077     -0.977724
+2:  Adelie  0.1194043  -0.8215515 -0.5055254     -1.0678666     -0.977724
+3:  Adelie  0.4240910  -0.6752636 -1.1885721     -0.4257325     -0.977724
+4:  Adelie  1.0842457  -1.3335592 -0.9401915     -0.5684290     -0.977724
+5:  Adelie  1.7444004  -0.8581235 -0.6918109     -0.7824736     -0.977724
+6:  Adelie  0.3225288  -0.9312674 -0.7228585     -1.4246077     -0.977724
+   island.Dream island.Torgersen sex.female   sex.male      year
+          &lt;num&gt;            &lt;num&gt;      &lt;num&gt;      &lt;num&gt;     &lt;num&gt;
+1:   -0.7641697         2.463094 -0.9895421  0.9895421 -1.281813
+2:   -0.7641697         2.463094  1.0075337 -1.0075337 -1.281813
+3:   -0.7641697         2.463094  1.0075337 -1.0075337 -1.281813
+4:   -0.7641697         2.463094  1.0075337 -1.0075337 -1.281813
+5:   -0.7641697         2.463094 -0.9895421  0.9895421 -1.281813
+6:   -0.7641697         2.463094  1.0075337 -1.0075337 -1.281813</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1"></a>smalltask <span class="ot">=</span> task<span class="sc">$</span><span class="fu">clone</span>()</span>
+<span id="cb78-2"><a href="#cb78-2"></a>smalltask <span class="ot">=</span> smalltask<span class="sc">$</span><span class="fu">filter</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)</span>
+<span id="cb78-3"><a href="#cb78-3"></a>pred <span class="ot">=</span> po_scale<span class="sc">$</span><span class="fu">predict</span>(<span class="fu">list</span>(smalltask))</span>
+<span id="cb78-4"><a href="#cb78-4"></a>pred<span class="sc">$</span>output<span class="sc">$</span><span class="fu">data</span>()</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   species bill_depth bill_length  body_mass flipper_length island.Biscoe
+    &lt;fctr&gt;      &lt;num&gt;       &lt;num&gt;      &lt;num&gt;          &lt;num&gt;         &lt;num&gt;
+1:  Adelie  0.7795590  -0.8946955 -0.5676206     -1.4246077     -0.977724
+2:  Adelie  0.1194043  -0.8215515 -0.5055254     -1.0678666     -0.977724
+3:  Adelie  0.4240910  -0.6752636 -1.1885721     -0.4257325     -0.977724
+   island.Dream island.Torgersen sex.female   sex.male      year
+          &lt;num&gt;            &lt;num&gt;      &lt;num&gt;      &lt;num&gt;     &lt;num&gt;
+1:   -0.7641697         2.463094 -0.9895421  0.9895421 -1.281813
+2:   -0.7641697         2.463094  1.0075337 -1.0075337 -1.281813
+3:   -0.7641697         2.463094  1.0075337 -1.0075337 -1.281813</code></pre>
+</div>
+</div>
+</section>
+<section id="pipeops-1" class="slide level2">
+<h2>PipeOps</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1"></a>mlr_pipeops<span class="sc">$</span><span class="fu">keys</span>()</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "boxcox"                "branch"                "chunk"                
+ [4] "classbalancing"        "classifavg"            "classweights"         
+ [7] "colapply"              "collapsefactors"       "colroles"             
+[10] "compose_crank"         "compose_distr"         "compose_probregr"     
+[13] "copy"                  "crankcompose"          "datefeatures"         
+[16] "distrcompose"          "encode"                "encodeimpact"         
+[19] "encodelmer"            "featureunion"          "filter"               
+[22] "fixfactors"            "histbin"               "ica"                  
+[25] "imputeconstant"        "imputehist"            "imputelearner"        
+[28] "imputemean"            "imputemedian"          "imputemode"           
+[31] "imputeoor"             "imputesample"          "kernelpca"            
+[34] "learner"               "learner_cv"            "missind"              
+[37] "modelmatrix"           "multiplicityexply"     "multiplicityimply"    
+[40] "mutate"                "nmf"                   "nop"                  
+[43] "ovrsplit"              "ovrunite"              "pca"                  
+[46] "proxy"                 "quantilebin"           "randomprojection"     
+[49] "randomresponse"        "regravg"               "removeconstants"      
+[52] "renamecolumns"         "replicate"             "scale"                
+[55] "scalemaxabs"           "scalerange"            "select"               
+[58] "smote"                 "spatialsign"           "subsample"            
+[61] "survavg"               "targetinvert"          "targetmutate"         
+[64] "targettrafoscalerange" "textvectorizer"        "threshold"            
+[67] "trafopred_regrsurv"    "trafopred_survregr"    "trafotask_regrsurv"   
+[70] "trafotask_survregr"    "tunethreshold"         "unbranch"             
+[73] "vtreat"                "yeojohnson"           </code></pre>
+</div>
+</div>
+</section>
+<section id="pipeops-2" class="slide level2">
+<h2>PipeOps</h2>
+<ul>
+<li>Simple data preprocessing operations (scaling, Box Cox, Yeo Johnson, PCA, ICA)</li>
+<li>Missing value imputation (sampling, mean, median, mode, new level, …)</li>
+<li>Feature selection (by name, by type, using filter methods)</li>
+<li>Categorical data encoding (one-hot, treatment, impact)</li>
+<li>Sampling (subsampling for speed, sampling for class balance)</li>
+<li>Ensemble methods on Predictions (weighted average, possibly learned weights)</li>
+<li>Branching (simultaneous branching, alternative branching)</li>
+<li>Combination of data</li>
+<li>Text processing</li>
+<li>Date processing</li>
+<li><strong>Soon</strong> <code>mlr3torch</code>: building of neural networks as graphs in <code>mlr3torch</code></li>
+</ul>
+</section></section>
+<section>
+<section id="graph-operations" class="title-slide slide level1">
+<h1>Graph Operations</h1>
+
+</section>
+<section id="graph-operations-1" class="slide level2">
+<h2>Graph Operations</h2>
+<div class="fragment" data-fragment-index="1">
+<p><img data-src="figures/pipeline-trim-7.png" class="absolute" style="top: 450px; left: 0px; "></p>
+</div>
+<div class="fragment" data-fragment-index="2">
+<ul>
+<li>The <code>%&gt;&gt;%</code> operator concatenates <code>Graph</code>s and <code>PipeOp</code>s</li>
+</ul>
+<p><img data-src="figures/pipeline-trim-3.png" class="absolute" style="top: 450px; left: 0px; "></p>
+</div>
+<div class="fragment" data-fragment-index="3">
+<ul>
+<li>The <code>gunion()</code>-function unites <code>Graph</code>s and <code>PipeOp</code>s <img data-src="figures/pipeline-trim-4.png" class="absolute" style="top: 450px; left: 0px; "></li>
+</ul>
+</div>
+<div class="fragment" data-fragment-index="4">
+<ul>
+<li>The <code>pipeline_greplicate()</code>-function unites copies of <code>Graph</code>s and <code>PipeOp</code>s <img data-src="figures/pipeline-trim-5.png" class="absolute" style="top: 450px; left: 0px; "></li>
+</ul>
+</div>
+</section>
+<section id="learners-and-graphs" class="slide level2">
+<h2>Learners and Graphs</h2>
+<p><strong>PipeOpLearner</strong></p>
+<ul>
+<li><code>Learner</code> as a <code>PipeOp</code></li>
+<li>Fits a model, output is <code>Prediction</code></li>
+</ul>
+<p><img data-src="figures/pipeline-trim-11.png" class="absolute" style="top: 400px; left: 0px; "></p>
+<div class="fragment">
+<p><strong>GraphLearner</strong></p>
+<ul>
+<li><code>Graph</code> as a <code>Learner</code></li>
+<li>All benefits of <code>mlr3</code>: <strong>resampling</strong>, <strong>tuning</strong>, <strong>nested resampling</strong>, …</li>
+</ul>
+<p><img data-src="figures/pipeline-trim-12.png" class="absolute" style="top: 400px; left: 0px; "></p>
+</div>
+</section></section>
+<section>
+<section id="linear-pipelines" class="title-slide slide level1">
+<h1>Linear Pipelines</h1>
+
+</section>
+<section id="linear-preprocessing-pipeline" class="slide level2">
+<h2>Linear Preprocessing Pipeline</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1"></a>graph_pp <span class="ot">=</span> <span class="fu">po</span>(<span class="st">"scale"</span>) <span class="sc">%&gt;&gt;%</span></span>
+<span id="cb82-2"><a href="#cb82-2"></a>  <span class="fu">po</span>(<span class="st">"encode"</span>) <span class="sc">%&gt;&gt;%</span></span>
+<span id="cb82-3"><a href="#cb82-3"></a>  <span class="fu">po</span>(<span class="st">"imputemedian"</span>) <span class="sc">%&gt;&gt;%</span></span>
+<span id="cb82-4"><a href="#cb82-4"></a>  <span class="fu">lrn</span>(<span class="st">"classif.rpart"</span>)</span></code></pre></div>
+</div>
+<p><img data-src="figures/pipeline-trim-270.png" class="absolute" style="top: 400px; left: 0px; "></p>
+</section>
+<section id="linear-preprocessing-pipeline-1" class="slide level2">
+<h2>Linear Preprocessing Pipeline</h2>
+<ul>
+<li><code>train()</code>ing: Data propagates and creates <code>$states</code></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1"></a>glrn <span class="ot">=</span> <span class="fu">as_learner</span>(graph_pp)</span>
+<span id="cb83-2"><a href="#cb83-2"></a>glrn<span class="sc">$</span><span class="fu">train</span>(task)</span></code></pre></div>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p><img data-src="figures/pipeline-trim-271.png" class="absolute" style="top: 400px; left: 0px; "></p>
+</div>
+<div class="fragment" data-fragment-index="2">
+<p><img data-src="figures/pipeline-trim-272.png" class="absolute" style="top: 400px; left: 0px; "></p>
+</div>
+<div class="fragment" data-fragment-index="3">
+<p><img data-src="figures/pipeline-trim-273.png" class="absolute" style="top: 400px; left: 0px; "></p>
+</div>
+<div class="fragment" data-fragment-index="4">
+<p><img data-src="figures/pipeline-trim-274.png" class="absolute" style="top: 400px; left: 0px; "></p>
+</div>
+<div class="fragment" data-fragment-index="5">
+<p><img data-src="figures/pipeline-trim-275.png" class="absolute" style="top: 400px; left: 0px; "></p>
+</div>
+</section>
+<section id="linear-preprocessing-pipeline-2" class="slide level2">
+<h2>Linear Preprocessing Pipeline</h2>
+<ul>
+<li><code>train()</code>ing: Data propagates and creates <code>$states</code></li>
+<li><code>predict()</code>tion: Data propagates, uses <code>$states</code></li>
+</ul>
+<p><img data-src="figures/pipeline-trim-276.png" class="absolute" style="top: 400px; left: 0px; "></p>
+</section>
+<section id="linear-preprocessing-pipeline-3" class="slide level2">
+<h2>Linear Preprocessing Pipeline</h2>
+<ul>
+<li>Setting parameter values: <code>$param_set</code>:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1"></a>graph_pp<span class="sc">$</span>param_set<span class="sc">$</span><span class="fu">set_values</span>(</span>
+<span id="cb84-2"><a href="#cb84-2"></a>    <span class="at">scale.center =</span> <span class="cn">FALSE</span></span>
+<span id="cb84-3"><a href="#cb84-3"></a>)</span></code></pre></div>
+</div>
+<ul>
+<li>Retrieving state: <code>$state</code></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1"></a>graph_pp<span class="sc">$</span>pipeops<span class="sc">$</span>scale<span class="sc">$</span>state<span class="sc">$</span>scale</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      bill_depth      bill_length        body_mass   flipper_length 
+       1.9692355        5.4686683      805.2158019       14.0157653 
+   island.Biscoe     island.Dream island.Torgersen       sex.female 
+       0.5006418        0.4833604        0.3486910        0.5007321 
+        sex.male             year 
+       0.5007321        0.8129439 </code></pre>
+</div>
+</div>
+<ul>
+<li>Retrieving intermediate results: <code>$.result</code> (set debug option before)</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1"></a>graph_pp<span class="sc">$</span>pipeops<span class="sc">$</span>scale<span class="sc">$</span>.result[[<span class="dv">1</span>]]<span class="sc">$</span><span class="fu">head</span>(<span class="dv">3</span>)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   species bill_depth bill_length  body_mass flipper_length island.Biscoe
+    &lt;fctr&gt;      &lt;num&gt;       &lt;num&gt;      &lt;num&gt;          &lt;num&gt;         &lt;num&gt;
+1:  Adelie  0.7795590  -0.8946955 -0.5676206     -1.4246077     -0.977724
+2:  Adelie  0.1194043  -0.8215515 -0.5055254     -1.0678666     -0.977724
+3:  Adelie  0.4240910  -0.6752636 -1.1885721     -0.4257325     -0.977724
+   island.Dream island.Torgersen sex.female   sex.male      year
+          &lt;num&gt;            &lt;num&gt;      &lt;num&gt;      &lt;num&gt;     &lt;num&gt;
+1:   -0.7641697         2.463094 -0.9895421  0.9895421 -1.281813
+2:   -0.7641697         2.463094  1.0075337 -1.0075337 -1.281813
+3:   -0.7641697         2.463094  1.0075337 -1.0075337 -1.281813</code></pre>
+</div>
+</div>
+</section></section>
+<section>
+<section id="tuning" class="title-slide slide level1">
+<h1>Tuning</h1>
+<div class="fragment" data-fragent-index="1">
+<ul>
+<li>Behaviour of most methods depends on <em>hyperparameters</em></li>
+</ul>
+</div>
+<div class="fragment" data-fragent-index="2">
+<ul>
+<li>We want to chose them so our algorithm performs well</li>
+</ul>
+</div>
+<div class="fragment" data-fragent-index="3">
+<ul>
+<li>Good hyperparameters are data-dependent</li>
+</ul>
+</div>
+<div class="fragment" data-fragent-index="4">
+<p><span class="math inline">\(\Rightarrow\)</span> We do <em>black box optimization</em> (“Try stuff and see what works”)</p>
+</div>
+<div class="fragment" data-fragent-index="5">
+<p>Tuning toolbox for <code>mlr3</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1"></a><span class="fu">library</span>(<span class="st">"bbotk"</span>)</span>
+<span id="cb89-2"><a href="#cb89-2"></a><span class="fu">library</span>(<span class="st">"mlr3tuning"</span>)</span></code></pre></div>
+</div>
+</div>
+</section>
+<section id="tuning-1" class="slide level2">
+<h2>Tuning</h2>
+<p><img data-src="figures/tuning-8.png" class="absolute" style="top: 100px; left: 50px; "></p>
+</section>
+<section id="tuning-2" class="slide level2">
+<h2>Tuning</h2>
+<p><img data-src="figures/tuning-9.png" class="absolute" style="top: 100px; left: 50px; "></p>
+</section>
+<section id="tuning-3" class="slide level2">
+<h2>Tuning</h2>
+<p><img data-src="figures/tuning-10.png" class="absolute" style="top: 100px; left: 50px; "></p>
+</section>
+<section id="tuning-4" class="slide level2">
+<h2>Tuning</h2>
+<p><img data-src="figures/tuning-11.png" class="absolute" style="top: 100px; left: 50px; "></p>
+</section>
+<section id="tuning-5" class="slide level2">
+<h2>Tuning</h2>
+<p><img data-src="figures/tuning-12.png" class="absolute" style="top: 100px; left: 50px; "></p>
+</section>
+<section id="tuning-6" class="slide level2">
+<h2>Tuning</h2>
+<p><img data-src="figures/tuning-13.png" class="absolute" style="top: 100px; left: 50px; "></p>
+</section>
+<section id="tuning-7" class="slide level2">
+<h2>Tuning</h2>
+<p><img data-src="figures/tuning-14.png" class="absolute" style="top: 100px; left: 50px; "></p>
+</section>
+<section id="tuning-8" class="slide level2">
+<h2>Tuning</h2>
+<p><img data-src="figures/tuning-15.png" class="absolute" style="top: 100px; left: 50px; "></p>
+</section>
+<section id="tuning-9" class="slide level2">
+<h2>Tuning</h2>
+<p><img data-src="figures/tuning-16.png" class="absolute" style="top: 100px; left: 50px; "></p>
+</section>
+<section id="tuning-10" class="slide level2">
+<h2>Tuning</h2>
+<p><img data-src="figures/tuning-17.png" class="absolute" style="top: 100px; left: 50px; "></p>
+</section>
+<section id="tuning-11" class="slide level2">
+<h2>Tuning</h2>
+<p><img data-src="figures/tuning-18.png" class="absolute" style="top: 100px; left: 50px; "></p>
+</section>
+<section id="tuning-12" class="slide level2">
+<h2>Tuning</h2>
+<p><img data-src="figures/tuning-19.png" class="absolute" style="top: 100px; left: 50px; "></p>
+</section>
+<section id="tuning-13" class="slide level2">
+<h2>Tuning</h2>
+<p><img data-src="figures/tuning-20.png" class="absolute" style="top: 100px; left: 50px; "></p>
+</section>
+<section id="tuning-14" class="slide level2">
+<h2>Tuning</h2>
+<p><img data-src="figures/tuning-21.png" class="absolute" style="top: 100px; left: 50px; "></p>
+</section>
+<section id="tuning-15" class="slide level2">
+<h2>Tuning</h2>
+<p><img data-src="figures/tuning-22.png" class="absolute" style="top: 100px; left: 50px; "></p>
+</section>
+<section id="tuning-16" class="slide level2">
+<h2>Tuning</h2>
+<p><img data-src="figures/tuning-23.png" class="absolute" style="top: 100px; left: 50px; "></p>
+</section>
+<section id="tuning-17" class="slide level2">
+<h2>Tuning</h2>
+<p><img data-src="figures/tuning-24.png" class="absolute" style="top: 100px; left: 50px; "></p>
+</section>
+<section id="tuning-18" class="slide level2">
+<h2>Tuning</h2>
+<p><img data-src="figures/tuning-25.png" class="absolute" style="top: 100px; left: 50px; "></p>
+</section>
+<section id="tuning-19" class="slide level2">
+<h2>Tuning</h2>
+<p>TODO: Simple example for tuning</p>
+</section>
+<section id="autotuner" class="slide level2">
+<h2>AutoTuner</h2>
+<p>TODO: Explain AutoTuner</p>
+</section>
+<section id="nested-resampling" class="slide level2">
+<h2>Nested Resampling</h2>
+<p>TODO: Explain Nested Resampling for unbiased performance evaluation</p>
+</section>
+<section id="where-to-go-from-here" class="slide level2">
+<h2>Where to go from here</h2>
+<p><strong>Resources</strong>:</p>
+<ul>
+<li>Read the <code>mlr3</code> book: https://mlr3book.mlr-org.com/</li>
+<li>Browse our website: https://mlr-org.com/</li>
+<li>Read one of our gallery posts: https://mlr-org.com/gallery.html</li>
+<li>Check us out on GitHub: https://github.com/mlr-org</li>
+</ul>
+<p><strong>Get in Touch</strong></p>
+<ul>
+<li>You can email us directly: sebastian.fischer@stat.uni-muenchen.de</li>
+<li>You our publicly available mattermost channel: https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/</li>
+<li>We are always looking for new contributors!</li>
+</ul>
+
+<img src="figures/logo.png" class="slide-logo r-stretch"><div class="footer footer-default">
+<p>Machine Learning in R - Berlin R Users Group</p>
+</div>
+</section></section>
+    </div>
+  </div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="presentation_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="presentation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="presentation_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="presentation_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="presentation_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="presentation_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="presentation_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="presentation_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="presentation_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="presentation_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'smaller': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1980,
+
+        height: 1080,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      function tippyHover(el, contentFn) {
+        const config = {
+          allowHTML: true,
+          content: contentFn,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start'
+        };
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          return note.innerHTML;
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>
