@@ -1,0 +1,161 @@
+# mlr3
+
+```{r}
+library(mlr3verse)
+library(data.table)
+
+dataset = fread("data_train.csv")
+
+skimr::skim(dataset)
+```
+
+```{r}
+keep_columns = c("Survived", "Pclass", "Age", "SibSp", "Parch", "Fare")
+
+# meanings:
+# Survived: 0 = No, 1 = Yes
+# Pclass: Ticket class 1 = 1st, 2 = 2nd, 3 = 3rd
+# SibSp: # of siblings / spouses aboard the Titanic
+# Parch: # of parents / children aboard the Titanic
+# Embarked: Port of Embarkation C = Cherbourg, Q = Queenstown, S = Southampton
+
+dataset = dataset[, ..keep_columns]
+dataset$Survived = as.factor(dataset$Survived)
+```
+
+```{r}
+# Create a task
+task = TaskClassif$new(id = "titanic", backend = dataset, target = "Survived")
+
+print(task)
+
+autoplot(task)
+```
+
+```{r, fig.height=10}
+autoplot(task, type = "duo")
+
+autoplot(task, type = "pairs")
+```
+
+## Start with training a model
+
+```{r, fig.height=7}
+lrn = lrn("classif.rpart", keep_model = TRUE)
+lrn$train(task)
+autoplot(lrn)
+```
+
+## Using the model to predict
+
+```{r}
+testset = fread("data_test.csv")
+pred = lrn$predict_newdata(testset)
+autoplot(pred)
+```
+
+# Estimation of the model performance
+
+```{r}
+# Create a resampling strategy
+rdesc = rsmp("cv", folds = 10)
+
+lrn$predict_type = "prob" # needed for AUC
+
+# Create a resampling instance
+rr = resample(task, lrn, rdesc)
+```
+
+Wait? Don't we need a performance metric?
+
+```{r}
+# Estimate the performance
+metric = msr("classif.acc")
+rr$score(metric)
+
+# Aggregate the performance
+rr$aggregate(metric)
+
+autoplot(rr, measure = metric)
+```
+
+## What about AUC and ROC?
+
+```{r}
+metrics = msrs(c("classif.auc", "classif.tpr", "classif.tnr"))
+rr$aggregate(metrics)
+autoplot(rr, type = "roc")
+```
+
+# Can we use another learner?
+
+```{r}
+learners = lrns(c("classif.rpart", "classif.xgboost"))
+
+learners = lapply(learners, function(l) {
+  l$predict_type = "prob" # needed for AUC
+  l
+})
+
+benchmark_design = benchmark_grid(task, learners, rdesc)
+bm_res = benchmark(design = benchmark_design, store_models = TRUE)
+autoplot(bm_res, measure = msr("classif.auc"))
+```
+
+# Can we imrpve the performance of xgboost?
+
+```{r}
+xgb_lrn = lrn("classif.xgboost",
+    eta = to_tune(0.01, 0.1, logscale = TRUE),
+    max_depth = to_tune(1, 10), predict_type = "prob")
+
+tuning_instance = ti(
+  task = task,
+  learner = xgb_lrn,
+  resampling = rsmp("cv", folds = 10),
+  measures = msr("classif.auc"),
+  terminator = trm("none")
+)
+
+tuner = tnr("grid_search", resolution = 5)
+tuner$optimize(tuning_instance)
+autoplot(tuning_instance, type = 'surface')
+```
+
+Put these parameters into the learner
+```{r}
+tuning_instance$result$learner_param_vals
+xgb_lrn$param_set$values = tuning_instance$result$learner_param_vals[[1]]
+```
+
+Now let's compare again
+```{r}
+learners = list(lrn("classif.rpart", predict_type = "prob"), xgb_lrn)
+benchmark_design = benchmark_grid(task, learners, rdesc)
+bm_res = benchmark(design = benchmark_design, store_models = TRUE)
+autoplot(bm_res, measure = msr("classif.auc"))
+```
+
+# What did we do wrong?
+
+We optimized the hyperparameters on the whole test set.
+This makes our results too optimistic.
+Also it was quite complicated to write the code.
+
+There is an easier and more correct way to do this.
+
+## Automatic hyperparameter tuning
+
+```{r}
+auto_xgb_lrn = auto_tuner(
+    tuner = tnr("random_search"),
+    learner = xgb_lrn,
+    resampling = rsmp("cv", folds = 10),
+    measure = msr("classif.auc"),
+    terminator = trm("run_time", secs = 2))
+
+learners = list(lrn("classif.rpart", predict_type = "prob"), auto_xgb_lrn)
+benchmark_design = benchmark_grid(task, learners, rdesc)
+bm_res = benchmark(design = benchmark_design, store_models = TRUE)
+autoplot(bm_res, measure = msr("classif.auc"))
+```

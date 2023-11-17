@@ -7,7 +7,7 @@
 <link href="presentation_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="presentation_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="presentation_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.3.361">
+  <meta name="generator" content="quarto-1.3.450">
 
   <meta name="author" content="Jakob Richter, Sebastian Fischer, mlr3 Team">
   <title>Modern Machine Learning in R</title>
@@ -531,7 +531,7 @@ Jakob Richter, Sebastian Fischer, mlr3 Team
 <section id="mlr3-ecosystem" class="slide level2">
 <h2><code>mlr3</code> Ecosystem</h2>
 
-<img data-src="figures/mlr3_ecosystem.png" width="7500" class="r-stretch quarto-figure-center"></section></section>
+<img data-src="figures/mlr3_ecosystem.png" class="r-stretch quarto-figure-center"></section></section>
 <section>
 <section id="data" class="title-slide slide level1">
 <h1>Data</h1>
@@ -687,19 +687,17 @@ Keys: ames_housing, bike_sharing, boston_housing, breast_cancer,
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>mlr_learners_table <span class="ot">=</span> <span class="fu">as.data.table</span>(mlr_learners)</span>
 <span id="cb23-2"><a href="#cb23-2"></a>mlr_learners_table[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="fu">c</span>(<span class="st">"key"</span>, <span class="st">"packages"</span>, <span class="st">"predict_types"</span>)]</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Key: &lt;key&gt;
-                   key                      packages predict_types
-                &lt;char&gt;                        &lt;list&gt;        &lt;list&gt;
- 1: classif.AdaBoostM1  mlr3,mlr3extralearners,RWeka response,prob
- 2:        classif.C50    mlr3,mlr3extralearners,C50 response,prob
- 3:        classif.IBk  mlr3,mlr3extralearners,RWeka response,prob
- 4:        classif.J48  mlr3,mlr3extralearners,RWeka      response
- 5:       classif.JRip  mlr3,mlr3extralearners,RWeka response,prob
- 6:        classif.LMT  mlr3,mlr3extralearners,RWeka response,prob
- 7:       classif.OneR  mlr3,mlr3extralearners,RWeka response,prob
- 8:       classif.PART  mlr3,mlr3extralearners,RWeka response,prob
- 9:      classif.abess                    mlr3,abess response,prob
-10:       classif.bart mlr3,mlr3extralearners,dbarts response,prob</code></pre>
+<pre><code>                    key                 packages predict_types
+ 1:   classif.cv_glmnet mlr3,mlr3learners,glmnet response,prob
+ 2:       classif.debug                     mlr3 response,prob
+ 3: classif.featureless                     mlr3 response,prob
+ 4:      classif.glmnet mlr3,mlr3learners,glmnet response,prob
+ 5:        classif.kknn   mlr3,mlr3learners,kknn response,prob
+ 6:         classif.lda   mlr3,mlr3learners,MASS response,prob
+ 7:     classif.log_reg  mlr3,mlr3learners,stats response,prob
+ 8:    classif.multinom   mlr3,mlr3learners,nnet response,prob
+ 9: classif.naive_bayes  mlr3,mlr3learners,e1071 response,prob
+10:        classif.nnet   mlr3,mlr3learners,nnet response,prob</code></pre>
 </div>
 </div>
 </div>
@@ -759,7 +757,6 @@ node), split, n, loss, yval, (yprob)
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="fu">as.data.table</span>(learner<span class="sc">$</span>param_set)[, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>]</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                id    class lower upper      levels nlevels
-            &lt;char&gt;   &lt;char&gt; &lt;num&gt; &lt;num&gt;      &lt;list&gt;   &lt;num&gt;
  1:             cp ParamDbl     0     1                 Inf
  2:     keep_model ParamLgl    NA    NA  TRUE,FALSE       2
  3:     maxcompete ParamInt     0   Inf                 Inf
@@ -849,10 +846,9 @@ node), split, n, loss, yval, (yprob)
 <div class="cell">
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a><span class="fu">as.data.table</span>(prediction)</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>   row_ids  truth response
-     &lt;int&gt; &lt;fctr&gt;   &lt;fctr&gt;
-1:       1   &lt;NA&gt;   Gentoo
-2:       2   &lt;NA&gt;   Gentoo</code></pre>
+<pre><code>   row_ids truth response
+1:       1  &lt;NA&gt;   Gentoo
+2:       2  &lt;NA&gt;   Gentoo</code></pre>
 </div>
 </div>
 <ul>
@@ -887,13 +883,11 @@ Levels: Adelie Chinstrap Gentoo</code></pre>
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a>known_truth_task<span class="sc">$</span><span class="fu">data</span>()</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   species bill_depth bill_length body_mass flipper_length island.Biscoe
-    &lt;fctr&gt;      &lt;num&gt;       &lt;num&gt;     &lt;num&gt;          &lt;num&gt;         &lt;num&gt;
 1:  Gentoo         20          37      4000            281             0
 2:  Adelie         21          39      3750            270             0
-   island.Dream island.Torgersen sex.female sex.male  year
-          &lt;num&gt;            &lt;num&gt;      &lt;num&gt;    &lt;num&gt; &lt;num&gt;
-1:            1                0          1        0  2007
-2:            0                1          0        1  2006</code></pre>
+   island.Dream island.Torgersen sex.female sex.male year
+1:            1                0          1        0 2007
+2:            0                1          0        1 2006</code></pre>
 </div>
 </div>
 <ul>
@@ -990,14 +984,12 @@ Levels: Adelie Chinstrap Gentoo</code></pre>
 <span id="cb53-2"><a href="#cb53-2"></a><span class="fu">print</span>(rr_table)</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                task                   learner         resampling iteration
-              &lt;list&gt;                    &lt;list&gt;             &lt;list&gt;     &lt;int&gt;
 1: &lt;TaskClassif[51]&gt; &lt;LearnerClassifRpart[38]&gt; &lt;ResamplingCV[20]&gt;         1
 2: &lt;TaskClassif[51]&gt; &lt;LearnerClassifRpart[38]&gt; &lt;ResamplingCV[20]&gt;         2
 3: &lt;TaskClassif[51]&gt; &lt;LearnerClassifRpart[38]&gt; &lt;ResamplingCV[20]&gt;         3
 4: &lt;TaskClassif[51]&gt; &lt;LearnerClassifRpart[38]&gt; &lt;ResamplingCV[20]&gt;         4
 5: &lt;TaskClassif[51]&gt; &lt;LearnerClassifRpart[38]&gt; &lt;ResamplingCV[20]&gt;         5
                 prediction
-                    &lt;list&gt;
 1: &lt;PredictionClassif[20]&gt;
 2: &lt;PredictionClassif[20]&gt;
 3: &lt;PredictionClassif[20]&gt;
@@ -1011,7 +1003,7 @@ Levels: Adelie Chinstrap Gentoo</code></pre>
 <div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1"></a>rr<span class="sc">$</span><span class="fu">aggregate</span>(<span class="fu">msr</span>(<span class="st">"classif.ce"</span>))</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>classif.ce 
-0.06901854 </code></pre>
+ 0.0541384 </code></pre>
 </div>
 </div></li>
 <li><p>Get predictions</p>
@@ -1020,13 +1012,13 @@ Levels: Adelie Chinstrap Gentoo</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;PredictionClassif&gt; for 333 observations:
     row_ids     truth  response
+          1    Adelie    Adelie
+          5    Adelie    Adelie
           9    Adelie    Adelie
-         29    Adelie    Adelie
-         33    Adelie    Adelie
 ---                            
-        290 Chinstrap Chinstrap
-        317 Chinstrap Chinstrap
-        326 Chinstrap Chinstrap</code></pre>
+        326 Chinstrap Chinstrap
+        327 Chinstrap Chinstrap
+        330 Chinstrap    Adelie</code></pre>
 </div>
 </div></li>
 </ul>
@@ -1041,13 +1033,13 @@ Levels: Adelie Chinstrap Gentoo</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;PredictionClassif&gt; for 67 observations:
     row_ids     truth  response
+          1    Adelie    Adelie
+          5    Adelie    Adelie
           9    Adelie    Adelie
-         29    Adelie    Adelie
-         33    Adelie    Adelie
 ---                            
-        327 Chinstrap Chinstrap
-        329 Chinstrap    Gentoo
-        330 Chinstrap    Adelie</code></pre>
+        316 Chinstrap Chinstrap
+        325 Chinstrap Chinstrap
+        332 Chinstrap    Gentoo</code></pre>
 </div>
 </div></li>
 <li><p>Score of individual folds</p>
@@ -1056,10 +1048,9 @@ Levels: Adelie Chinstrap Gentoo</code></pre>
 <span id="cb61-2"><a href="#cb61-2"></a>scores[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="fu">c</span>(<span class="st">"iteration"</span>, <span class="st">"classif.ce"</span>)]</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   iteration classif.ce
-       &lt;int&gt;      &lt;num&gt;
 1:         1 0.07462687
 2:         2 0.01492537
-3:         3 0.13432836</code></pre>
+3:         3 0.04477612</code></pre>
 </div>
 </div></li>
 </ul>
@@ -1085,7 +1076,6 @@ Levels: Adelie Chinstrap Gentoo</code></pre>
 <span id="cb64-2"><a href="#cb64-2"></a>design</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       task       learner resampling
-     &lt;list&gt;        &lt;list&gt;     &lt;list&gt;
 1: penguins classif.rpart         cv
 2: penguins  classif.kknn         cv
 3:    sonar classif.rpart         cv
@@ -1100,14 +1090,13 @@ Levels: Adelie Chinstrap Gentoo</code></pre>
 <div class="sourceCode cell-code" id="cb67"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1"></a>bmr_ag <span class="ot">=</span> bmr<span class="sc">$</span><span class="fu">aggregate</span>()</span>
 <span id="cb67-2"><a href="#cb67-2"></a>bmr_ag[, <span class="fu">c</span>(<span class="st">"task_id"</span>, <span class="st">"learner_id"</span>, <span class="st">"classif.ce"</span>)]</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>    task_id    learner_id classif.ce
-     &lt;char&gt;        &lt;char&gt;      &lt;num&gt;
-1: penguins classif.rpart 0.05409317
-2: penguins  classif.kknn 0.01510629
-3:    sonar classif.rpart 0.38013937
-4:    sonar  classif.kknn 0.16306620
-5:     wine classif.rpart 0.12396825
-6:     wine  classif.kknn 0.02809524</code></pre>
+<pre><code>    task_id    learner_id  classif.ce
+1: penguins classif.rpart 0.057078245
+2: penguins  classif.kknn 0.009000452
+3:    sonar classif.rpart 0.313008130
+4:    sonar  classif.kknn 0.149012776
+5:     wine classif.rpart 0.078412698
+6:     wine  classif.kknn 0.039206349</code></pre>
 </div>
 </div></li>
 </ul>
@@ -1227,12 +1216,10 @@ Levels: Adelie Chinstrap Gentoo</code></pre>
 <span id="cb72-3"><a href="#cb72-3"></a>trained<span class="sc">$</span>output<span class="sc">$</span><span class="fu">head</span>(<span class="dv">3</span>)</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   species bill_depth bill_length  body_mass flipper_length island.Biscoe
-    &lt;fctr&gt;      &lt;num&gt;       &lt;num&gt;      &lt;num&gt;          &lt;num&gt;         &lt;num&gt;
 1:  Adelie  0.7795590  -0.8946955 -0.5676206     -1.4246077     -0.977724
 2:  Adelie  0.1194043  -0.8215515 -0.5055254     -1.0678666     -0.977724
 3:  Adelie  0.4240910  -0.6752636 -1.1885721     -0.4257325     -0.977724
    island.Dream island.Torgersen sex.female   sex.male      year
-          &lt;num&gt;            &lt;num&gt;      &lt;num&gt;      &lt;num&gt;     &lt;num&gt;
 1:   -0.7641697         2.463094 -0.9895421  0.9895421 -1.281813
 2:   -0.7641697         2.463094  1.0075337 -1.0075337 -1.281813
 3:   -0.7641697         2.463094  1.0075337 -1.0075337 -1.281813</code></pre>
@@ -1267,7 +1254,6 @@ $scale
 <span id="cb76-3"><a href="#cb76-3"></a>trained<span class="sc">$</span>output<span class="sc">$</span><span class="fu">head</span>()</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   species bill_depth bill_length  body_mass flipper_length island.Biscoe
-    &lt;fctr&gt;      &lt;num&gt;       &lt;num&gt;      &lt;num&gt;          &lt;num&gt;         &lt;num&gt;
 1:  Adelie  0.7795590  -0.8946955 -0.5676206     -1.4246077     -0.977724
 2:  Adelie  0.1194043  -0.8215515 -0.5055254     -1.0678666     -0.977724
 3:  Adelie  0.4240910  -0.6752636 -1.1885721     -0.4257325     -0.977724
@@ -1275,7 +1261,6 @@ $scale
 5:  Adelie  1.7444004  -0.8581235 -0.6918109     -0.7824736     -0.977724
 6:  Adelie  0.3225288  -0.9312674 -0.7228585     -1.4246077     -0.977724
    island.Dream island.Torgersen sex.female   sex.male      year
-          &lt;num&gt;            &lt;num&gt;      &lt;num&gt;      &lt;num&gt;     &lt;num&gt;
 1:   -0.7641697         2.463094 -0.9895421  0.9895421 -1.281813
 2:   -0.7641697         2.463094  1.0075337 -1.0075337 -1.281813
 3:   -0.7641697         2.463094  1.0075337 -1.0075337 -1.281813
@@ -1291,12 +1276,10 @@ $scale
 <span id="cb78-4"><a href="#cb78-4"></a>pred<span class="sc">$</span>output<span class="sc">$</span><span class="fu">data</span>()</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   species bill_depth bill_length  body_mass flipper_length island.Biscoe
-    &lt;fctr&gt;      &lt;num&gt;       &lt;num&gt;      &lt;num&gt;          &lt;num&gt;         &lt;num&gt;
 1:  Adelie  0.7795590  -0.8946955 -0.5676206     -1.4246077     -0.977724
 2:  Adelie  0.1194043  -0.8215515 -0.5055254     -1.0678666     -0.977724
 3:  Adelie  0.4240910  -0.6752636 -1.1885721     -0.4257325     -0.977724
    island.Dream island.Torgersen sex.female   sex.male      year
-          &lt;num&gt;            &lt;num&gt;      &lt;num&gt;      &lt;num&gt;     &lt;num&gt;
 1:   -0.7641697         2.463094 -0.9895421  0.9895421 -1.281813
 2:   -0.7641697         2.463094  1.0075337 -1.0075337 -1.281813
 3:   -0.7641697         2.463094  1.0075337 -1.0075337 -1.281813</code></pre>
@@ -1311,28 +1294,25 @@ $scale
 <pre><code> [1] "boxcox"                "branch"                "chunk"                
  [4] "classbalancing"        "classifavg"            "classweights"         
  [7] "colapply"              "collapsefactors"       "colroles"             
-[10] "compose_crank"         "compose_distr"         "compose_probregr"     
-[13] "copy"                  "crankcompose"          "datefeatures"         
-[16] "distrcompose"          "encode"                "encodeimpact"         
-[19] "encodelmer"            "featureunion"          "filter"               
-[22] "fixfactors"            "histbin"               "ica"                  
-[25] "imputeconstant"        "imputehist"            "imputelearner"        
-[28] "imputemean"            "imputemedian"          "imputemode"           
-[31] "imputeoor"             "imputesample"          "kernelpca"            
-[34] "learner"               "learner_cv"            "missind"              
-[37] "modelmatrix"           "multiplicityexply"     "multiplicityimply"    
-[40] "mutate"                "nmf"                   "nop"                  
-[43] "ovrsplit"              "ovrunite"              "pca"                  
-[46] "proxy"                 "quantilebin"           "randomprojection"     
-[49] "randomresponse"        "regravg"               "removeconstants"      
-[52] "renamecolumns"         "replicate"             "scale"                
-[55] "scalemaxabs"           "scalerange"            "select"               
-[58] "smote"                 "spatialsign"           "subsample"            
-[61] "survavg"               "targetinvert"          "targetmutate"         
-[64] "targettrafoscalerange" "textvectorizer"        "threshold"            
-[67] "trafopred_regrsurv"    "trafopred_survregr"    "trafotask_regrsurv"   
-[70] "trafotask_survregr"    "tunethreshold"         "unbranch"             
-[73] "vtreat"                "yeojohnson"           </code></pre>
+[10] "copy"                  "datefeatures"          "encode"               
+[13] "encodeimpact"          "encodelmer"            "featureunion"         
+[16] "filter"                "fixfactors"            "histbin"              
+[19] "ica"                   "imputeconstant"        "imputehist"           
+[22] "imputelearner"         "imputemean"            "imputemedian"         
+[25] "imputemode"            "imputeoor"             "imputesample"         
+[28] "kernelpca"             "learner"               "learner_cv"           
+[31] "missind"               "modelmatrix"           "multiplicityexply"    
+[34] "multiplicityimply"     "mutate"                "nmf"                  
+[37] "nop"                   "ovrsplit"              "ovrunite"             
+[40] "pca"                   "proxy"                 "quantilebin"          
+[43] "randomprojection"      "randomresponse"        "regravg"              
+[46] "removeconstants"       "renamecolumns"         "replicate"            
+[49] "scale"                 "scalemaxabs"           "scalerange"           
+[52] "select"                "smote"                 "spatialsign"          
+[55] "subsample"             "targetinvert"          "targetmutate"         
+[58] "targettrafoscalerange" "textvectorizer"        "threshold"            
+[61] "tunethreshold"         "unbranch"              "vtreat"               
+[64] "yeojohnson"           </code></pre>
 </div>
 </div>
 </section>
@@ -1475,12 +1455,10 @@ $scale
 <div class="sourceCode cell-code" id="cb87"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1"></a>graph_pp<span class="sc">$</span>pipeops<span class="sc">$</span>scale<span class="sc">$</span>.result[[<span class="dv">1</span>]]<span class="sc">$</span><span class="fu">head</span>(<span class="dv">3</span>)</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   species bill_depth bill_length  body_mass flipper_length island.Biscoe
-    &lt;fctr&gt;      &lt;num&gt;       &lt;num&gt;      &lt;num&gt;          &lt;num&gt;         &lt;num&gt;
 1:  Adelie  0.7795590  -0.8946955 -0.5676206     -1.4246077     -0.977724
 2:  Adelie  0.1194043  -0.8215515 -0.5055254     -1.0678666     -0.977724
 3:  Adelie  0.4240910  -0.6752636 -1.1885721     -0.4257325     -0.977724
    island.Dream island.Torgersen sex.female   sex.male      year
-          &lt;num&gt;            &lt;num&gt;      &lt;num&gt;      &lt;num&gt;     &lt;num&gt;
 1:   -0.7641697         2.463094 -0.9895421  0.9895421 -1.281813
 2:   -0.7641697         2.463094  1.0075337 -1.0075337 -1.281813
 3:   -0.7641697         2.463094  1.0075337 -1.0075337 -1.281813</code></pre>
