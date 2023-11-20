@@ -14,44 +14,65 @@ format:
     slide-number: c/t
     center-title-slide: false
     higlight-style: atom-one
-    footer: "Machine Learning in R - Berlin R Users Group "
 
 ---
 
 ```{r, include = FALSE}
 library("mlr3verse")
 lgr::get_logger("mlr3")$set_threshold("warn")
+lgr::get_logger("bbotk")$set_threshold("warn")
+set.seed(1)
 ```
 
 
-# Intro
+## `mlr3` Ecosystem
 
-## So you want to do ML in R
-
-::: frame
--   `R` gives you access to many machine learning methods
--   ... but without a unified interface
--   things like performance evaluation are cumbersome
-
-Example:
 
 ```{r}
-#| eval: false
-# Specify what we want to model in a formula: target \~ features
-svm_model = e1071::svm(Species ~ ., data = iris)
+#| echo: false
+#| fig-align: "center"
+knitr::include_graphics("figures/mlr3_ecosystem.png")
+```
+
+## Penguins
+
+```{r}
+#| echo: false
+#| fig-align: "center"
+knitr::include_graphics("figures/penguins.png")
+```
+^[Source: https://github.com/allisonhorst/penguins]
+
+
+
+## Penguins
+
+- Our goal: Classify penguins into their species: Adelie, Chinstrap, Gentoo
+- `penguins_simple` is a simplified version of the well known palmer penguins dataset
+
+```{r}
+penguins = mlr3data::penguins_simple
+head(penguins)
+```
+
+
+## Classifying penguins without `mlr3`
+
+- `R` gives you access to many machine learning methods
+- ... but without a unified interface
+- things like performance evaluation are cumbersome
+
+```{r}
+svm_model = e1071::svm(species ~ ., data = penguins)
 ```
 
 vs.
 
 ```{r}
-#| eval: false
-#| results: hide
-#| warning: false
-# Pass the features as a matrix and the target as a vector
-xgb_model = xgboost::xgboost(data = as.matrix(iris[1:4]),
-  label = iris$Species, nrounds = 10)
+#| output: false
+xgb_model = xgboost::xgboost(data = as.matrix(penguins[, -1]),
+  label = penguins$species, nrounds = 10)
 ```
-:::
 
 ## So you want to do ML in R
 
@@ -71,7 +92,29 @@ Ingredients:
 -   Performance Comparison
 :::
 
-# R6
+
+## Creating an `mlr3::Task`
+
+-   Tabular data
+
+-   Features
+
+-   Target / outcome to predict
+
+    -   discrete for classification
+    -   continuous for regression
+    -   target determines the machine learning "Task"
+
+```{r}
+library("mlr3")
+
+task = as_task_classif(penguins, target = "species", id = "penguins")
+
+task
+```
+
+
+# Intermezzo: R6
 
 ## R6 -- All you need to know
 
@@ -81,7 +124,7 @@ Ingredients:
 -   Objects are created using <Class>\$new().
 
 ```{r}
-task = TaskClassif$new("iris", iris, "Species")
+task = TaskClassif$new("penguins", penguins, "species")
 ```
 
 -   Objects have fields that contain information about the object.
@@ -103,100 +146,8 @@ task$nrow
 ```
 :::
 
-## R6 and Active Bindings
 
-::: frame
-Some fields of R6-objects may be "Active Bindings". Internally they are realized as functions that are called whenever the value is set or retrieved.
-
--   Active bindings for read-only fields
-
-```{r}
-#| error: true
-task$nrow = 11
-```
-
--   Active bindings for argument checking
-
-```{r}
-#| error: true
-task$properties = NULL
-task$properties = c("property1", "property2") # works
-```
-:::
-
-## `mlr3` Philosophy
-
-::: frame
-Overcome limitations of S3 with the help of **R6**
-
--   Truly object-oriented: data and methods live in the same object
--   Make use of inheritance
--   Reference semantics
-
-Embrace **data.table**, both for arguments and internally
-
--   Fast operations for tabular data
-
--   List columns to arrange complex objects in tabular structure
-
-Be **light on dependencies**:
-
--   `R6, data.table, lgr, uuid, mlbench, digest, future, evaluate`
-
--   Plus some of our own packages (`backports`, `checkmate`, . . . )
-:::
-
-
-## `mlr3` Ecosystem
-
-
-```{r}
-#| echo: false
-#| fig-align: "center"
-knitr::include_graphics("figures/mlr3_ecosystem.png")
-```
-
-
-# Data
-
-## Data
-
--   Tabular data
-
--   Features
-
--   Target / outcome to predict
-
-    -   discrete for classification
-    -   continuous for regression
-    -   target determines the machine learning "Task"
-
-```{r}
-penguins = mlr3data::penguins_simple # simplified penguins data
-head(penguins)
-task = TaskClassif$new("penguins", penguins, "species")
-# or
-task = as_task_classif(penguins, target = "species", id = "penguins")
-
-task
-```
-
-## Task API
-
-* `task$ncol` - Get number of columns
-* `task$nrow` - Get number of rows
-* `task$feature_names` - Get number of columns
-* `task$target_names` - Get number of columns
-* `task$head(n = )` -  Get number of columns
-* `task$truth(row_ids = )` - Get number of columns
-* `task$data(rows = , cols = )` - Get number of columns
-* `task$select(cols = )` - Select specific columns
-* `task$filter(rows = )` - Select specific rows
-* `task$cbind(data = )` - Cbind coumns
-* `task$rbind(data = )` - Rbind columns
-
-
-# Dictionaries
+# Sugar Functions and Dictionaries
 
 ## Dictionaries
 
@@ -207,12 +158,12 @@ task
 
 -   They access `Dictionary` of objects:
 
-| Object       | Dictionary        | Short Form |     |
+| Object       | Dictionary        | Short Form | Converter|
 |:-------------|:------------------|:-----------|-----|
-| `Task`       | `mlr_tasks`       | `tsk()`    |     |
-| `Learner`    | `mlr_learners`    | `lrn()`    |     |
-| `Measure`    | `mlr_measures`    | `msr()`    |     |
-| `Resampling` | `mlr_resamplings` | `rsmp()`   |     |
+| `Task`       | `mlr_tasks`       | `tsk()`    | `as_task()`     |
+| `Learner`    | `mlr_learners`    | `lrn()`    |  `as_learner()`    |
+| `Measure`    | `mlr_measures`    | `msr()`    | `as_measure()`     |
+| `Resampling` | `mlr_resamplings` | `rsmp()`   | `as_resampling()`     |
 
 Dictionaries can get populated by add-on packages (e.g. `mlr3learners`)
 :::
@@ -225,39 +176,32 @@ Dictionaries can get populated by add-on packages (e.g. `mlr3learners`)
 tsk()
 
 # retrieve an element
-tsk("penguins_simple")
-```
-:::
-
-## Short forms and Dictionaries
-
-::: frame
-`as.data.table(<DICTIONARY>)` creates a data.table with metadata about objects in dictionaries:
-
-```{r}
-mlr_learners_table = as.data.table(mlr_learners)
-mlr_learners_table[1:10, c("key", "packages", "predict_types")]
+task = tsk("penguins_simple")
+task
 ```
 :::
 
 # Learning Algorithms
 
-## Learning Algorithms
+## Availabe `mlr3::Learner`s
+
+- `as.data.table(<DICTIONARY>)` creates a data.table with metadata about objects in dictionaries:
+- An overview of available objects can also be found on the `mlr3` website: https://mlr-org.com
+- The `Learner`s are just wrappers around other packages
 
 ```{r}
-#| echo: false
-#| fig-align: "center"
-knitr::include_graphics("figures/mlr3book_figures-2.svg")
+mlr_learners_table = as.data.table(mlr_learners)
+mlr_learners_table[1:10, c("key", "packages", "predict_types")]
 ```
 
-## Learning Algorithms
+## Learning Algorithms {.smaller}
 
-::: frame
 -   Get a Learner provided by `mlr3`
 
 ```{r}
 learner = lrn("classif.rpart")
 ```
+
 
 -   Train the `Learner`
 
@@ -270,9 +214,8 @@ learner$train(task)
 ```{r}
 print(learner$model)
 ```
-:::
 
-## Hyperparameters
+## Hyperparameters {.smaller}
 
 -   Learners have *hyperparameters*
 
@@ -283,7 +226,10 @@ as.data.table(learner$param_set)[, 1:6]
 -   Changing them changes the `Learner`'s behavior
 
 ```{r}
-learner$param_set$values = list(maxdepth = 1, xval = 0)
+learner$param_set$set_values(
+  maxdepth = 1,
+  xval = 0
+)
 learner$train(task)
 ```
 
@@ -295,23 +241,22 @@ print(learner$model)
 
 ## Prediction
 
-
-::: frame
--   Let's make a prediction for some new data, e.g.:
+-   Our scientists have found two new penguins and want to know their species
 
     ```{r}
     #| echo: false
-    new_data = data.frame(
-      bill_depth = c(20, 21), bill_length = c(37, 39), body_mass = c(4000, 3750), flipper_length = c(281, 270),
+    new_penguins = data.frame(
+      bill_depth = c(20, 21), bill_length = c(37, 39), body_mass = c(4000, 3750), flipper_length = c(281, 190),
       year = c(2007, 2006), island.Biscoe = c(0, 0), island.Dream = c(1, 0), island.Torgersen = c(0, 1),
       sex.female = c(1, 0), sex.male = c(0, 1)
     )
+    print(new_penguins)
     ```
 
 -   To do so, we call the `$predict_newdata()` method using the new data:
 
 ```{r}
-prediction = learner$predict_newdata(new_data)
+prediction = learner$predict_newdata(new_penguins)
 ```
 
 -   We get a Prediction object:
@@ -319,101 +264,71 @@ prediction = learner$predict_newdata(new_data)
 ```{r}
 prediction
 ```
-:::
+
 
 ## Prediction
 
-::: frame
 -   We can make the Learner predict *probabilities* when we set `predict_type`:
 
 ```{r}
 learner$predict_type = "prob"
-learner$predict_newdata(new_data)
-```
-:::
-
-## Prediction
-
-::: frame
-What exactly is a Prediction object?
-
--   Contains predictions and offers useful access fields / methods
--   Use `as.data.table()` to extract data
-
-```{r}
-as.data.table(prediction)
+learner$predict_newdata(new_penguins)
 ```
 
--   Active bindings and functions that give further information: `$response, $truth,` `$confusion` . . .
 
-```{r}
-prediction$response
+## Learning Algorithms
+
+```{r, out.width = "50%"}
+#| echo: false
+#| fig-align: "center"
+knitr::include_graphics("figures/mlr3book_figures-2.svg")
 ```
 
-:::
 
 # Performance
 
 
-## Performance Evaluation
+## Performance Evaluation {.smaller}
+
+
+- In order to evaluate the performance of our model we need to split our data into a training and a test set
 
 ```{r}
-#| echo: false
-#| fig-align: "center"
-#| out.width: 100%
-knitr::include_graphics("figures/mlr3book_figures-4.svg")
+split = partition(task)
+```
+
+- We train our learner on the train set and make predictions for the test set
+
+```{r}
+learner$train(task, row_ids = split$train)
+prediction = learner$predict(task, row_ids = split$test)
+prediction
+```
+
+- We can evaluate the prediction using an `mlr3::Measure`
+
+```{r}
+measure = msr("classif.acc")
+measure
+prediction$score(measure)
 ```
 
 ## Performance Evaluation
 
 ```{r}
-#| include: false
-known_truth_task = as_task_classif(cbind(new_data, data.table(species = factor(c("Gentoo", "Adelie"), levels = c("Gentoo", "Adelie", "Chinstrap")))), target = "species", id = "penguins_simple_predict")
-
-```
-
-
-:::: {.columns}
-
-::: {.column width="50%"}
--   Prediction 'Task' with known data
-
-```{r}
-known_truth_task$data()
-```
-
--   Predict again
-
-```{r}
-pred = learner$predict(known_truth_task)
-pred
-```
-
--   Score the prediction
-
-```{r}
-pred$score(msr("classif.ce"))
-```
-:::
-
-::: {.column width="50%"}
-```{r}
 #| echo: false
 #| fig-align: "center"
+#| out-width: "80%"
 knitr::include_graphics("figures/mlr3book_figures-3.svg")
 ```
-:::
 
-::::
 
+## Performance Evaluation
+
+- Because our dataset is very small, a simple train-test split is not enough to get a reliable estimate of the generalization error
+- `mlr3` supports other resampling methods like k-fold cross-validation
 
 # Resampling
-
-## Resampling
-
-```{r, echo = FALSE}
-knitr::include_graphics("./figures/mlr3book_figures-4.svg")
-```
 
 ## Resampling
 
@@ -425,14 +340,12 @@ knitr::include_graphics("./figures/mlr3book_figures-4.svg")
 -   Resample description: How to split the data
 
     ```{r}
-    cv3 = rsmp("cv", folds = 5)
+    cv3 = rsmp("cv", folds = 3)
     ```
 
 -   Use the `resample()` function for resampling:
 
     ```{r}
-    task = tsk("penguins_simple")
-    learner = lrn("classif.rpart")
     rr = resample(task, learner, cv3)
     ```
 
@@ -454,34 +367,13 @@ knitr::include_graphics("figures/mlr3book_figures-8.svg")
 
 ::::
 
-## Resample Result
-
-What exactly is a `ResampleResult` object?
-
-Remember `Prediction`:
-
--   Get a table presentation using `as.data.table()`:
-
-    ```{r}
-    rr_table = as.data.table(rr)
-    print(rr_table)
-    ```
-
--   Active bindings and functions that make information easily accessible
+## Resample Result {.smaller}
 
 -   Calculate performance:
 
     ```{r}
-    rr$aggregate(msr("classif.ce"))
+    rr$aggregate(msr("classif.acc"))
     ```
-
--   Get predictions
-
-    ```{r}
-    rr$prediction()
-    ```
-
-## Resampling
 
 -   Predictions of individual folds
 
@@ -493,82 +385,144 @@ Remember `Prediction`:
 -   Score of individual folds
 
     ```{r}
-    scores = rr$score()
-    scores[1:3, c("iteration", "classif.ce")]
+    scores = rr$score(msr("classif.acc"))
+    scores[1:3, c("iteration", "classif.acc")]
     ```
 
-# Benchmark
+## Performance Comparison {.smaller}
+
+-   We now want to try a glmnet learner from the glmnet package and compare it with the classification tree
+
+-   We also add a simple baseline learner that predicts the majority class
+
+    ```{r}
+    lrn_rpart = lrn("classif.rpart")
+    lrn_glmnet = lrn("classif.glmnet")
+    lrn_featureless = lrn("classif.featureless")
+    ```
+
+-   We create a benchmark design where each row specifies a resample experiment
+
+    ```{r}
+    design = benchmark_grid(
+        tasks = task,
+        learners = list(lrn_rpart, lrn_glmnet, lrn_featureless),
+        resampling = rsmp("cv", folds = 3)
+    )
+    design
+    ```
 
 ## Performance Comparison
 
--   Multiple learners on multiple tasks:
+-   We can run the benchmark experiment by calling `benchmark()` and obtain a `BenchmarkResult` object:
 
     ```{r}
-    cv5 = rsmp("cv", folds = 5)
-    library("mlr3learners")
-    learners = list(lrn("classif.rpart"), lrn("classif.kknn"))
-    tasks = list(tsk("penguins_simple"), tsk("sonar"), tsk("wine"))
-    ```
-
--   Setup the *design* and run the benchmark:
-
-    ```{r}
-    design = benchmark_grid(tasks, learners, cv5)
-    design
     bmr = benchmark(design)
+    bmr
     ```
 
--   We get a `BenhmarkResult` object which shows that `knn` outperforms `rpart`:
+-   We can compare the learners by aggregating the results:
 
     ```{r}
-    bmr_ag = bmr$aggregate()
-    bmr_ag[, c("task_id", "learner_id", "classif.ce")]
+    bmr_ag = bmr$aggregate(msr("classif.acc"))
+    bmr_ag[, c("task_id", "learner_id", "classif.acc")]
     ```
 
-## Benchmark Result
+    $\Rightarrow$ `classif.glmnet` achieves the highest accuracy
 
-A `BenchmarkResult` is just like a `Prediction` and `ResampleResult`:
+## Visualizing Results
 
-- Table representation using `as.data.table()`
-- Active bindings and functiouns that make information easily accessible
-
-
-## Benchmark Result
-
-The mlr3viz package contains `autoplot()` functions for many mlr3
-objects
+- The `mlr3viz` package contains `autoplot)` methods for many mlr3 objects
 
 ```{r}
+#| out.width: "80%"
 library(mlr3viz)
 autoplot(bmr)
 ```
 
+## Preprocessing
 
-# Control of Execution
+-   Earlier, we worked on a simplified version of the penguins dataset
+-   We will now work with the original penguins data that contains missing values and that has categorical columns
 
-Parallelization
+    ```{r}
+    task = tsk("penguins")
+    task
+    task$missings()
+    ```
 
-```{r, eval = FALSE}
-future::plan("multicore")
-```
-- runs each resampling iteration as a job
-- also allows nested resampling (although not needed here)
+## Preprocessing
 
-Encapsulation
+-   While some learners can deal with missing values and categoricals
 
-```{r}
-learner$encapsulate = c(train = "callr", predict = "callr")
-```
-
-- Spawns a separate R process to train the learner
-- Learner may segfault without tearing down the session
-- Logs are captured
-- Possibility to have a fallback to create predictions
+    ```{r}
+    lrn("classif.rpart")
+    ```
+    others cannot:
+    ```{r}
+    lrn("classif.glmnet")
+    ```
 
 
-# Machine Learning Pipelines in R
 
-## mlr3pipelines
+- Within the `mlr3` ecosystem, we can assemble machine learning pipelines using `mlr3pipelines`
+
+
+## Preprocessing
+
+- To use the data with the  `lrn("classif.glmnet")` we will:
+
+    - Scale the features
+    - Handle missing values
+    - Encode categorical columns
+
+
+-   We can do this by combining `PipeOp`s in a `Graph`:
+
+    ```{r}
+    graph = po("scale") %>>%
+      po("encode") %>>%
+      po("imputemedian") %>>%
+      lrn("classif.glmnet")
+    graph
+    ```
+
+## Preprocessing
+
+-   We can convert this `Graph` to a `GraphLearner`
+
+    ```{r}
+    lrn_glmnet_preproc = as_learner(graph)
+    lrn_glmnet_preproc
+    ```
+
+-   While the original glmnet learner fails on the new task
+
+    ```{r}
+    #| error: true
+    lrn_glmnet$train(task)
+    ```
+
+    The preprocessed learner works
+
+    ```{r}
+    lrn_glmnet_preproc$train(task)
+    ```
+## Performance Evaluation on the New Task
+
+-   Because the `GraphLearner` is also a `Learner`, we can evaluate the preprocessed learner just like before
+
+    ```{r}
+    rr = resample(
+      task,
+      lrn_glmnet_preproc,
+      rsmp("cv", folds = 3)
+    )
+    rr$aggregate(msr("classif.acc"))
+    ```
+
+
+## What is `mlr3pipelines`
 
 Machine Learning Workflows:
 
@@ -579,40 +533,37 @@ Machine Learning Workflows:
 $\Rightarrow$ `mlr3pipelines`: modular *ML workflows*
 
 
-```{r, echo = FALSE, out.width = "100%"}
+```{r, echo = FALSE, out.width="70%"}
 knitr::include_graphics("figures/pipelines_12.png")
 ```
-
-
 
 ## Machine Learning Workflows
 
 
 ::: {.fragment fragment-index=1}
 What do they look like?
-![](figures/pipelines_6.png){.absolute top=450 left=0}
+![](figures/pipelines_6.png){.absolute top=450 left=400 width="50%"}
 :::
 
 ::: {.fragment fragment-index=2}
 - **Buildings block**: *what* is happening? $\rightarrow$ `PipeOp`
-![](figures/pipelines_7.png){.absolute top=450 left=0}
+![](figures/pipelines_7.png){.absolute top=450 left=400 width="50%"}
 :::
 
 ::: {.fragment fragment-index=3}
  - **Structure**: in what *sequence* is it happening? $\rightarrow$ `Graph`
-![](figures/pipelines_8.png){.absolute top=450 left=0}
+![](figures/pipelines_8.png){.absolute top=450 left=400 width="50%"}
 :::
 
 ::: {.fragment fragment-index=4}
   $\Rightarrow$ `Graph`: `PipeOp`s as **nodes** with **edges** (data flow) between them
-
-![](figures/pipelines_8.png){.absolute top=450 left=0}
+![](figures/pipelines_8.png){.absolute top=450 left=400 width="50%"}
 :::
 
 
 # PipeOps
 
-## PipeOp: Single Unit of Data Operation
+## PipeOp: Single Unit of Data Operation {.smaller}
 
 
 :::{.fragment fragment-index=1}
@@ -633,14 +584,8 @@ What do they look like?
 ![](figures/pipeline-trim-2.png){.absolute top=400 left=0}
 :::
 
-:::{.fragment fragment-index=4}
-* Multiple inputs or multiple outputs
 
-![](figures/pipeline-trim-6.png){.absolute top=400 left=0}
-:::
-
-
-## PipeOp: Single Unit of Data Operation
+## PipeOp: Single Unit of Data Operation {.smaller}
 
 ```{r}
 po_scale = po("scale")
@@ -652,20 +597,8 @@ trained$output$head(3)
 head(po_scale$state, 2)
 ```
 
-
-## PipeOp: Single Unit of Data Operation
-
 ```{r}
-po_scale = po("scale")
-trained = po_scale$train(list(task))
-trained$output$head()
-```
-
-```{r}
-smalltask = task$clone()
-smalltask = smalltask$filter(1:3)
-pred = po_scale$predict(list(smalltask))
-pred$output$data()
+po_scale$predict(list(task))[[1L]]$head(3)
 ```
 
 ## PipeOps
@@ -686,76 +619,12 @@ mlr_pipeops$keys()
 - Combination of data
 - Text processing
 - Date processing
-- **Soon** `mlr3torch`: building of neural networks as graphs in `mlr3torch`
+- **Soon**: building of neural networks as graphs in `mlr3torch`
 
-# Graph Operations
-
-## Graph Operations
-
-:::{.fragment fragment-index=1}
-![](figures/pipeline-trim-7.png){.absolute top=450 left=0}
-:::
-
-:::{.fragment fragment-index=2}
-* The `%>>%` operator concatenates `Graph`s and `PipeOp`s
-
-![](figures/pipeline-trim-3.png){.absolute top=450 left=0}
-:::
-
-:::{.fragment fragment-index=3}
-* The `gunion()`-function unites `Graph`s and `PipeOp`s
-![](figures/pipeline-trim-4.png){.absolute top=450 left=0}
-:::
-
-:::{.fragment fragment-index=4}
-* The `pipeline_greplicate()`-function unites copies of `Graph`s and `PipeOp`s
-![](figures/pipeline-trim-5.png){.absolute top=450 left=0}
-:::
-
-## Learners and Graphs
-
-**PipeOpLearner**
-
-* `Learner` as a `PipeOp`
-* Fits a model, output is `Prediction`
-
-
-![](figures/pipeline-trim-11.png){.absolute top=400 left=0}
-
-
-:::{.fragment}
-**GraphLearner**
-
-* `Graph` as a `Learner`
-* All benefits of `mlr3`: **resampling**, **tuning**, **nested resampling**, ...
-
-![](figures/pipeline-trim-12.png){.absolute top=400 left=0}
-:::
-
-# Linear Pipelines
-
-
-## Linear Preprocessing Pipeline
-
-```{r}
-graph_pp = po("scale") %>>%
-  po("encode") %>>%
-  po("imputemedian") %>>%
-  lrn("classif.rpart")
-```
-
-![](figures/pipeline-trim-270.png){.absolute top=400 left=0}
-
-
-## Linear Preprocessing Pipeline
+## Preprocessing Pipeline
 
 * `train()`ing: Data propagates and creates `$states`
 
-
-```{r}
-glrn = as_learner(graph_pp)
-glrn$train(task)
-```
 
 :::{.fragment fragment-index=1}
 ![](figures/pipeline-trim-271.png){.absolute top=400 left=0}
@@ -777,169 +646,182 @@ glrn$train(task)
 ![](figures/pipeline-trim-275.png){.absolute top=400 left=0}
 :::
 
-## Linear Preprocessing Pipeline
+## Preprocessing Pipeline
 
 * `train()`ing: Data propagates and creates `$states`
 * `predict()`tion: Data propagates, uses `$states`
 
 ![](figures/pipeline-trim-276.png){.absolute top=400 left=0}
 
-## Linear Preprocessing Pipeline
+
+
+## Back to the Penguins Task
+
+- Even though we have now already achieved good performance using the `lrn("classif.glmnet")` learner,
+  we want to see whether we can improve our performance by using a boosting algorithm
+
+-   We have decided to go for XGboost
+    ```{r}
+    lrn_xgb = lrn("classif.xgboost")
+    ```
+
+## Tuning XGBoost
+
+-   However, this learner has many hyperparameters, some of which should be tuned!
+
+-   Instead of specifying hyperparameters to a given value
+    ```{r}
+    lrn_xgb$param_set$set_values(nrounds = 10)
+    ```
+    we can also mark them for hyperparameter tuning
+
+    ```{r}
+    lrn_xgb$param_set$set_values(nrounds = to_tune(10, 100))
+    ```
+
+-   Because XGboost does not support factor columns, we add a factor encoding preprocessing step
+
+    ```{r}
+    lrn_xgb = po("encode") %>>% lrn_xgb |> as_learner()
+    lrn_xgb
+    ```
+
+## Tuning XGBoost
+
+-   Hyperparameter tuning is implemented in the `mlr3tuning` package:
+    ```{r}
+    library("mlr3tuning")
+    ```
+
+-   Besides knowing which hyperparameters to tune, we also need to specify:
+
+    - The performance measure
+    - The tuning method
+    - The termination criterion
+    - The resampling strategy
+
+
+
+
+
+## Tuning XGboost
+
+-   We can tune the classification accuracy using random search with 20 evaluations and 3-fold CV:
+
+    ```{r}
+    instance = tune(
+      task = task,
+      learner = lrn_xgb,
+      measure = msr("classif.acc"),
+      tuner = tnr("random_search"),
+      term_evals = 20,
+      resampling = rsmp("cv", folds = 3)
+    )
+    instance
+    ```
+
+
+## Tuning XGBoost
+
+-   We can now train a learner on the full dataset using the optimal configuration
+    ```{r}
+    optimal_nrounds =
+      instance$result_learner_param_vals$classif.xgboost.nrounds
+    optimal_nrounds
+    lrn_xgb$param_set$set_values(
+      classif.xgboost.nrounds = optimal_nrounds
+    )
+    lrn_xgb$train(task)
+    ```
+
+
+## Tuning in `mlr3`
 
 ```{r}
-#| include: false
-graph_pp$keep_results = TRUE
-graph_pp$train(task)
-```
-
-
-* Setting parameter values: `$param_set`:
-```{r}
-graph_pp$param_set$set_values(
-    scale.center = FALSE
-)
-```
-
-* Retrieving state: `$state`
-
-```{r}
-graph_pp$pipeops$scale$state$scale
-```
-
-* Retrieving intermediate results: `$.result` (set debug option before)
-```{r}
-graph_pp$pipeops$scale$.result[[1]]$head(3)
-```
-
-
-# Tuning
-
-
-:::{.fragment fragent-index=1}
-- Behaviour of most methods depends on *hyperparameters*
-:::
-:::{.fragment fragent-index=2}
-- We want to chose them so our algorithm performs well
-:::
-:::{.fragment fragent-index=3}
-- Good hyperparameters are data-dependent
-:::
-:::{.fragment fragent-index=4}
-$\Rightarrow$ We do *black box optimization* ("Try stuff and see what works")
-:::
-
-:::{.fragment fragent-index=5}
-Tuning toolbox for `mlr3`:
-```{r}
-library("bbotk")
-library("mlr3tuning")
-```
-:::
-
-
-## Tuning
-
-![](figures/tuning-8.png){.absolute top=100 left=50}
-
-## Tuning
-
-![](figures/tuning-9.png){.absolute top=100 left=50}
-
-## Tuning
-
-![](figures/tuning-10.png){.absolute top=100 left=50}
-
-## Tuning
-
-![](figures/tuning-11.png){.absolute top=100 left=50}
-
-## Tuning
-
-![](figures/tuning-12.png){.absolute top=100 left=50}
-
-## Tuning
-
-![](figures/tuning-13.png){.absolute top=100 left=50}
-
-## Tuning
-
-![](figures/tuning-14.png){.absolute top=100 left=50}
-
-## Tuning
-
-![](figures/tuning-15.png){.absolute top=100 left=50}
-
-## Tuning
-![](figures/tuning-16.png){.absolute top=100 left=50}
-
-## Tuning
-![](figures/tuning-17.png){.absolute top=100 left=50}
-
-## Tuning
-![](figures/tuning-18.png){.absolute top=100 left=50}
-
-## Tuning
-![](figures/tuning-19.png){.absolute top=100 left=50}
-
-## Tuning
-![](figures/tuning-20.png){.absolute top=100 left=50}
-
-## Tuning
-![](figures/tuning-21.png){.absolute top=100 left=50}
-
-## Tuning
-![](figures/tuning-22.png){.absolute top=100 left=50}
-
-## Tuning
-![](figures/tuning-23.png){.absolute top=100 left=50}
-
-## Tuning
-![](figures/tuning-24.png){.absolute top=100 left=50}
-
-## Tuning
-![](figures/tuning-25.png){.absolute top=100 left=50}
-
-
-## Tuning
-
-TODO: Simple example for tuning
-
-```{r}
+#| echo: false
+knitr::include_graphics("figures/mlr3book_figures-9.svg")
 ```
 
 ## AutoTuner
 
-TODO: Explain AutoTuner
+-   We can automate the process of first finding a good parameter configuration and then training the final model using an `AutoTuner`
+
+    ```{r}
+    lrn_xgb_tuned = auto_tuner(
+      learner = lrn_xgb,
+      measure = msr("classif.acc"),
+      tuner = tnr("random_search"),
+      term_evals = 20,
+      resampling = rsmp("cv", folds = 3)
+    )
+    lrn_xgb_tuned
+    ```
+
+-   Like for the `GraphLearner`, this can be used like any `mlr3::Learner` such as evaluating its generalization error using `resample()`, resulting in a nested resampling
+
+
+## AutoTuner
 
 ```{r}
+#| echo: false
+#| fig-align: "center"
+knitr::include_graphics("figures/mlr3book_figures-12.svg")
 ```
 
-## Nested Resampling
+## Glmnet vs Tuned XGBoost
+-   We change the `Learner`'s IDs:
+
+    ```{r}
+    lrn_xgb_tuned$id = "tuned_xgboost"
+    lrn_glmnet_preproc$id = "glmnet"
+    ```
 
 
-TODO: Explain Nested Resampling for unbiased performance evaluation
+-   We create a benchmark design to compare the tuned xgboost pipeline with the glmnet pipeline
+
+    ```{r}
+    design = benchmark_grid(task, list(lrn_xgb_tuned, lrn_glmnet_preproc), rsmp("cv", folds = 3))
+    bmr = benchmark(design)
+    bmr$aggregate(msr("classif.acc"))
+    ```
+
+## Glmnet vs Tuned XGBoost
 
 ```{r}
+autoplot(bmr, measure = msr("classif.acc"))
 ```
 
+## Parallelizing Execution
 
+- In real-world cases, hyperparameter tuning and benchmarking is computationally expensive
+-   Fortunately, `mlr3` can be conveniently parallelized using the `future` package
+    ```{r, eval = FALSE}
+    future::plan("multicore")
+    ```
+- This allows to parallelize everything that internally calls `resample()` or `benchmark()`
+- Submission on HPC clusters is supported via the `batchtools` connector `mlr3batchmark`
 
+## We have written a book!
 
+```{r}
+#| echo: false
+#| fig-align: "center"
+knitr::include_graphics("figures/book-flyer.png")
+```
 
+## Resources
 
+We have only shown you a glimpse of what is possible with `mlr3`!
 
-## Where to go from here
+- Read the `mlr3` book: https://mlr3book.mlr-org.com/
+- Browse our website: https://mlr-org.com/
+- Read one of our gallery posts: https://mlr-org.com/gallery.html
+- Check us out on GitHub: https://github.com/mlr-org
+- This presentation: https://github.com/sebffischer/mlr3_UseR_berlin_2023
 
-**Resources**:
+## Getting In Touch
 
-* Read the `mlr3` book: https://mlr3book.mlr-org.com/
-* Browse our website: https://mlr-org.com/
-* Read one of our gallery posts: https://mlr-org.com/gallery.html
-* Check us out on GitHub: https://github.com/mlr-org
-
-**Get in Touch**
-
-* You can email us directly: sebastian.fischer@stat.uni-muenchen.de
-* You our publicly available mattermost channel: https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/
-* We are always looking for new contributors!
+- You can email us directly: sebastian.fischer@stat.uni-muenchen.de
+- You our publicly available mattermost channel: https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/
+- **We are always looking for new contributors!**
 
