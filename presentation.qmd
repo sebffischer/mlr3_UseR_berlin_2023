@@ -5,8 +5,7 @@ format:
   revealjs:
     execute:
         echo: true
-    theme:
-      - simple
+    theme: [simple, style.scss]
     logo: "figures/logo.png"
     height: 1080
     width: 1980
@@ -14,6 +13,7 @@ format:
     slide-number: c/t
     center-title-slide: false
     higlight-style: atom-one
+    df-print: kable
 
 ---
 
@@ -121,11 +121,16 @@ task
 ::: frame
 `mlr3` uses the *R6* class system. Some things may seem unusual if you see them for the first time.
 
+<!---
+Out because mlr3verse does not even export the classes, and there are much more practical functions for the end user available.
+
+
 -   Objects are created using <Class>\$new().
 
 ```{r}
 task = TaskClassif$new("penguins", penguins, "species")
 ```
+--->
 
 -   Objects have fields that contain information about the object.
 
@@ -152,9 +157,10 @@ task$nrow
 ## Dictionaries
 
 ::: frame
+<!---
 -   Ordinary constructors: `TaskClassif$new()` / `LearnerClassifRpart$new()`
-
--   `mlr3` offers *Short Form Constructors* that are less verbose
+--->
+-   `mlr3` offers constructors for all R6 objects:
 
 -   They access `Dictionary` of objects:
 
@@ -215,28 +221,12 @@ learner$train(task)
 print(learner$model)
 ```
 
-## Hyperparameters {.smaller}
+## Learning Algorithms
 
--   Learners have *hyperparameters*
-
-```{r}
-as.data.table(learner$param_set)[, 1:6]
-```
-
--   Changing them changes the `Learner`'s behavior
-
-```{r}
-learner$param_set$set_values(
-  maxdepth = 1,
-  xval = 0
-)
-learner$train(task)
-```
-
--   This gives a smaller decision tree
-
-```{r}
-print(learner$model)
+```{r, out.width = "50%"}
+#| echo: false
+#| fig-align: "center"
+knitr::include_graphics("figures/mlr3book_figures-2.svg")
 ```
 
 ## Prediction
@@ -250,7 +240,7 @@ print(learner$model)
       year = c(2007, 2006), island.Biscoe = c(0, 0), island.Dream = c(1, 0), island.Torgersen = c(0, 1),
       sex.female = c(1, 0), sex.male = c(0, 1)
     )
-    print(new_penguins)
+    new_penguins
     ```
 
 -   To do so, we call the `$predict_newdata()` method using the new data:
@@ -275,15 +265,27 @@ learner$predict_type = "prob"
 learner$predict_newdata(new_penguins)
 ```
 
+## Success #1! 
 
-## Learning Algorithms
-
-```{r, out.width = "50%"}
+```{r}
 #| echo: false
-#| fig-align: "center"
-knitr::include_graphics("figures/mlr3book_figures-2.svg")
+#| fig-align: "right"
+#| out.width: "30%"
+knitr::include_graphics("figures/partying-face-emoji.svg")
 ```
 
+We can now classify penguins into their species!
+```{r}
+l_rpart = lrn("classif.rpart", predict_type = "prob")
+t_penguins = as_task_classif(penguins, target = "species", id = "penguins")
+l_rpart$train(t_penguins)
+new_penguin = data.frame(
+  bill_depth = 20, bill_length = 37, body_mass = 4000, flipper_length = 281,
+  year = 2007, island.Biscoe = 0, island.Dream = 1, island.Torgersen = 0,
+  sex.female = 1, sex.male = 0
+)
+l_rpart$predict_newdata(new_penguin) |> as.data.table()
+```
 
 # Performance
 
@@ -389,6 +391,23 @@ knitr::include_graphics("figures/mlr3book_figures-8.svg")
     scores[1:3, c("iteration", "classif.acc")]
     ```
 
+## Success #2! 
+
+```{r}
+#| echo: false
+#| fig-align: "right"
+#| out.width: "30%"
+knitr::include_graphics("figures/partying-face-emoji.svg")
+```
+
+We can now access the performance of our model!
+```{r}
+l_rpart = lrn("classif.rpart")
+t_penguins = as_task_classif(penguins, target = "species", id = "penguins")
+rr = resample(t_penguins, l_rpart, rsmp("cv", folds = 3))
+rr$aggregate(msr("classif.acc"))
+```
+
 ## Performance Comparison {.smaller}
 
 -   We now want to try a glmnet learner from the glmnet package and compare it with the classification tree
@@ -456,14 +475,12 @@ autoplot(bmr)
 -   While some learners can deal with missing values and categoricals
 
     ```{r}
-    lrn("classif.rpart")
+    lrn("classif.rpart")$properties
     ```
     others cannot:
     ```{r}
-    lrn("classif.glmnet")
+    lrn("classif.glmnet")$properties
     ```
-
-
 
 - Within the `mlr3` ecosystem, we can assemble machine learning pipelines using `mlr3pipelines`
 
@@ -493,7 +510,7 @@ autoplot(bmr)
 
     ```{r}
     lrn_glmnet_preproc = as_learner(graph)
-    lrn_glmnet_preproc
+    lrn_glmnet_preproc$properties
     ```
 
 -   While the original glmnet learner fails on the new task
@@ -510,16 +527,35 @@ autoplot(bmr)
     ```
 ## Performance Evaluation on the New Task
 
--   Because the `GraphLearner` is also a `Learner`, we can evaluate the preprocessed learner just like before
+Because the `GraphLearner` is also a `Learner`, we can evaluate the preprocessed learner just like before
 
-    ```{r}
-    rr = resample(
-      task,
-      lrn_glmnet_preproc,
-      rsmp("cv", folds = 3)
-    )
-    rr$aggregate(msr("classif.acc"))
-    ```
+```{r}
+rr = resample(
+    task,
+    lrn_glmnet_preproc,
+    rsmp("cv", folds = 3)
+)
+rr$aggregate(msr("classif.acc"))
+```
+
+## Success #3! 
+
+```{r}
+#| echo: false
+#| fig-align: "right"
+#| out.width: "30%"
+knitr::include_graphics("figures/partying-face-emoji.svg")
+```
+
+We can now handle missing values and categorical columns for any learner!
+```{r}
+l_glment = lrn("classif.glmnet")
+l_preproc = po("scale") %>>% po("encode") %>>% 
+  po("imputemedian") %>>% l_glment |> as_learner()
+t_penguins = as_task_classif(penguins, target = "species", id = "penguins")
+rr = resample(t_penguins, l_preproc, rsmp("cv", folds = 3))
+rr$aggregate(msr("classif.acc"))
+```
 
 
 ## What is `mlr3pipelines`
@@ -563,7 +599,7 @@ What do they look like?
 
 # PipeOps
 
-## PipeOp: Single Unit of Data Operation {.smaller}
+## PipeOp: Single Unit of Data Operation
 
 
 :::{.fragment fragment-index=1}
@@ -585,6 +621,7 @@ What do they look like?
 :::
 
 
+<!---
 ## PipeOp: Single Unit of Data Operation {.smaller}
 
 ```{r}
@@ -606,6 +643,8 @@ po_scale$predict(list(task))[[1L]]$head(3)
 ```{r}
 mlr_pipeops$keys()
 ```
+
+--->
 
 ## PipeOps
 
@@ -653,37 +692,50 @@ mlr_pipeops$keys()
 
 ![](figures/pipeline-trim-276.png){.absolute top=400 left=0}
 
-
+# Putting it all together
 
 ## Back to the Penguins Task
 
-- Even though we have now already achieved good performance using the `lrn("classif.glmnet")` learner,
-  we want to see whether we can improve our performance by using a boosting algorithm
+- Even though we have now already achieved good performance using the `lrn("classif.rpart")` learner,
+  we want to see whether we can improve our performance by using a boosting algorithm and **tuning its hyperparameters**.
 
--   We have decided to go for XGboost
+-   We have decided to go for XGBoost
     ```{r}
     lrn_xgb = lrn("classif.xgboost")
     ```
 
+## Hyperparameters
+
+-   Learners have *hyperparameters*
+
+```{r}
+as.data.table(lrn_xgb$param_set)[c(12,16,24,31), c(1:4,9,10,11)]
+```
+
+-   Changing them changes the `Learner`'s behavior
+
+```{r}
+lrn_xgb$param_set$set_values(
+    nrounds = 10,
+    eta = 0.1
+)
+```
+
 ## Tuning XGBoost
 
--   However, this learner has many hyperparameters, some of which should be tuned!
-
--   Instead of specifying hyperparameters to a given value
-    ```{r}
-    lrn_xgb$param_set$set_values(nrounds = 10)
-    ```
-    we can also mark them for hyperparameter tuning
+-   Instead of specifying hyperparameters to a given value we can also mark them for hyperparameter tuning
 
     ```{r}
-    lrn_xgb$param_set$set_values(nrounds = to_tune(10, 100))
+    lrn_xgb$param_set$set_values(nrounds = to_tune(10, 100, logscale = TRUE))
     ```
 
--   Because XGboost does not support factor columns, we add a factor encoding preprocessing step
+-   Wondering which hyperparameters to tune? Check out [mlr3tuningspaces](https://github.com/mlr-org/mlr3tuningspaces)!
+
+-   Because XGBoost does not support factor columns, we add a factor encoding preprocessing step
 
     ```{r}
     lrn_xgb = po("encode") %>>% lrn_xgb |> as_learner()
-    lrn_xgb
+    lrn_xgb$properties
     ```
 
 ## Tuning XGBoost
@@ -704,30 +756,29 @@ mlr_pipeops$keys()
 
 
 
-## Tuning XGboost
+## Tuning XGBoost
 
--   We can tune the classification accuracy using random search with 20 evaluations and 3-fold CV:
+We can tune the classification accuracy using random search with 20 evaluations and 3-fold CV:
 
-    ```{r}
-    instance = tune(
-      task = task,
-      learner = lrn_xgb,
-      measure = msr("classif.acc"),
-      tuner = tnr("random_search"),
-      term_evals = 20,
-      resampling = rsmp("cv", folds = 3)
-    )
-    instance
-    ```
+```{r}
+instance = tune(
+    task = task,
+    learner = lrn_xgb,
+    measure = msr("classif.acc"),
+    tuner = tnr("random_search"),
+    term_evals = 20,
+    resampling = rsmp("cv", folds = 3)
+)
+instance$result
+instance$archive$data[1:3, 1:3]
+```
 
 
 ## Tuning XGBoost
 
 -   We can now train a learner on the full dataset using the optimal configuration
     ```{r}
-    optimal_nrounds =
-      instance$result_learner_param_vals$classif.xgboost.nrounds
-    optimal_nrounds
+    (optimal_nrounds = instance$result_learner_param_vals$classif.xgboost.nrounds)
     lrn_xgb$param_set$set_values(
       classif.xgboost.nrounds = optimal_nrounds
     )
@@ -754,7 +805,6 @@ knitr::include_graphics("figures/mlr3book_figures-9.svg")
       term_evals = 20,
       resampling = rsmp("cv", folds = 3)
     )
-    lrn_xgb_tuned
     ```
 
 -   Like for the `GraphLearner`, this can be used like any `mlr3::Learner` such as evaluating its generalization error using `resample()`, resulting in a nested resampling
@@ -771,24 +821,52 @@ knitr::include_graphics("figures/mlr3book_figures-12.svg")
 ## Glmnet vs Tuned XGBoost
 -   We change the `Learner`'s IDs:
 
-    ```{r}
-    lrn_xgb_tuned$id = "tuned_xgboost"
-    lrn_glmnet_preproc$id = "glmnet"
-    ```
+```{r}
+lrn_xgb_tuned$id = "tuned_xgboost"
+lrn_glmnet_preproc$id = "glmnet"
+```
 
 
--   We create a benchmark design to compare the tuned xgboost pipeline with the glmnet pipeline
+-   We create a benchmark design to compare the tuned XGBoost pipeline with the glmnet pipeline
 
-    ```{r}
-    design = benchmark_grid(task, list(lrn_xgb_tuned, lrn_glmnet_preproc), rsmp("cv", folds = 3))
-    bmr = benchmark(design)
-    bmr$aggregate(msr("classif.acc"))
-    ```
+```{r}
+design = benchmark_grid(
+    task, 
+    list(lrn_xgb_tuned, lrn_glmnet_preproc), 
+    rsmp("cv", folds = 5))
+bmr = benchmark(design)
+bmr$aggregate(msr("classif.acc"))
+```
 
 ## Glmnet vs Tuned XGBoost
 
 ```{r}
 autoplot(bmr, measure = msr("classif.acc"))
+```
+
+## Success #4! 
+
+```{r}
+#| echo: false
+#| fig-align: "right"
+#| out.width: "30%"
+knitr::include_graphics("figures/partying-face-emoji.svg")
+```
+
+We can now tune hyperparameters automatically!
+```{r}
+l_xgb = lrn("classif.xgboost", nrounds = to_tune(10, 100, logscale = TRUE))
+l_xgb_pre = po("encode") %>>% l_xgb |> as_learner()
+l_xgb_pre_auto = auto_tuner(
+  learner = l_xgb_pre,
+  measure = msr("classif.acc"),
+  tuner = tnr("random_search"),
+  term_evals = 10,
+  resampling = rsmp("cv", folds = 3)
+)
+t_penguins = as_task_classif(penguins, target = "species", id = "penguins")
+rr = resample(t_penguins, l_xgb_pre_auto, rsmp("cv", folds = 3))
+rr$aggregate(msr("classif.acc"))
 ```
 
 ## Parallelizing Execution
@@ -809,19 +887,21 @@ autoplot(bmr, measure = msr("classif.acc"))
 knitr::include_graphics("figures/book-flyer.png")
 ```
 
-## Resources
+## Want more?
+
+### Resources
 
 We have only shown you a glimpse of what is possible with `mlr3`!
 
-- Read the `mlr3` book: https://mlr3book.mlr-org.com/
-- Browse our website: https://mlr-org.com/
-- Read one of our gallery posts: https://mlr-org.com/gallery.html
-- Check us out on GitHub: https://github.com/mlr-org
-- This presentation: https://github.com/sebffischer/mlr3_UseR_berlin_2023
+- Read the `mlr3` book: [mlr3book.mlr-org.com](https://mlr3book.mlr-org.com/)
+- Browse our website: [mlr-org.com](https://mlr-org.com)
+- Read one of our gallery posts: [mlr-org.com/gallery.html](https://mlr-org.com/gallery.html)
+- Check us out on GitHub: [github.com/mlr-org](https://github.com/mlr-org)
+- This presentation: [github.com/sebffischer/mlr3_UseR_berlin_2023](https://github.com/sebffischer/mlr3_UseR_berlin_2023)
 
-## Getting In Touch
+### Getting In Touch
 
-- You can email us directly: sebastian.fischer@stat.uni-muenchen.de
-- You our publicly available mattermost channel: https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/
+- You can email us directly: [sebastian.fischer@stat.uni-muenchen.de](mailto:sebastian.fischer@stat.uni-muenchen.de), [code@jakob-r.de](mailto:code@jakob-r.de)
+- You our publicly available mattermost channel: [lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/](https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/)
 - **We are always looking for new contributors!**
 

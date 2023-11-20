@@ -7,7 +7,7 @@
 <link href="presentation_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="presentation_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="presentation_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.3.361">
+  <meta name="generator" content="quarto-1.3.450">
 
   <meta name="author" content="Jakob Richter, Sebastian Fischer, mlr3 Team">
   <title>Modern Machine Learning in R</title>
@@ -403,14 +403,14 @@ Jakob Richter, Sebastian Fischer, mlr3 Team
 <section id="mlr3-ecosystem" class="slide level2">
 <h2><code>mlr3</code> Ecosystem</h2>
 
-<img data-src="figures/mlr3_ecosystem.png" width="7500" class="r-stretch quarto-figure-center"></section>
+<img data-src="figures/mlr3_ecosystem.png" class="r-stretch quarto-figure-center"></section>
 <section id="penguins" class="slide level2">
 <h2>Penguins</h2>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figures/penguins.png" width="1500"></p>
+<p><img data-src="figures/penguins.png"></p>
 </figure>
 </div>
 </div>
@@ -426,21 +426,119 @@ Jakob Richter, Sebastian Fischer, mlr3 Team
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>penguins <span class="ot">=</span> mlr3data<span class="sc">::</span>penguins_simple</span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="fu">head</span>(penguins)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>  species bill_depth bill_length body_mass flipper_length year island.Biscoe
-1  Adelie       18.7        39.1      3750            181 2007             0
-2  Adelie       17.4        39.5      3800            186 2007             0
-3  Adelie       18.0        40.3      3250            195 2007             0
-4  Adelie       19.3        36.7      3450            193 2007             0
-5  Adelie       20.6        39.3      3650            190 2007             0
-6  Adelie       17.8        38.9      3625            181 2007             0
-  island.Dream island.Torgersen sex.female sex.male
-1            0                1          0        1
-2            0                1          1        0
-3            0                1          1        0
-4            0                1          1        0
-5            0                1          0        1
-6            0                1          1        0</code></pre>
+<div class="cell-output-display">
+<div class="kable-table">
+<table style="width:100%;">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 8%">
+<col style="width: 9%">
+<col style="width: 8%">
+<col style="width: 12%">
+<col style="width: 4%">
+<col style="width: 11%">
+<col style="width: 10%">
+<col style="width: 13%">
+<col style="width: 8%">
+<col style="width: 7%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">species</th>
+<th style="text-align: right;">bill_depth</th>
+<th style="text-align: right;">bill_length</th>
+<th style="text-align: right;">body_mass</th>
+<th style="text-align: right;">flipper_length</th>
+<th style="text-align: right;">year</th>
+<th style="text-align: right;">island.Biscoe</th>
+<th style="text-align: right;">island.Dream</th>
+<th style="text-align: right;">island.Torgersen</th>
+<th style="text-align: right;">sex.female</th>
+<th style="text-align: right;">sex.male</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Adelie</td>
+<td style="text-align: right;">18.7</td>
+<td style="text-align: right;">39.1</td>
+<td style="text-align: right;">3750</td>
+<td style="text-align: right;">181</td>
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Adelie</td>
+<td style="text-align: right;">17.4</td>
+<td style="text-align: right;">39.5</td>
+<td style="text-align: right;">3800</td>
+<td style="text-align: right;">186</td>
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Adelie</td>
+<td style="text-align: right;">18.0</td>
+<td style="text-align: right;">40.3</td>
+<td style="text-align: right;">3250</td>
+<td style="text-align: right;">195</td>
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Adelie</td>
+<td style="text-align: right;">19.3</td>
+<td style="text-align: right;">36.7</td>
+<td style="text-align: right;">3450</td>
+<td style="text-align: right;">193</td>
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Adelie</td>
+<td style="text-align: right;">20.6</td>
+<td style="text-align: right;">39.3</td>
+<td style="text-align: right;">3650</td>
+<td style="text-align: right;">190</td>
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Adelie</td>
+<td style="text-align: right;">17.8</td>
+<td style="text-align: right;">38.9</td>
+<td style="text-align: right;">3625</td>
+<td style="text-align: right;">181</td>
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 </section>
@@ -452,19 +550,19 @@ Jakob Richter, Sebastian Fischer, mlr3 Team
 <li>things like performance evaluation are cumbersome</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>svm_model <span class="ot">=</span> e1071<span class="sc">::</span><span class="fu">svm</span>(species <span class="sc">~</span> ., <span class="at">data =</span> penguins)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>svm_model <span class="ot">=</span> e1071<span class="sc">::</span><span class="fu">svm</span>(species <span class="sc">~</span> ., <span class="at">data =</span> penguins)</span></code></pre></div>
 </div>
 <p>vs.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>xgb_model <span class="ot">=</span> xgboost<span class="sc">::</span><span class="fu">xgboost</span>(<span class="at">data =</span> <span class="fu">as.matrix</span>(penguins[, <span class="sc">-</span><span class="dv">1</span>]),</span>
-<span id="cb4-2"><a href="#cb4-2"></a>  <span class="at">label =</span> penguins<span class="sc">$</span>species, <span class="at">nrounds =</span> <span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>xgb_model <span class="ot">=</span> xgboost<span class="sc">::</span><span class="fu">xgboost</span>(<span class="at">data =</span> <span class="fu">as.matrix</span>(penguins[, <span class="sc">-</span><span class="dv">1</span>]),</span>
+<span id="cb3-2"><a href="#cb3-2"></a>  <span class="at">label =</span> penguins<span class="sc">$</span>species, <span class="at">nrounds =</span> <span class="dv">10</span>)</span></code></pre></div>
 </div>
 </section>
 <section id="so-you-want-to-do-ml-in-r" class="slide level2">
 <h2>So you want to do ML in R</h2>
 <div class="frame">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">library</span>(<span class="st">"mlr3"</span>)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">library</span>(<span class="st">"mlr3"</span>)</span></code></pre></div>
 </div>
 <p>Ingredients:</p>
 <ul>
@@ -488,11 +586,11 @@ Jakob Richter, Sebastian Fischer, mlr3 Team
 </ul></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">library</span>(<span class="st">"mlr3"</span>)</span>
-<span id="cb6-2"><a href="#cb6-2"></a></span>
-<span id="cb6-3"><a href="#cb6-3"></a>task <span class="ot">=</span> <span class="fu">as_task_classif</span>(penguins, <span class="at">target =</span> <span class="st">"species"</span>, <span class="at">id =</span> <span class="st">"penguins"</span>)</span>
-<span id="cb6-4"><a href="#cb6-4"></a></span>
-<span id="cb6-5"><a href="#cb6-5"></a>task</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">library</span>(<span class="st">"mlr3"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2"></a></span>
+<span id="cb5-3"><a href="#cb5-3"></a>task <span class="ot">=</span> <span class="fu">as_task_classif</span>(penguins, <span class="at">target =</span> <span class="st">"species"</span>, <span class="at">id =</span> <span class="st">"penguins"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4"></a></span>
+<span id="cb5-5"><a href="#cb5-5"></a>task</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;TaskClassif:penguins&gt; (333 x 11)
 * Target: species
@@ -513,17 +611,26 @@ Jakob Richter, Sebastian Fischer, mlr3 Team
 <h2>R6 – All you need to know</h2>
 <div class="frame">
 <p><code>mlr3</code> uses the <em>R6</em> class system. Some things may seem unusual if you see them for the first time.</p>
-<ul>
-<li>Objects are created using <class>$new().</class></li>
-</ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>task <span class="ot">=</span> TaskClassif<span class="sc">$</span><span class="fu">new</span>(<span class="st">"penguins"</span>, penguins, <span class="st">"species"</span>)</span></code></pre></div>
-</div>
+<!---
+Out because mlr3verse does not even export the classes, and there are much more practical functions for the end user available.
+
+
+-   Objects are created using <Class>\$new().
+
+
+::: {.cell}
+
+```{.r .cell-code}
+task = TaskClassif$new("penguins", penguins, "species")
+```
+:::
+
+--->
 <ul>
 <li>Objects have fields that contain information about the object.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>task<span class="sc">$</span>nrow</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>task<span class="sc">$</span>nrow</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 333</code></pre>
 </div>
@@ -532,13 +639,13 @@ Jakob Richter, Sebastian Fischer, mlr3 Team
 <li>Objects have methods that are called like functions:</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>task<span class="sc">$</span><span class="fu">filter</span>(<span class="at">rows =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>task<span class="sc">$</span><span class="fu">filter</span>(<span class="at">rows =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span></code></pre></div>
 </div>
 <ul>
 <li>Methods may change (“mutate”) the object (reference semantics)!</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>task<span class="sc">$</span>nrow</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>task<span class="sc">$</span>nrow</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 10</code></pre>
 </div>
@@ -553,9 +660,11 @@ Jakob Richter, Sebastian Fischer, mlr3 Team
 <section id="dictionaries" class="slide level2">
 <h2>Dictionaries</h2>
 <div class="frame">
+<!---
+-   Ordinary constructors: `TaskClassif$new()` / `LearnerClassifRpart$new()`
+--->
 <ul>
-<li><p>Ordinary constructors: <code>TaskClassif$new()</code> / <code>LearnerClassifRpart$new()</code></p></li>
-<li><p><code>mlr3</code> offers <em>Short Form Constructors</em> that are less verbose</p></li>
+<li><p><code>mlr3</code> offers constructors for all R6 objects:</p></li>
 <li><p>They access <code>Dictionary</code> of objects:</p></li>
 </ul>
 <table>
@@ -607,8 +716,8 @@ Jakob Richter, Sebastian Fischer, mlr3 Team
 <h2>Dictionaries</h2>
 <div class="frame">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="co"># list items</span></span>
-<span id="cb14-2"><a href="#cb14-2"></a><span class="fu">tsk</span>()</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="co"># list items</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="fu">tsk</span>()</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;DictionaryTask&gt; with 21 stored values
 Keys: ames_housing, bike_sharing, boston_housing, breast_cancer,
@@ -616,9 +725,9 @@ Keys: ames_housing, bike_sharing, boston_housing, breast_cancer,
   penguins, penguins_simple, pima, ruspini, sonar, spam, titanic,
   usarrests, wine, zoo</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="co"># retrieve an element</span></span>
-<span id="cb16-2"><a href="#cb16-2"></a>task <span class="ot">=</span> <span class="fu">tsk</span>(<span class="st">"penguins_simple"</span>)</span>
-<span id="cb16-3"><a href="#cb16-3"></a>task</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="co"># retrieve an element</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a>task <span class="ot">=</span> <span class="fu">tsk</span>(<span class="st">"penguins_simple"</span>)</span>
+<span id="cb14-3"><a href="#cb14-3"></a>task</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;TaskClassif:penguins&gt; (333 x 11): Simplified Palmer Penguins
 * Target: species
@@ -644,22 +753,77 @@ Keys: ames_housing, bike_sharing, boston_housing, breast_cancer,
 <li>The <code>Learner</code>s are just wrappers around other packages</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>mlr_learners_table <span class="ot">=</span> <span class="fu">as.data.table</span>(mlr_learners)</span>
-<span id="cb18-2"><a href="#cb18-2"></a>mlr_learners_table[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="fu">c</span>(<span class="st">"key"</span>, <span class="st">"packages"</span>, <span class="st">"predict_types"</span>)]</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Key: &lt;key&gt;
-                   key                      packages predict_types
-                &lt;char&gt;                        &lt;list&gt;        &lt;list&gt;
- 1: classif.AdaBoostM1  mlr3,mlr3extralearners,RWeka response,prob
- 2:        classif.C50    mlr3,mlr3extralearners,C50 response,prob
- 3:        classif.IBk  mlr3,mlr3extralearners,RWeka response,prob
- 4:        classif.J48  mlr3,mlr3extralearners,RWeka      response
- 5:       classif.JRip  mlr3,mlr3extralearners,RWeka response,prob
- 6:        classif.LMT  mlr3,mlr3extralearners,RWeka response,prob
- 7:       classif.OneR  mlr3,mlr3extralearners,RWeka response,prob
- 8:       classif.PART  mlr3,mlr3extralearners,RWeka response,prob
- 9:      classif.abess                    mlr3,abess response,prob
-10:       classif.bart mlr3,mlr3extralearners,dbarts response,prob</code></pre>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>mlr_learners_table <span class="ot">=</span> <span class="fu">as.data.table</span>(mlr_learners)</span>
+<span id="cb16-2"><a href="#cb16-2"></a>mlr_learners_table[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="fu">c</span>(<span class="st">"key"</span>, <span class="st">"packages"</span>, <span class="st">"predict_types"</span>)]</span></code></pre></div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table>
+<colgroup>
+<col style="width: 28%">
+<col style="width: 50%">
+<col style="width: 21%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">key</th>
+<th style="text-align: left;">packages</th>
+<th style="text-align: left;">predict_types</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">classif.cv_glmnet</td>
+<td style="text-align: left;">mlr3 , mlr3learners, glmnet</td>
+<td style="text-align: left;">response, prob</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">classif.debug</td>
+<td style="text-align: left;">mlr3</td>
+<td style="text-align: left;">response, prob</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">classif.featureless</td>
+<td style="text-align: left;">mlr3</td>
+<td style="text-align: left;">response, prob</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">classif.glmnet</td>
+<td style="text-align: left;">mlr3 , mlr3learners, glmnet</td>
+<td style="text-align: left;">response, prob</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">classif.kknn</td>
+<td style="text-align: left;">mlr3 , mlr3learners, kknn</td>
+<td style="text-align: left;">response, prob</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">classif.lda</td>
+<td style="text-align: left;">mlr3 , mlr3learners, MASS</td>
+<td style="text-align: left;">response, prob</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">classif.log_reg</td>
+<td style="text-align: left;">mlr3 , mlr3learners, stats</td>
+<td style="text-align: left;">response, prob</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">classif.multinom</td>
+<td style="text-align: left;">mlr3 , mlr3learners, nnet</td>
+<td style="text-align: left;">response, prob</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">classif.naive_bayes</td>
+<td style="text-align: left;">mlr3 , mlr3learners, e1071</td>
+<td style="text-align: left;">response, prob</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">classif.nnet</td>
+<td style="text-align: left;">mlr3 , mlr3learners, nnet</td>
+<td style="text-align: left;">response, prob</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 </section>
@@ -669,19 +833,19 @@ Keys: ames_housing, bike_sharing, boston_housing, breast_cancer,
 <li>Get a Learner provided by <code>mlr3</code></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>learner <span class="ot">=</span> <span class="fu">lrn</span>(<span class="st">"classif.rpart"</span>)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>learner <span class="ot">=</span> <span class="fu">lrn</span>(<span class="st">"classif.rpart"</span>)</span></code></pre></div>
 </div>
 <ul>
 <li>Train the <code>Learner</code></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>learner<span class="sc">$</span><span class="fu">train</span>(task)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>learner<span class="sc">$</span><span class="fu">train</span>(task)</span></code></pre></div>
 </div>
 <ul>
 <li>The <code>$model</code> is the rpart model: a decision tree</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">print</span>(learner<span class="sc">$</span>model)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">print</span>(learner<span class="sc">$</span>model)</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>n= 333 
 
@@ -698,84 +862,89 @@ node), split, n, loss, yval, (yprob)
 </div>
 </div>
 </section>
-<section id="hyperparameters" class="slide level2 smaller">
-<h2>Hyperparameters</h2>
-<ul>
-<li>Learners have <em>hyperparameters</em></li>
-</ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">as.data.table</span>(learner<span class="sc">$</span>param_set)[, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>]</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>                id    class lower upper      levels nlevels
-            &lt;char&gt;   &lt;char&gt; &lt;num&gt; &lt;num&gt;      &lt;list&gt;   &lt;num&gt;
- 1:             cp ParamDbl     0     1                 Inf
- 2:     keep_model ParamLgl    NA    NA  TRUE,FALSE       2
- 3:     maxcompete ParamInt     0   Inf                 Inf
- 4:       maxdepth ParamInt     1    30                  30
- 5:   maxsurrogate ParamInt     0   Inf                 Inf
- 6:      minbucket ParamInt     1   Inf                 Inf
- 7:       minsplit ParamInt     1   Inf                 Inf
- 8: surrogatestyle ParamInt     0     1                   2
- 9:   usesurrogate ParamInt     0     2                   3
-10:           xval ParamInt     0   Inf                 Inf</code></pre>
-</div>
-</div>
-<ul>
-<li>Changing them changes the <code>Learner</code>’s behavior</li>
-</ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>learner<span class="sc">$</span>param_set<span class="sc">$</span><span class="fu">set_values</span>(</span>
-<span id="cb26-2"><a href="#cb26-2"></a>  <span class="at">maxdepth =</span> <span class="dv">1</span>,</span>
-<span id="cb26-3"><a href="#cb26-3"></a>  <span class="at">xval =</span> <span class="dv">0</span></span>
-<span id="cb26-4"><a href="#cb26-4"></a>)</span>
-<span id="cb26-5"><a href="#cb26-5"></a>learner<span class="sc">$</span><span class="fu">train</span>(task)</span></code></pre></div>
-</div>
-<ul>
-<li>This gives a smaller decision tree</li>
-</ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">print</span>(learner<span class="sc">$</span>model)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>n= 333 
+<section id="learning-algorithms-2" class="slide level2">
+<h2>Learning Algorithms</h2>
 
-node), split, n, loss, yval, (yprob)
-      * denotes terminal node
-
-1) root 333 187 Adelie (0.438438438 0.204204204 0.357357357)  
-  2) flipper_length&lt; 206.5 208  64 Adelie (0.692307692 0.302884615 0.004807692) *
-  3) flipper_length&gt;=206.5 125   7 Gentoo (0.016000000 0.040000000 0.944000000) *</code></pre>
-</div>
-</div>
-</section>
+<img data-src="figures/mlr3book_figures-2.svg" style="width:50.0%" class="r-stretch quarto-figure-center"></section>
 <section id="prediction" class="slide level2">
 <h2>Prediction</h2>
 <ul>
 <li><p>Our scientists have found two new penguins and want to know their species</p>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>  bill_depth bill_length body_mass flipper_length year island.Biscoe
-1         20          37      4000            281 2007             0
-2         21          39      3750            190 2006             0
-  island.Dream island.Torgersen sex.female sex.male
-1            1                0          1        0
-2            0                1          0        1</code></pre>
+<div class="cell-output-display">
+<div class="kable-table">
+<table>
+<colgroup>
+<col style="width: 9%">
+<col style="width: 10%">
+<col style="width: 8%">
+<col style="width: 12%">
+<col style="width: 4%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 14%">
+<col style="width: 9%">
+<col style="width: 7%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">bill_depth</th>
+<th style="text-align: right;">bill_length</th>
+<th style="text-align: right;">body_mass</th>
+<th style="text-align: right;">flipper_length</th>
+<th style="text-align: right;">year</th>
+<th style="text-align: right;">island.Biscoe</th>
+<th style="text-align: right;">island.Dream</th>
+<th style="text-align: right;">island.Torgersen</th>
+<th style="text-align: right;">sex.female</th>
+<th style="text-align: right;">sex.male</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">37</td>
+<td style="text-align: right;">4000</td>
+<td style="text-align: right;">281</td>
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">3750</td>
+<td style="text-align: right;">190</td>
+<td style="text-align: right;">2006</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div></li>
 <li><p>To do so, we call the <code>$predict_newdata()</code> method using the new data:</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>prediction <span class="ot">=</span> learner<span class="sc">$</span><span class="fu">predict_newdata</span>(new_penguins)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>prediction <span class="ot">=</span> learner<span class="sc">$</span><span class="fu">predict_newdata</span>(new_penguins)</span></code></pre></div>
 </div>
 <ul>
 <li>We get a Prediction object:</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>prediction</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>prediction</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;PredictionClassif&gt; for 2 observations:
- row_ids truth response
-       1  &lt;NA&gt;   Gentoo
-       2  &lt;NA&gt;   Adelie</code></pre>
+ row_ids truth  response
+       1  &lt;NA&gt; Chinstrap
+       2  &lt;NA&gt;    Adelie</code></pre>
 </div>
 </div>
 </section>
@@ -785,20 +954,58 @@ node), split, n, loss, yval, (yprob)
 <li>We can make the Learner predict <em>probabilities</em> when we set <code>predict_type</code>:</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a>learner<span class="sc">$</span>predict_type <span class="ot">=</span> <span class="st">"prob"</span></span>
-<span id="cb33-2"><a href="#cb33-2"></a>learner<span class="sc">$</span><span class="fu">predict_newdata</span>(new_penguins)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>learner<span class="sc">$</span>predict_type <span class="ot">=</span> <span class="st">"prob"</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a>learner<span class="sc">$</span><span class="fu">predict_newdata</span>(new_penguins)</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;PredictionClassif&gt; for 2 observations:
- row_ids truth response prob.Adelie prob.Chinstrap prob.Gentoo
-       1  &lt;NA&gt;   Gentoo   0.0160000      0.0400000 0.944000000
-       2  &lt;NA&gt;   Adelie   0.6923077      0.3028846 0.004807692</code></pre>
+ row_ids truth  response prob.Adelie prob.Chinstrap prob.Gentoo
+       1  &lt;NA&gt; Chinstrap   0.2857143     0.71428571           0
+       2  &lt;NA&gt;    Adelie   0.9655172     0.03448276           0</code></pre>
 </div>
 </div>
 </section>
-<section id="learning-algorithms-2" class="slide level2">
-<h2>Learning Algorithms</h2>
+<section id="success-1" class="slide level2">
+<h2>Success #1!</h2>
 
-<img data-src="figures/mlr3book_figures-2.svg" style="width:50.0%" class="r-stretch quarto-figure-center"></section></section>
+<img data-src="figures/partying-face-emoji.svg" style="width:30.0%" class="r-stretch quarto-figure-right"><p>We can now classify penguins into their species!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>l_rpart <span class="ot">=</span> <span class="fu">lrn</span>(<span class="st">"classif.rpart"</span>, <span class="at">predict_type =</span> <span class="st">"prob"</span>)</span>
+<span id="cb26-2"><a href="#cb26-2"></a>t_penguins <span class="ot">=</span> <span class="fu">as_task_classif</span>(penguins, <span class="at">target =</span> <span class="st">"species"</span>, <span class="at">id =</span> <span class="st">"penguins"</span>)</span>
+<span id="cb26-3"><a href="#cb26-3"></a>l_rpart<span class="sc">$</span><span class="fu">train</span>(t_penguins)</span>
+<span id="cb26-4"><a href="#cb26-4"></a>new_penguin <span class="ot">=</span> <span class="fu">data.frame</span>(</span>
+<span id="cb26-5"><a href="#cb26-5"></a>  <span class="at">bill_depth =</span> <span class="dv">20</span>, <span class="at">bill_length =</span> <span class="dv">37</span>, <span class="at">body_mass =</span> <span class="dv">4000</span>, <span class="at">flipper_length =</span> <span class="dv">281</span>,</span>
+<span id="cb26-6"><a href="#cb26-6"></a>  <span class="at">year =</span> <span class="dv">2007</span>, <span class="at">island.Biscoe =</span> <span class="dv">0</span>, <span class="at">island.Dream =</span> <span class="dv">1</span>, <span class="at">island.Torgersen =</span> <span class="dv">0</span>,</span>
+<span id="cb26-7"><a href="#cb26-7"></a>  <span class="at">sex.female =</span> <span class="dv">1</span>, <span class="at">sex.male =</span> <span class="dv">0</span></span>
+<span id="cb26-8"><a href="#cb26-8"></a>)</span>
+<span id="cb26-9"><a href="#cb26-9"></a>l_rpart<span class="sc">$</span><span class="fu">predict_newdata</span>(new_penguin) <span class="sc">|&gt;</span> <span class="fu">as.data.table</span>()</span></code></pre></div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">row_ids</th>
+<th style="text-align: left;">truth</th>
+<th style="text-align: left;">response</th>
+<th style="text-align: right;">prob.Adelie</th>
+<th style="text-align: right;">prob.Chinstrap</th>
+<th style="text-align: right;">prob.Gentoo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">Chinstrap</td>
+<td style="text-align: right;">0.2857143</td>
+<td style="text-align: right;">0.7142857</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section></section>
 <section>
 <section id="performance" class="title-slide slide level1">
 <h1>Performance</h1>
@@ -810,33 +1017,33 @@ node), split, n, loss, yval, (yprob)
 <li>In order to evaluate the performance of our model we need to split our data into a training and a test set</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>split <span class="ot">=</span> <span class="fu">partition</span>(task)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>split <span class="ot">=</span> <span class="fu">partition</span>(task)</span></code></pre></div>
 </div>
 <ul>
 <li>We train our learner on the train set and make predictions for the test set</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a>learner<span class="sc">$</span><span class="fu">train</span>(task, <span class="at">row_ids =</span> split<span class="sc">$</span>train)</span>
-<span id="cb36-2"><a href="#cb36-2"></a>prediction <span class="ot">=</span> learner<span class="sc">$</span><span class="fu">predict</span>(task, <span class="at">row_ids =</span> split<span class="sc">$</span>test)</span>
-<span id="cb36-3"><a href="#cb36-3"></a>prediction</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>learner<span class="sc">$</span><span class="fu">train</span>(task, <span class="at">row_ids =</span> split<span class="sc">$</span>train)</span>
+<span id="cb28-2"><a href="#cb28-2"></a>prediction <span class="ot">=</span> learner<span class="sc">$</span><span class="fu">predict</span>(task, <span class="at">row_ids =</span> split<span class="sc">$</span>test)</span>
+<span id="cb28-3"><a href="#cb28-3"></a>prediction</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;PredictionClassif&gt; for 109 observations:
-    row_ids     truth response prob.Adelie prob.Chinstrap prob.Gentoo
-          3    Adelie   Adelie  0.68794326     0.30496454 0.007092199
-          4    Adelie   Adelie  0.68794326     0.30496454 0.007092199
-          5    Adelie   Adelie  0.68794326     0.30496454 0.007092199
----                                                                  
-        325 Chinstrap   Adelie  0.68794326     0.30496454 0.007092199
-        328 Chinstrap   Adelie  0.68794326     0.30496454 0.007092199
-        329 Chinstrap   Gentoo  0.01204819     0.03614458 0.951807229</code></pre>
+    row_ids     truth  response prob.Adelie prob.Chinstrap prob.Gentoo
+          3    Adelie    Adelie  0.97894737     0.02105263  0.00000000
+          4    Adelie    Adelie  0.97894737     0.02105263  0.00000000
+          5    Adelie    Adelie  0.97894737     0.02105263  0.00000000
+---                                                                   
+        325 Chinstrap Chinstrap  0.08695652     0.89130435  0.02173913
+        328 Chinstrap Chinstrap  0.08695652     0.89130435  0.02173913
+        329 Chinstrap    Gentoo  0.01204819     0.03614458  0.95180723</code></pre>
 </div>
 </div>
 <ul>
 <li>We can evaluate the prediction using an <code>mlr3::Measure</code></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a>measure <span class="ot">=</span> <span class="fu">msr</span>(<span class="st">"classif.acc"</span>)</span>
-<span id="cb38-2"><a href="#cb38-2"></a>measure</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>measure <span class="ot">=</span> <span class="fu">msr</span>(<span class="st">"classif.acc"</span>)</span>
+<span id="cb30-2"><a href="#cb30-2"></a>measure</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;MeasureClassifSimple:classif.acc&gt;: Classification Accuracy
 * Packages: mlr3, mlr3measures
@@ -847,10 +1054,10 @@ node), split, n, loss, yval, (yprob)
 * Properties: -
 * Predict type: response</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a>prediction<span class="sc">$</span><span class="fu">score</span>(measure)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>prediction<span class="sc">$</span><span class="fu">score</span>(measure)</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>classif.acc 
-  0.7889908 </code></pre>
+  0.9449541 </code></pre>
 </div>
 </div>
 </section>
@@ -877,15 +1084,15 @@ node), split, n, loss, yval, (yprob)
 <ul>
 <li><p>Resample description: How to split the data</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a>cv3 <span class="ot">=</span> <span class="fu">rsmp</span>(<span class="st">"cv"</span>, <span class="at">folds =</span> <span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>cv3 <span class="ot">=</span> <span class="fu">rsmp</span>(<span class="st">"cv"</span>, <span class="at">folds =</span> <span class="dv">3</span>)</span></code></pre></div>
 </div></li>
 <li><p>Use the <code>resample()</code> function for resampling:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a>rr <span class="ot">=</span> <span class="fu">resample</span>(task, learner, cv3)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>rr <span class="ot">=</span> <span class="fu">resample</span>(task, learner, cv3)</span></code></pre></div>
 </div></li>
 <li><p>We get a <code>ResampleResult</code> object:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a>rr</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a>rr</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;ResampleResult&gt; with 3 resampling iterations
   task_id    learner_id resampling_id iteration warnings errors
@@ -909,41 +1116,75 @@ node), split, n, loss, yval, (yprob)
 <ul>
 <li><p>Calculate performance:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1"></a>rr<span class="sc">$</span><span class="fu">aggregate</span>(<span class="fu">msr</span>(<span class="st">"classif.acc"</span>))</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a>rr<span class="sc">$</span><span class="fu">aggregate</span>(<span class="fu">msr</span>(<span class="st">"classif.acc"</span>))</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>classif.acc 
-  0.7837838 </code></pre>
+  0.9339339 </code></pre>
 </div>
 </div></li>
 <li><p>Predictions of individual folds</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1"></a>predictions <span class="ot">=</span> rr<span class="sc">$</span><span class="fu">predictions</span>()</span>
-<span id="cb48-2"><a href="#cb48-2"></a>predictions[[<span class="dv">1</span>]]</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a>predictions <span class="ot">=</span> rr<span class="sc">$</span><span class="fu">predictions</span>()</span>
+<span id="cb40-2"><a href="#cb40-2"></a>predictions[[<span class="dv">1</span>]]</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;PredictionClassif&gt; for 111 observations:
-    row_ids     truth response prob.Adelie prob.Chinstrap prob.Gentoo
-          3    Adelie   Adelie  0.72661871     0.26618705 0.007194245
-          6    Adelie   Adelie  0.72661871     0.26618705 0.007194245
-         11    Adelie   Adelie  0.72661871     0.26618705 0.007194245
----                                                                  
-        323 Chinstrap   Adelie  0.72661871     0.26618705 0.007194245
-        329 Chinstrap   Gentoo  0.01204819     0.04819277 0.939759036
-        331 Chinstrap   Adelie  0.72661871     0.26618705 0.007194245</code></pre>
+    row_ids     truth  response prob.Adelie prob.Chinstrap prob.Gentoo
+          3    Adelie    Adelie  0.94392523     0.05607477    0.000000
+          6    Adelie    Adelie  0.94392523     0.05607477    0.000000
+         11    Adelie    Adelie  0.94392523     0.05607477    0.000000
+---                                                                   
+        323 Chinstrap Chinstrap  0.00000000     0.96875000    0.031250
+        329 Chinstrap    Gentoo  0.01204819     0.04819277    0.939759
+        331 Chinstrap Chinstrap  0.00000000     0.96875000    0.031250</code></pre>
 </div>
 </div></li>
 <li><p>Score of individual folds</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1"></a>scores <span class="ot">=</span> rr<span class="sc">$</span><span class="fu">score</span>(<span class="fu">msr</span>(<span class="st">"classif.acc"</span>))</span>
-<span id="cb50-2"><a href="#cb50-2"></a>scores[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="fu">c</span>(<span class="st">"iteration"</span>, <span class="st">"classif.acc"</span>)]</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   iteration classif.acc
-       &lt;int&gt;       &lt;num&gt;
-1:         1   0.7477477
-2:         2   0.7837838
-3:         3   0.8198198</code></pre>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a>scores <span class="ot">=</span> rr<span class="sc">$</span><span class="fu">score</span>(<span class="fu">msr</span>(<span class="st">"classif.acc"</span>))</span>
+<span id="cb42-2"><a href="#cb42-2"></a>scores[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="fu">c</span>(<span class="st">"iteration"</span>, <span class="st">"classif.acc"</span>)]</span></code></pre></div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">iteration</th>
+<th style="text-align: right;">classif.acc</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.9549550</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.9099099</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.9369369</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div></li>
 </ul>
+</section>
+<section id="success-2" class="slide level2">
+<h2>Success #2!</h2>
+
+<img data-src="figures/partying-face-emoji.svg" style="width:30.0%" class="r-stretch quarto-figure-right"><p>We can now access the performance of our model!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a>l_rpart <span class="ot">=</span> <span class="fu">lrn</span>(<span class="st">"classif.rpart"</span>)</span>
+<span id="cb43-2"><a href="#cb43-2"></a>t_penguins <span class="ot">=</span> <span class="fu">as_task_classif</span>(penguins, <span class="at">target =</span> <span class="st">"species"</span>, <span class="at">id =</span> <span class="st">"penguins"</span>)</span>
+<span id="cb43-3"><a href="#cb43-3"></a>rr <span class="ot">=</span> <span class="fu">resample</span>(t_penguins, l_rpart, <span class="fu">rsmp</span>(<span class="st">"cv"</span>, <span class="at">folds =</span> <span class="dv">3</span>))</span>
+<span id="cb43-4"><a href="#cb43-4"></a>rr<span class="sc">$</span><span class="fu">aggregate</span>(<span class="fu">msr</span>(<span class="st">"classif.acc"</span>))</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>classif.acc 
+  0.9489489 </code></pre>
+</div>
+</div>
 </section>
 <section id="performance-comparison" class="slide level2 smaller">
 <h2>Performance Comparison</h2>
@@ -951,24 +1192,52 @@ node), split, n, loss, yval, (yprob)
 <li><p>We now want to try a glmnet learner from the glmnet package and compare it with the classification tree</p></li>
 <li><p>We also add a simple baseline learner that predicts the majority class</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1"></a>lrn_rpart <span class="ot">=</span> <span class="fu">lrn</span>(<span class="st">"classif.rpart"</span>)</span>
-<span id="cb52-2"><a href="#cb52-2"></a>lrn_glmnet <span class="ot">=</span> <span class="fu">lrn</span>(<span class="st">"classif.glmnet"</span>)</span>
-<span id="cb52-3"><a href="#cb52-3"></a>lrn_featureless <span class="ot">=</span> <span class="fu">lrn</span>(<span class="st">"classif.featureless"</span>)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a>lrn_rpart <span class="ot">=</span> <span class="fu">lrn</span>(<span class="st">"classif.rpart"</span>)</span>
+<span id="cb45-2"><a href="#cb45-2"></a>lrn_glmnet <span class="ot">=</span> <span class="fu">lrn</span>(<span class="st">"classif.glmnet"</span>)</span>
+<span id="cb45-3"><a href="#cb45-3"></a>lrn_featureless <span class="ot">=</span> <span class="fu">lrn</span>(<span class="st">"classif.featureless"</span>)</span></code></pre></div>
 </div></li>
 <li><p>We create a benchmark design where each row specifies a resample experiment</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a>design <span class="ot">=</span> <span class="fu">benchmark_grid</span>(</span>
-<span id="cb53-2"><a href="#cb53-2"></a>    <span class="at">tasks =</span> task,</span>
-<span id="cb53-3"><a href="#cb53-3"></a>    <span class="at">learners =</span> <span class="fu">list</span>(lrn_rpart, lrn_glmnet, lrn_featureless),</span>
-<span id="cb53-4"><a href="#cb53-4"></a>    <span class="at">resampling =</span> <span class="fu">rsmp</span>(<span class="st">"cv"</span>, <span class="at">folds =</span> <span class="dv">3</span>)</span>
-<span id="cb53-5"><a href="#cb53-5"></a>)</span>
-<span id="cb53-6"><a href="#cb53-6"></a>design</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>       task             learner resampling
-     &lt;char&gt;              &lt;char&gt;     &lt;char&gt;
-1: penguins       classif.rpart         cv
-2: penguins      classif.glmnet         cv
-3: penguins classif.featureless         cv</code></pre>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1"></a>design <span class="ot">=</span> <span class="fu">benchmark_grid</span>(</span>
+<span id="cb46-2"><a href="#cb46-2"></a>    <span class="at">tasks =</span> task,</span>
+<span id="cb46-3"><a href="#cb46-3"></a>    <span class="at">learners =</span> <span class="fu">list</span>(lrn_rpart, lrn_glmnet, lrn_featureless),</span>
+<span id="cb46-4"><a href="#cb46-4"></a>    <span class="at">resampling =</span> <span class="fu">rsmp</span>(<span class="st">"cv"</span>, <span class="at">folds =</span> <span class="dv">3</span>)</span>
+<span id="cb46-5"><a href="#cb46-5"></a>)</span>
+<span id="cb46-6"><a href="#cb46-6"></a>design</span></code></pre></div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">task</th>
+<th style="text-align: left;">learner</th>
+<th style="text-align: left;">resampling</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">&lt;environment: 0x10622c5f8&gt;</td>
+<td style="text-align: left;">&lt;environment: 0x117022e10&gt;</td>
+<td style="text-align: left;">&lt;environment: 0x122691b30&gt;</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">&lt;environment: 0x10622c5f8&gt;</td>
+<td style="text-align: left;">&lt;environment: 0x115a51a18&gt;</td>
+<td style="text-align: left;">&lt;environment: 0x122691b30&gt;</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">&lt;environment: 0x10622c5f8&gt;</td>
+<td style="text-align: left;">&lt;environment: 0x12206a550&gt;</td>
+<td style="text-align: left;">&lt;environment: 0x122691b30&gt;</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div></li>
 </ul>
@@ -978,8 +1247,8 @@ node), split, n, loss, yval, (yprob)
 <ul>
 <li><p>We can run the benchmark experiment by calling <code>benchmark()</code> and obtain a <code>BenchmarkResult</code> object:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1"></a>bmr <span class="ot">=</span> <span class="fu">benchmark</span>(design)</span>
-<span id="cb55-2"><a href="#cb55-2"></a>bmr</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a>bmr <span class="ot">=</span> <span class="fu">benchmark</span>(design)</span>
+<span id="cb47-2"><a href="#cb47-2"></a>bmr</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;BenchmarkResult&gt; of 9 rows with 3 resampling runs
  nr  task_id          learner_id resampling_id iters warnings errors
@@ -990,14 +1259,37 @@ node), split, n, loss, yval, (yprob)
 </div></li>
 <li><p>We can compare the learners by aggregating the results:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1"></a>bmr_ag <span class="ot">=</span> bmr<span class="sc">$</span><span class="fu">aggregate</span>(<span class="fu">msr</span>(<span class="st">"classif.acc"</span>))</span>
-<span id="cb57-2"><a href="#cb57-2"></a>bmr_ag[, <span class="fu">c</span>(<span class="st">"task_id"</span>, <span class="st">"learner_id"</span>, <span class="st">"classif.acc"</span>)]</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>    task_id          learner_id classif.acc
-     &lt;char&gt;              &lt;char&gt;       &lt;num&gt;
-1: penguins       classif.rpart   0.9489489
-2: penguins      classif.glmnet   0.9969970
-3: penguins classif.featureless   0.4024024</code></pre>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1"></a>bmr_ag <span class="ot">=</span> bmr<span class="sc">$</span><span class="fu">aggregate</span>(<span class="fu">msr</span>(<span class="st">"classif.acc"</span>))</span>
+<span id="cb49-2"><a href="#cb49-2"></a>bmr_ag[, <span class="fu">c</span>(<span class="st">"task_id"</span>, <span class="st">"learner_id"</span>, <span class="st">"classif.acc"</span>)]</span></code></pre></div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">task_id</th>
+<th style="text-align: left;">learner_id</th>
+<th style="text-align: right;">classif.acc</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">penguins</td>
+<td style="text-align: left;">classif.rpart</td>
+<td style="text-align: right;">0.9339339</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">penguins</td>
+<td style="text-align: left;">classif.glmnet</td>
+<td style="text-align: right;">0.9969970</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">penguins</td>
+<td style="text-align: left;">classif.featureless</td>
+<td style="text-align: right;">0.4384384</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 <p><span class="math inline">\(\Rightarrow\)</span> <code>classif.glmnet</code> achieves the highest accuracy</p></li>
@@ -1009,19 +1301,19 @@ node), split, n, loss, yval, (yprob)
 <li>The <code>mlr3viz</code> package contains <code>autoplot)</code> methods for many mlr3 objects</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1"></a><span class="fu">library</span>(mlr3viz)</span>
-<span id="cb59-2"><a href="#cb59-2"></a><span class="fu">autoplot</span>(bmr)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1"></a><span class="fu">library</span>(mlr3viz)</span>
+<span id="cb50-2"><a href="#cb50-2"></a><span class="fu">autoplot</span>(bmr)</span></code></pre></div>
 
 </div>
-<img data-src="presentation_files/figure-revealjs/unnamed-chunk-41-1.png" style="width:80.0%" class="r-stretch"></section>
+<img data-src="presentation_files/figure-revealjs/unnamed-chunk-42-1.png" style="width:80.0%" class="r-stretch"></section>
 <section id="preprocessing" class="slide level2">
 <h2>Preprocessing</h2>
 <ul>
 <li><p>Earlier, we worked on a simplified version of the penguins dataset</p></li>
 <li><p>We will now work with the original penguins data that contains missing values and that has categorical columns</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1"></a>task <span class="ot">=</span> <span class="fu">tsk</span>(<span class="st">"penguins"</span>)</span>
-<span id="cb60-2"><a href="#cb60-2"></a>task</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1"></a>task <span class="ot">=</span> <span class="fu">tsk</span>(<span class="st">"penguins"</span>)</span>
+<span id="cb51-2"><a href="#cb51-2"></a>task</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;TaskClassif:penguins&gt; (344 x 8): Palmer Penguins
 * Target: species
@@ -1031,7 +1323,7 @@ node), split, n, loss, yval, (yprob)
   - dbl (2): bill_depth, bill_length
   - fct (2): island, sex</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1"></a>task<span class="sc">$</span><span class="fu">missings</span>()</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a>task<span class="sc">$</span><span class="fu">missings</span>()</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       species     bill_depth    bill_length      body_mass flipper_length 
              0              2              2              2              2 
@@ -1046,29 +1338,17 @@ node), split, n, loss, yval, (yprob)
 <ul>
 <li><p>While some learners can deal with missing values and categoricals</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1"></a><span class="fu">lrn</span>(<span class="st">"classif.rpart"</span>)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1"></a><span class="fu">lrn</span>(<span class="st">"classif.rpart"</span>)<span class="sc">$</span>properties</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;LearnerClassifRpart:classif.rpart&gt;: Classification Tree
-* Model: -
-* Parameters: xval=0
-* Packages: mlr3, rpart
-* Predict Types:  [response], prob
-* Feature Types: logical, integer, numeric, factor, ordered
-* Properties: importance, missings, multiclass, selected_features,
-  twoclass, weights</code></pre>
+<pre><code>[1] "importance"        "missings"          "multiclass"       
+[4] "selected_features" "twoclass"          "weights"          </code></pre>
 </div>
 </div>
 <p>others cannot:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1"></a><span class="fu">lrn</span>(<span class="st">"classif.glmnet"</span>)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1"></a><span class="fu">lrn</span>(<span class="st">"classif.glmnet"</span>)<span class="sc">$</span>properties</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;LearnerClassifGlmnet:classif.glmnet&gt;
-* Model: -
-* Parameters: list()
-* Packages: mlr3, mlr3learners, glmnet
-* Predict Types:  [response], prob
-* Feature Types: logical, integer, numeric
-* Properties: multiclass, twoclass, weights</code></pre>
+<pre><code>[1] "multiclass" "twoclass"   "weights"   </code></pre>
 </div>
 </div></li>
 <li><p>Within the <code>mlr3</code> ecosystem, we can assemble machine learning pipelines using <code>mlr3pipelines</code></p></li>
@@ -1085,15 +1365,14 @@ node), split, n, loss, yval, (yprob)
 </ul></li>
 <li><p>We can do this by combining <code>PipeOp</code>s in a <code>Graph</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1"></a>graph <span class="ot">=</span> <span class="fu">po</span>(<span class="st">"scale"</span>) <span class="sc">%&gt;&gt;%</span></span>
-<span id="cb68-2"><a href="#cb68-2"></a>  <span class="fu">po</span>(<span class="st">"encode"</span>) <span class="sc">%&gt;&gt;%</span></span>
-<span id="cb68-3"><a href="#cb68-3"></a>  <span class="fu">po</span>(<span class="st">"imputemedian"</span>) <span class="sc">%&gt;&gt;%</span></span>
-<span id="cb68-4"><a href="#cb68-4"></a>  <span class="fu">lrn</span>(<span class="st">"classif.glmnet"</span>)</span>
-<span id="cb68-5"><a href="#cb68-5"></a>graph</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1"></a>graph <span class="ot">=</span> <span class="fu">po</span>(<span class="st">"scale"</span>) <span class="sc">%&gt;&gt;%</span></span>
+<span id="cb59-2"><a href="#cb59-2"></a>  <span class="fu">po</span>(<span class="st">"encode"</span>) <span class="sc">%&gt;&gt;%</span></span>
+<span id="cb59-3"><a href="#cb59-3"></a>  <span class="fu">po</span>(<span class="st">"imputemedian"</span>) <span class="sc">%&gt;&gt;%</span></span>
+<span id="cb59-4"><a href="#cb59-4"></a>  <span class="fu">lrn</span>(<span class="st">"classif.glmnet"</span>)</span>
+<span id="cb59-5"><a href="#cb59-5"></a>graph</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Graph with 4 PipeOps:
              ID         State       sccssors    prdcssors
-         &lt;char&gt;        &lt;char&gt;         &lt;char&gt;       &lt;char&gt;
           scale &lt;&lt;UNTRAINED&gt;&gt;         encode             
          encode &lt;&lt;UNTRAINED&gt;&gt;   imputemedian        scale
    imputemedian &lt;&lt;UNTRAINED&gt;&gt; classif.glmnet       encode
@@ -1107,51 +1386,60 @@ node), split, n, loss, yval, (yprob)
 <ul>
 <li><p>We can convert this <code>Graph</code> to a <code>GraphLearner</code></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1"></a>lrn_glmnet_preproc <span class="ot">=</span> <span class="fu">as_learner</span>(graph)</span>
-<span id="cb70-2"><a href="#cb70-2"></a>lrn_glmnet_preproc</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1"></a>lrn_glmnet_preproc <span class="ot">=</span> <span class="fu">as_learner</span>(graph)</span>
+<span id="cb61-2"><a href="#cb61-2"></a>lrn_glmnet_preproc<span class="sc">$</span>properties</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;GraphLearner:scale.encode.imputemedian.classif.glmnet&gt;
-* Model: -
-* Parameters: scale.robust=FALSE, encode.method=one-hot
-* Packages: mlr3, mlr3pipelines, stats, mlr3learners, glmnet
-* Predict Types:  [response], prob
-* Feature Types: logical, integer, numeric, character, factor, ordered,
-  POSIXct
-* Properties: featureless, hotstart_backward, hotstart_forward,
-  importance, loglik, missings, multiclass, oob_error,
-  selected_features, twoclass, weights</code></pre>
+<pre><code> [1] "featureless"       "hotstart_backward" "hotstart_forward" 
+ [4] "importance"        "loglik"            "missings"         
+ [7] "multiclass"        "oob_error"         "selected_features"
+[10] "twoclass"          "weights"          </code></pre>
 </div>
 </div></li>
 <li><p>While the original glmnet learner fails on the new task</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1"></a>lrn_glmnet<span class="sc">$</span><span class="fu">train</span>(task)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1"></a>lrn_glmnet<span class="sc">$</span><span class="fu">train</span>(task)</span></code></pre></div>
 <div class="cell-output cell-output-error">
 <pre><code>Error: &lt;TaskClassif:penguins&gt; has the following unsupported feature types: factor</code></pre>
 </div>
 </div>
 <p>The preprocessed learner works</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1"></a>lrn_glmnet_preproc<span class="sc">$</span><span class="fu">train</span>(task)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1"></a>lrn_glmnet_preproc<span class="sc">$</span><span class="fu">train</span>(task)</span></code></pre></div>
 </div></li>
 </ul>
 </section>
 <section id="performance-evaluation-on-the-new-task" class="slide level2">
 <h2>Performance Evaluation on the New Task</h2>
-<ul>
-<li><p>Because the <code>GraphLearner</code> is also a <code>Learner</code>, we can evaluate the preprocessed learner just like before</p>
+<p>Because the <code>GraphLearner</code> is also a <code>Learner</code>, we can evaluate the preprocessed learner just like before</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1"></a>rr <span class="ot">=</span> <span class="fu">resample</span>(</span>
-<span id="cb75-2"><a href="#cb75-2"></a>  task,</span>
-<span id="cb75-3"><a href="#cb75-3"></a>  lrn_glmnet_preproc,</span>
-<span id="cb75-4"><a href="#cb75-4"></a>  <span class="fu">rsmp</span>(<span class="st">"cv"</span>, <span class="at">folds =</span> <span class="dv">3</span>)</span>
-<span id="cb75-5"><a href="#cb75-5"></a>)</span>
-<span id="cb75-6"><a href="#cb75-6"></a>rr<span class="sc">$</span><span class="fu">aggregate</span>(<span class="fu">msr</span>(<span class="st">"classif.acc"</span>))</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1"></a>rr <span class="ot">=</span> <span class="fu">resample</span>(</span>
+<span id="cb66-2"><a href="#cb66-2"></a>    task,</span>
+<span id="cb66-3"><a href="#cb66-3"></a>    lrn_glmnet_preproc,</span>
+<span id="cb66-4"><a href="#cb66-4"></a>    <span class="fu">rsmp</span>(<span class="st">"cv"</span>, <span class="at">folds =</span> <span class="dv">3</span>)</span>
+<span id="cb66-5"><a href="#cb66-5"></a>)</span>
+<span id="cb66-6"><a href="#cb66-6"></a>rr<span class="sc">$</span><span class="fu">aggregate</span>(<span class="fu">msr</span>(<span class="st">"classif.acc"</span>))</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>classif.acc 
-  0.9912789 </code></pre>
+  0.9884058 </code></pre>
 </div>
-</div></li>
-</ul>
+</div>
+</section>
+<section id="success-3" class="slide level2">
+<h2>Success #3!</h2>
+
+<img data-src="figures/partying-face-emoji.svg" style="width:30.0%" class="r-stretch quarto-figure-right"><p>We can now handle missing values and categorical columns for any learner!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1"></a>l_glment <span class="ot">=</span> <span class="fu">lrn</span>(<span class="st">"classif.glmnet"</span>)</span>
+<span id="cb68-2"><a href="#cb68-2"></a>l_preproc <span class="ot">=</span> <span class="fu">po</span>(<span class="st">"scale"</span>) <span class="sc">%&gt;&gt;%</span> <span class="fu">po</span>(<span class="st">"encode"</span>) <span class="sc">%&gt;&gt;%</span> </span>
+<span id="cb68-3"><a href="#cb68-3"></a>  <span class="fu">po</span>(<span class="st">"imputemedian"</span>) <span class="sc">%&gt;&gt;%</span> l_glment <span class="sc">|&gt;</span> <span class="fu">as_learner</span>()</span>
+<span id="cb68-4"><a href="#cb68-4"></a>t_penguins <span class="ot">=</span> <span class="fu">as_task_classif</span>(penguins, <span class="at">target =</span> <span class="st">"species"</span>, <span class="at">id =</span> <span class="st">"penguins"</span>)</span>
+<span id="cb68-5"><a href="#cb68-5"></a>rr <span class="ot">=</span> <span class="fu">resample</span>(t_penguins, l_preproc, <span class="fu">rsmp</span>(<span class="st">"cv"</span>, <span class="at">folds =</span> <span class="dv">3</span>))</span>
+<span id="cb68-6"><a href="#cb68-6"></a>rr<span class="sc">$</span><span class="fu">aggregate</span>(<span class="fu">msr</span>(<span class="st">"classif.acc"</span>))</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>classif.acc 
+   0.993994 </code></pre>
+</div>
+</div>
 </section>
 <section id="what-is-mlr3pipelines" class="slide level2">
 <h2>What is <code>mlr3pipelines</code></h2>
@@ -1188,7 +1476,7 @@ node), split, n, loss, yval, (yprob)
 <h1>PipeOps</h1>
 
 </section>
-<section id="pipeop-single-unit-of-data-operation" class="slide level2 smaller">
+<section id="pipeop-single-unit-of-data-operation" class="slide level2">
 <h2>PipeOp: Single Unit of Data Operation</h2>
 <div class="fragment" data-fragment-index="1">
 <ul>
@@ -1208,88 +1496,112 @@ node), split, n, loss, yval, (yprob)
 </ul>
 <p><img data-src="figures/pipeline-trim-2.png" class="absolute" style="top: 400px; left: 0px; "></p>
 </div>
-</section>
-<section id="pipeop-single-unit-of-data-operation-1" class="slide level2 smaller">
-<h2>PipeOp: Single Unit of Data Operation</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1"></a>po_scale <span class="ot">=</span> <span class="fu">po</span>(<span class="st">"scale"</span>)</span>
-<span id="cb77-2"><a href="#cb77-2"></a>trained <span class="ot">=</span> po_scale<span class="sc">$</span><span class="fu">train</span>(<span class="fu">list</span>(task))</span>
-<span id="cb77-3"><a href="#cb77-3"></a>trained<span class="sc">$</span>output<span class="sc">$</span><span class="fu">head</span>(<span class="dv">3</span>)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   species    island    sex bill_depth bill_length  body_mass flipper_length
-    &lt;fctr&gt;    &lt;fctr&gt; &lt;fctr&gt;      &lt;num&gt;       &lt;num&gt;      &lt;num&gt;          &lt;num&gt;
-1:  Adelie Torgersen   male  0.7843001  -0.8832047 -0.5633167     -1.4162715
-2:  Adelie Torgersen female  0.1260033  -0.8099390 -0.5009690     -1.0606961
-3:  Adelie Torgersen female  0.4298326  -0.6634077 -1.1867934     -0.4206603
-        year
-       &lt;num&gt;
-1: -1.257484
-2: -1.257484
-3: -1.257484</code></pre>
+
+<!---
+## PipeOp: Single Unit of Data Operation {.smaller}
+
+
+::: {.cell}
+
+```{.r .cell-code}
+po_scale = po("scale")
+trained = po_scale$train(list(task))
+trained$output$head(3)
+```
+
+::: {.cell-output-display}
+<div class="kable-table">
+
+|species |island    |sex    | bill_depth| bill_length|  body_mass| flipper_length|      year|
+|:-------|:---------|:------|----------:|-----------:|----------:|--------------:|---------:|
+|Adelie  |Torgersen |male   |  0.7843001|  -0.8832047| -0.5633167|     -1.4162715| -1.257484|
+|Adelie  |Torgersen |female |  0.1260033|  -0.8099390| -0.5009690|     -1.0606961| -1.257484|
+|Adelie  |Torgersen |female |  0.4298326|  -0.6634077| -1.1867934|     -0.4206603| -1.257484|
+
 </div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1"></a><span class="fu">head</span>(po_scale<span class="sc">$</span>state, <span class="dv">2</span>)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>$center
+:::
+:::
+
+::: {.cell}
+
+```{.r .cell-code}
+head(po_scale$state, 2)
+```
+
+::: {.cell-output .cell-output-stdout}
+```
+$center
     bill_depth    bill_length      body_mass flipper_length           year 
       17.15117       43.92193     4201.75439      200.91520     2008.02907 
 
 $scale
     bill_depth    bill_length      body_mass flipper_length           year 
-     1.9747932      5.4595837    801.9545357     14.0617137      0.8183559 </code></pre>
+     1.9747932      5.4595837    801.9545357     14.0617137      0.8183559 
+```
+:::
+:::
+
+::: {.cell}
+
+```{.r .cell-code}
+po_scale$predict(list(task))[[1L]]$head(3)
+```
+
+::: {.cell-output-display}
+<div class="kable-table">
+
+|species |island    |sex    | bill_depth| bill_length|  body_mass| flipper_length|      year|
+|:-------|:---------|:------|----------:|-----------:|----------:|--------------:|---------:|
+|Adelie  |Torgersen |male   |  0.7843001|  -0.8832047| -0.5633167|     -1.4162715| -1.257484|
+|Adelie  |Torgersen |female |  0.1260033|  -0.8099390| -0.5009690|     -1.0606961| -1.257484|
+|Adelie  |Torgersen |female |  0.4298326|  -0.6634077| -1.1867934|     -0.4206603| -1.257484|
+
 </div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1"></a>po_scale<span class="sc">$</span><span class="fu">predict</span>(<span class="fu">list</span>(task))[[1L]]<span class="sc">$</span><span class="fu">head</span>(<span class="dv">3</span>)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   species    island    sex bill_depth bill_length  body_mass flipper_length
-    &lt;fctr&gt;    &lt;fctr&gt; &lt;fctr&gt;      &lt;num&gt;       &lt;num&gt;      &lt;num&gt;          &lt;num&gt;
-1:  Adelie Torgersen   male  0.7843001  -0.8832047 -0.5633167     -1.4162715
-2:  Adelie Torgersen female  0.1260033  -0.8099390 -0.5009690     -1.0606961
-3:  Adelie Torgersen female  0.4298326  -0.6634077 -1.1867934     -0.4206603
-        year
-       &lt;num&gt;
-1: -1.257484
-2: -1.257484
-3: -1.257484</code></pre>
-</div>
-</div>
-</section>
-<section id="pipeops-1" class="slide level2">
-<h2>PipeOps</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1"></a>mlr_pipeops<span class="sc">$</span><span class="fu">keys</span>()</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] "boxcox"                "branch"                "chunk"                
+:::
+:::
+
+
+## PipeOps
+
+
+::: {.cell}
+
+```{.r .cell-code}
+mlr_pipeops$keys()
+```
+
+::: {.cell-output .cell-output-stdout}
+```
+ [1] "boxcox"                "branch"                "chunk"                
  [4] "classbalancing"        "classifavg"            "classweights"         
  [7] "colapply"              "collapsefactors"       "colroles"             
-[10] "compose_crank"         "compose_distr"         "compose_probregr"     
-[13] "copy"                  "crankcompose"          "datefeatures"         
-[16] "distrcompose"          "encode"                "encodeimpact"         
-[19] "encodelmer"            "featureunion"          "filter"               
-[22] "fixfactors"            "histbin"               "ica"                  
-[25] "imputeconstant"        "imputehist"            "imputelearner"        
-[28] "imputemean"            "imputemedian"          "imputemode"           
-[31] "imputeoor"             "imputesample"          "kernelpca"            
-[34] "learner"               "learner_cv"            "missind"              
-[37] "modelmatrix"           "multiplicityexply"     "multiplicityimply"    
-[40] "mutate"                "nmf"                   "nop"                  
-[43] "ovrsplit"              "ovrunite"              "pca"                  
-[46] "proxy"                 "quantilebin"           "randomprojection"     
-[49] "randomresponse"        "regravg"               "removeconstants"      
-[52] "renamecolumns"         "replicate"             "scale"                
-[55] "scalemaxabs"           "scalerange"            "select"               
-[58] "smote"                 "spatialsign"           "subsample"            
-[61] "survavg"               "targetinvert"          "targetmutate"         
-[64] "targettrafoscalerange" "textvectorizer"        "threshold"            
-[67] "trafopred_regrsurv"    "trafopred_survregr"    "trafotask_regrsurv"   
-[70] "trafotask_survregr"    "tunethreshold"         "unbranch"             
-[73] "vtreat"                "yeojohnson"           </code></pre>
-</div>
-</div>
+[10] "copy"                  "datefeatures"          "encode"               
+[13] "encodeimpact"          "encodelmer"            "featureunion"         
+[16] "filter"                "fixfactors"            "histbin"              
+[19] "ica"                   "imputeconstant"        "imputehist"           
+[22] "imputelearner"         "imputemean"            "imputemedian"         
+[25] "imputemode"            "imputeoor"             "imputesample"         
+[28] "kernelpca"             "learner"               "learner_cv"           
+[31] "missind"               "modelmatrix"           "multiplicityexply"    
+[34] "multiplicityimply"     "mutate"                "nmf"                  
+[37] "nop"                   "ovrsplit"              "ovrunite"             
+[40] "pca"                   "proxy"                 "quantilebin"          
+[43] "randomprojection"      "randomresponse"        "regravg"              
+[46] "removeconstants"       "renamecolumns"         "replicate"            
+[49] "scale"                 "scalemaxabs"           "scalerange"           
+[52] "select"                "smote"                 "spatialsign"          
+[55] "subsample"             "targetinvert"          "targetmutate"         
+[58] "targettrafoscalerange" "textvectorizer"        "threshold"            
+[61] "tunethreshold"         "unbranch"              "vtreat"               
+[64] "yeojohnson"           
+```
+:::
+:::
+
+
+--->
 </section>
-<section id="pipeops-2" class="slide level2">
+<section id="pipeops-1" class="slide level2">
 <h2>PipeOps</h2>
 <ul>
 <li>Simple data preprocessing operations (scaling, Box Cox, Yeo Johnson, PCA, ICA)</li>
@@ -1333,46 +1645,121 @@ $scale
 <li><code>predict()</code>tion: Data propagates, uses <code>$states</code></li>
 </ul>
 <p><img data-src="figures/pipeline-trim-276.png" class="absolute" style="top: 400px; left: 0px; "></p>
+</section></section>
+<section>
+<section id="putting-it-all-together" class="title-slide slide level1">
+<h1>Putting it all together</h1>
+
 </section>
 <section id="back-to-the-penguins-task" class="slide level2">
 <h2>Back to the Penguins Task</h2>
 <ul>
-<li><p>Even though we have now already achieved good performance using the <code>lrn("classif.glmnet")</code> learner, we want to see whether we can improve our performance by using a boosting algorithm</p></li>
-<li><p>We have decided to go for XGboost</p>
+<li><p>Even though we have now already achieved good performance using the <code>lrn("classif.rpart")</code> learner, we want to see whether we can improve our performance by using a boosting algorithm and <strong>tuning its hyperparameters</strong>.</p></li>
+<li><p>We have decided to go for XGBoost</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1"></a>lrn_xgb <span class="ot">=</span> <span class="fu">lrn</span>(<span class="st">"classif.xgboost"</span>)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1"></a>lrn_xgb <span class="ot">=</span> <span class="fu">lrn</span>(<span class="st">"classif.xgboost"</span>)</span></code></pre></div>
 </div></li>
 </ul>
+</section>
+<section id="hyperparameters" class="slide level2">
+<h2>Hyperparameters</h2>
+<ul>
+<li>Learners have <em>hyperparameters</em></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1"></a><span class="fu">as.data.table</span>(lrn_xgb<span class="sc">$</span>param_set)[<span class="fu">c</span>(<span class="dv">12</span>,<span class="dv">16</span>,<span class="dv">24</span>,<span class="dv">31</span>), <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>)]</span></code></pre></div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table style="width:100%;">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 10%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 30%">
+<col style="width: 14%">
+<col style="width: 21%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">id</th>
+<th style="text-align: left;">class</th>
+<th style="text-align: right;">lower</th>
+<th style="text-align: right;">upper</th>
+<th style="text-align: left;">default</th>
+<th style="text-align: left;">storage_type</th>
+<th style="text-align: left;">tags</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">eta</td>
+<td style="text-align: left;">ParamDbl</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">0.3</td>
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">train , control</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">gamma</td>
+<td style="text-align: left;">ParamDbl</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">Inf</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">train , control</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">max_depth</td>
+<td style="text-align: left;">ParamInt</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">Inf</td>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">integer</td>
+<td style="text-align: left;">train , control</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">nrounds</td>
+<td style="text-align: left;">ParamInt</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">Inf</td>
+<td style="text-align: left;">&lt;environment: 0x116b3d7f0&gt;</td>
+<td style="text-align: left;">integer</td>
+<td style="text-align: left;">train , hotstart</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<ul>
+<li>Changing them changes the <code>Learner</code>’s behavior</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1"></a>lrn_xgb<span class="sc">$</span>param_set<span class="sc">$</span><span class="fu">set_values</span>(</span>
+<span id="cb72-2"><a href="#cb72-2"></a>    <span class="at">nrounds =</span> <span class="dv">10</span>,</span>
+<span id="cb72-3"><a href="#cb72-3"></a>    <span class="at">eta =</span> <span class="fl">0.1</span></span>
+<span id="cb72-4"><a href="#cb72-4"></a>)</span></code></pre></div>
+</div>
 </section>
 <section id="tuning-xgboost" class="slide level2">
 <h2>Tuning XGBoost</h2>
 <ul>
-<li><p>However, this learner has many hyperparameters, some of which should be tuned!</p></li>
-<li><p>Instead of specifying hyperparameters to a given value</p>
+<li><p>Instead of specifying hyperparameters to a given value we can also mark them for hyperparameter tuning</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1"></a>lrn_xgb<span class="sc">$</span>param_set<span class="sc">$</span><span class="fu">set_values</span>(<span class="at">nrounds =</span> <span class="dv">10</span>)</span></code></pre></div>
-</div>
-<p>we can also mark them for hyperparameter tuning</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1"></a>lrn_xgb<span class="sc">$</span>param_set<span class="sc">$</span><span class="fu">set_values</span>(<span class="at">nrounds =</span> <span class="fu">to_tune</span>(<span class="dv">10</span>, <span class="dv">100</span>))</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1"></a>lrn_xgb<span class="sc">$</span>param_set<span class="sc">$</span><span class="fu">set_values</span>(<span class="at">nrounds =</span> <span class="fu">to_tune</span>(<span class="dv">10</span>, <span class="dv">100</span>, <span class="at">logscale =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
 </div></li>
-<li><p>Because XGboost does not support factor columns, we add a factor encoding preprocessing step</p>
+<li><p>Wondering which hyperparameters to tune? Check out <a href="https://github.com/mlr-org/mlr3tuningspaces">mlr3tuningspaces</a>!</p></li>
+<li><p>Because XGBoost does not support factor columns, we add a factor encoding preprocessing step</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1"></a>lrn_xgb <span class="ot">=</span> <span class="fu">po</span>(<span class="st">"encode"</span>) <span class="sc">%&gt;&gt;%</span> lrn_xgb <span class="sc">|&gt;</span> <span class="fu">as_learner</span>()</span>
-<span id="cb88-2"><a href="#cb88-2"></a>lrn_xgb</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1"></a>lrn_xgb <span class="ot">=</span> <span class="fu">po</span>(<span class="st">"encode"</span>) <span class="sc">%&gt;&gt;%</span> lrn_xgb <span class="sc">|&gt;</span> <span class="fu">as_learner</span>()</span>
+<span id="cb74-2"><a href="#cb74-2"></a>lrn_xgb<span class="sc">$</span>properties</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;GraphLearner:encode.classif.xgboost&gt;
-* Model: -
-* Parameters: encode.method=one-hot,
-  classif.xgboost.nrounds=&lt;RangeTuneToken&gt;, classif.xgboost.nthread=1,
-  classif.xgboost.verbose=0, classif.xgboost.early_stopping_set=none
-* Packages: mlr3, mlr3pipelines, stats, mlr3learners, xgboost
-* Predict Types:  [response], prob
-* Feature Types: logical, integer, numeric, character, factor, ordered,
-  POSIXct
-* Properties: featureless, hotstart_backward, hotstart_forward,
-  importance, loglik, missings, multiclass, oob_error,
-  selected_features, twoclass, weights</code></pre>
+<pre><code> [1] "featureless"       "hotstart_backward" "hotstart_forward" 
+ [4] "importance"        "loglik"            "missings"         
+ [7] "multiclass"        "oob_error"         "selected_features"
+[10] "twoclass"          "weights"          </code></pre>
 </div>
 </div></li>
 </ul>
@@ -1382,7 +1769,7 @@ $scale
 <ul>
 <li><p>Hyperparameter tuning is implemented in the <code>mlr3tuning</code> package:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1"></a><span class="fu">library</span>(<span class="st">"mlr3tuning"</span>)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1"></a><span class="fu">library</span>(<span class="st">"mlr3tuning"</span>)</span></code></pre></div>
 </div></li>
 <li><p>Besides knowing which hyperparameters to tune, we also need to specify:</p>
 <ul>
@@ -1394,75 +1781,92 @@ $scale
 </ul>
 </section>
 <section id="tuning-xgboost-2" class="slide level2">
-<h2>Tuning XGboost</h2>
-<ul>
-<li><p>We can tune the classification accuracy using random search with 20 evaluations and 3-fold CV:</p>
+<h2>Tuning XGBoost</h2>
+<p>We can tune the classification accuracy using random search with 20 evaluations and 3-fold CV:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1"></a>instance <span class="ot">=</span> <span class="fu">tune</span>(</span>
-<span id="cb91-2"><a href="#cb91-2"></a>  <span class="at">task =</span> task,</span>
-<span id="cb91-3"><a href="#cb91-3"></a>  <span class="at">learner =</span> lrn_xgb,</span>
-<span id="cb91-4"><a href="#cb91-4"></a>  <span class="at">measure =</span> <span class="fu">msr</span>(<span class="st">"classif.acc"</span>),</span>
-<span id="cb91-5"><a href="#cb91-5"></a>  <span class="at">tuner =</span> <span class="fu">tnr</span>(<span class="st">"random_search"</span>),</span>
-<span id="cb91-6"><a href="#cb91-6"></a>  <span class="at">term_evals =</span> <span class="dv">20</span>,</span>
-<span id="cb91-7"><a href="#cb91-7"></a>  <span class="at">resampling =</span> <span class="fu">rsmp</span>(<span class="st">"cv"</span>, <span class="at">folds =</span> <span class="dv">3</span>)</span>
-<span id="cb91-8"><a href="#cb91-8"></a>)</span>
-<span id="cb91-9"><a href="#cb91-9"></a>instance</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>&lt;TuningInstanceSingleCrit&gt;
-* State:  Optimized
-* Objective: &lt;ObjectiveTuning:encode.classif.xgboost_on_penguins&gt;
-* Search Space:
-                        id    class lower upper nlevels
-                    &lt;char&gt;   &lt;char&gt; &lt;num&gt; &lt;num&gt;   &lt;num&gt;
-1: classif.xgboost.nrounds ParamInt    10   100      91
-* Terminator: &lt;TerminatorEvals&gt;
-* Result:
-   classif.xgboost.nrounds classif.acc
-                     &lt;int&gt;       &lt;num&gt;
-1:                      25   0.9826087
-* Archive:
-    classif.xgboost.nrounds classif.acc
-                      &lt;int&gt;       &lt;num&gt;
- 1:                      14   0.9825833
- 2:                      25   0.9826087
- 3:                      98   0.9826087
- 4:                      59   0.9826087
- 5:                      78   0.9826087
- 6:                      87   0.9826087
- 7:                      48   0.9826087
- 8:                      74   0.9826087
- 9:                      15   0.9825833
-10:                      73   0.9826087
-11:                      43   0.9826087
-12:                      34   0.9826087
-13:                      91   0.9826087
-14:                      92   0.9826087
-15:                      66   0.9826087
-16:                      43   0.9826087
-17:                      61   0.9826087
-18:                      89   0.9826087
-19:                      69   0.9826087
-20:                      88   0.9826087
-    classif.xgboost.nrounds classif.acc</code></pre>
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1"></a>instance <span class="ot">=</span> <span class="fu">tune</span>(</span>
+<span id="cb77-2"><a href="#cb77-2"></a>    <span class="at">task =</span> task,</span>
+<span id="cb77-3"><a href="#cb77-3"></a>    <span class="at">learner =</span> lrn_xgb,</span>
+<span id="cb77-4"><a href="#cb77-4"></a>    <span class="at">measure =</span> <span class="fu">msr</span>(<span class="st">"classif.acc"</span>),</span>
+<span id="cb77-5"><a href="#cb77-5"></a>    <span class="at">tuner =</span> <span class="fu">tnr</span>(<span class="st">"random_search"</span>),</span>
+<span id="cb77-6"><a href="#cb77-6"></a>    <span class="at">term_evals =</span> <span class="dv">20</span>,</span>
+<span id="cb77-7"><a href="#cb77-7"></a>    <span class="at">resampling =</span> <span class="fu">rsmp</span>(<span class="st">"cv"</span>, <span class="at">folds =</span> <span class="dv">3</span>)</span>
+<span id="cb77-8"><a href="#cb77-8"></a>)</span>
+<span id="cb77-9"><a href="#cb77-9"></a>instance<span class="sc">$</span>result</span></code></pre></div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table>
+<colgroup>
+<col style="width: 25%">
+<col style="width: 51%">
+<col style="width: 9%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">classif.xgboost.nrounds</th>
+<th style="text-align: left;">learner_param_vals</th>
+<th style="text-align: left;">x_domain</th>
+<th style="text-align: right;">classif.acc</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">4.358877</td>
+<td style="text-align: left;">one-hot, none , 0.1 , 1 , 0 , 78</td>
+<td style="text-align: left;">78</td>
+<td style="text-align: right;">0.9912535</td>
+</tr>
+</tbody>
+</table>
 </div>
-</div></li>
-</ul>
+</div>
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1"></a>instance<span class="sc">$</span>archive<span class="sc">$</span>data[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span></code></pre></div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">classif.xgboost.nrounds</th>
+<th style="text-align: right;">classif.acc</th>
+<th style="text-align: right;">warnings</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">3.925875</td>
+<td style="text-align: right;">0.9854310</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4.224724</td>
+<td style="text-align: right;">0.9883549</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3.759835</td>
+<td style="text-align: right;">0.9825070</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
 </section>
 <section id="tuning-xgboost-3" class="slide level2">
 <h2>Tuning XGBoost</h2>
 <ul>
 <li><p>We can now train a learner on the full dataset using the optimal configuration</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1"></a>optimal_nrounds <span class="ot">=</span></span>
-<span id="cb93-2"><a href="#cb93-2"></a>  instance<span class="sc">$</span>result_learner_param_vals<span class="sc">$</span>classif.xgboost.nrounds</span>
-<span id="cb93-3"><a href="#cb93-3"></a>optimal_nrounds</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1"></a>(<span class="at">optimal_nrounds =</span> instance<span class="sc">$</span>result_learner_param_vals<span class="sc">$</span>classif.xgboost.nrounds)</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 25</code></pre>
+<pre><code>[1] 78</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1"></a>lrn_xgb<span class="sc">$</span>param_set<span class="sc">$</span><span class="fu">set_values</span>(</span>
-<span id="cb95-2"><a href="#cb95-2"></a>  <span class="at">classif.xgboost.nrounds =</span> optimal_nrounds</span>
-<span id="cb95-3"><a href="#cb95-3"></a>)</span>
-<span id="cb95-4"><a href="#cb95-4"></a>lrn_xgb<span class="sc">$</span><span class="fu">train</span>(task)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1"></a>lrn_xgb<span class="sc">$</span>param_set<span class="sc">$</span><span class="fu">set_values</span>(</span>
+<span id="cb81-2"><a href="#cb81-2"></a>  <span class="at">classif.xgboost.nrounds =</span> optimal_nrounds</span>
+<span id="cb81-3"><a href="#cb81-3"></a>)</span>
+<span id="cb81-4"><a href="#cb81-4"></a>lrn_xgb<span class="sc">$</span><span class="fu">train</span>(task)</span></code></pre></div>
 </div></li>
 </ul>
 </section>
@@ -1475,29 +1879,13 @@ $scale
 <ul>
 <li><p>We can automate the process of first finding a good parameter configuration and then training the final model using an <code>AutoTuner</code></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1"></a>lrn_xgb_tuned <span class="ot">=</span> <span class="fu">auto_tuner</span>(</span>
-<span id="cb96-2"><a href="#cb96-2"></a>  <span class="at">learner =</span> lrn_xgb,</span>
-<span id="cb96-3"><a href="#cb96-3"></a>  <span class="at">measure =</span> <span class="fu">msr</span>(<span class="st">"classif.acc"</span>),</span>
-<span id="cb96-4"><a href="#cb96-4"></a>  <span class="at">tuner =</span> <span class="fu">tnr</span>(<span class="st">"random_search"</span>),</span>
-<span id="cb96-5"><a href="#cb96-5"></a>  <span class="at">term_evals =</span> <span class="dv">20</span>,</span>
-<span id="cb96-6"><a href="#cb96-6"></a>  <span class="at">resampling =</span> <span class="fu">rsmp</span>(<span class="st">"cv"</span>, <span class="at">folds =</span> <span class="dv">3</span>)</span>
-<span id="cb96-7"><a href="#cb96-7"></a>)</span>
-<span id="cb96-8"><a href="#cb96-8"></a>lrn_xgb_tuned</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>&lt;AutoTuner:encode.classif.xgboost.tuned&gt;
-* Model: list
-* Search Space:
-&lt;ParamSet&gt;
-Empty.
-* Packages: mlr3, mlr3tuning, mlr3pipelines, stats, mlr3learners,
-  xgboost
-* Predict Type: response
-* Feature Types: logical, integer, numeric, character, factor, ordered,
-  POSIXct
-* Properties: featureless, hotstart_backward, hotstart_forward,
-  importance, loglik, missings, multiclass, oob_error,
-  selected_features, twoclass, weights</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1"></a>lrn_xgb_tuned <span class="ot">=</span> <span class="fu">auto_tuner</span>(</span>
+<span id="cb82-2"><a href="#cb82-2"></a>  <span class="at">learner =</span> lrn_xgb,</span>
+<span id="cb82-3"><a href="#cb82-3"></a>  <span class="at">measure =</span> <span class="fu">msr</span>(<span class="st">"classif.acc"</span>),</span>
+<span id="cb82-4"><a href="#cb82-4"></a>  <span class="at">tuner =</span> <span class="fu">tnr</span>(<span class="st">"random_search"</span>),</span>
+<span id="cb82-5"><a href="#cb82-5"></a>  <span class="at">term_evals =</span> <span class="dv">20</span>,</span>
+<span id="cb82-6"><a href="#cb82-6"></a>  <span class="at">resampling =</span> <span class="fu">rsmp</span>(<span class="st">"cv"</span>, <span class="at">folds =</span> <span class="dv">3</span>)</span>
+<span id="cb82-7"><a href="#cb82-7"></a>)</span></code></pre></div>
 </div></li>
 <li><p>Like for the <code>GraphLearner</code>, this can be used like any <code>mlr3::Learner</code> such as evaluating its generalization error using <code>resample()</code>, resulting in a nested resampling</p></li>
 </ul>
@@ -1509,40 +1897,107 @@ Empty.
 <section id="glmnet-vs-tuned-xgboost" class="slide level2">
 <h2>Glmnet vs Tuned XGBoost</h2>
 <ul>
-<li><p>We change the <code>Learner</code>’s IDs:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1"></a>lrn_xgb_tuned<span class="sc">$</span>id <span class="ot">=</span> <span class="st">"tuned_xgboost"</span></span>
-<span id="cb98-2"><a href="#cb98-2"></a>lrn_glmnet_preproc<span class="sc">$</span>id <span class="ot">=</span> <span class="st">"glmnet"</span></span></code></pre></div>
-</div></li>
-<li><p>We create a benchmark design to compare the tuned xgboost pipeline with the glmnet pipeline</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1"></a>design <span class="ot">=</span> <span class="fu">benchmark_grid</span>(task, <span class="fu">list</span>(lrn_xgb_tuned, lrn_glmnet_preproc), <span class="fu">rsmp</span>(<span class="st">"cv"</span>, <span class="at">folds =</span> <span class="dv">3</span>))</span>
-<span id="cb99-2"><a href="#cb99-2"></a>bmr <span class="ot">=</span> <span class="fu">benchmark</span>(design)</span>
-<span id="cb99-3"><a href="#cb99-3"></a>bmr<span class="sc">$</span><span class="fu">aggregate</span>(<span class="fu">msr</span>(<span class="st">"classif.acc"</span>))</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>      nr  task_id    learner_id resampling_id iters classif.acc
-   &lt;int&gt;   &lt;char&gt;        &lt;char&gt;        &lt;char&gt; &lt;int&gt;       &lt;num&gt;
-1:     1 penguins tuned_xgboost            cv     3   0.9855072
-2:     2 penguins        glmnet            cv     3   0.9942029
-Hidden columns: resample_result</code></pre>
-</div>
-</div></li>
+<li>We change the <code>Learner</code>’s IDs:</li>
 </ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1"></a>lrn_xgb_tuned<span class="sc">$</span>id <span class="ot">=</span> <span class="st">"tuned_xgboost"</span></span>
+<span id="cb83-2"><a href="#cb83-2"></a>lrn_glmnet_preproc<span class="sc">$</span>id <span class="ot">=</span> <span class="st">"glmnet"</span></span></code></pre></div>
+</div>
+<ul>
+<li>We create a benchmark design to compare the tuned XGBoost pipeline with the glmnet pipeline</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1"></a>design <span class="ot">=</span> <span class="fu">benchmark_grid</span>(</span>
+<span id="cb84-2"><a href="#cb84-2"></a>    task, </span>
+<span id="cb84-3"><a href="#cb84-3"></a>    <span class="fu">list</span>(lrn_xgb_tuned, lrn_glmnet_preproc), </span>
+<span id="cb84-4"><a href="#cb84-4"></a>    <span class="fu">rsmp</span>(<span class="st">"cv"</span>, <span class="at">folds =</span> <span class="dv">5</span>))</span>
+<span id="cb84-5"><a href="#cb84-5"></a>bmr <span class="ot">=</span> <span class="fu">benchmark</span>(design)</span>
+<span id="cb84-6"><a href="#cb84-6"></a>bmr<span class="sc">$</span><span class="fu">aggregate</span>(<span class="fu">msr</span>(<span class="st">"classif.acc"</span>))</span></code></pre></div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table>
+<colgroup>
+<col style="width: 3%">
+<col style="width: 31%">
+<col style="width: 10%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 7%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">nr</th>
+<th style="text-align: left;">resample_result</th>
+<th style="text-align: left;">task_id</th>
+<th style="text-align: left;">learner_id</th>
+<th style="text-align: left;">resampling_id</th>
+<th style="text-align: right;">iters</th>
+<th style="text-align: right;">classif.acc</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">&lt;environment: 0x116f43eb8&gt;</td>
+<td style="text-align: left;">penguins</td>
+<td style="text-align: left;">tuned_xgboost</td>
+<td style="text-align: left;">cv</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.9855072</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">&lt;environment: 0x116f1b278&gt;</td>
+<td style="text-align: left;">penguins</td>
+<td style="text-align: left;">glmnet</td>
+<td style="text-align: left;">cv</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.9941603</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
 </section>
 <section id="glmnet-vs-tuned-xgboost-1" class="slide level2">
 <h2>Glmnet vs Tuned XGBoost</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1"></a><span class="fu">autoplot</span>(bmr, <span class="at">measure =</span> <span class="fu">msr</span>(<span class="st">"classif.acc"</span>))</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1"></a><span class="fu">autoplot</span>(bmr, <span class="at">measure =</span> <span class="fu">msr</span>(<span class="st">"classif.acc"</span>))</span></code></pre></div>
 
 </div>
-<img data-src="presentation_files/figure-revealjs/unnamed-chunk-67-1.png" width="960" class="r-stretch"></section>
+<img data-src="presentation_files/figure-revealjs/unnamed-chunk-71-1.png" width="960" class="r-stretch"></section>
+<section id="success-4" class="slide level2">
+<h2>Success #4!</h2>
+
+<img data-src="figures/partying-face-emoji.svg" style="width:30.0%" class="r-stretch quarto-figure-right"><p>We can now tune hyperparameters automatically!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1"></a>l_xgb <span class="ot">=</span> <span class="fu">lrn</span>(<span class="st">"classif.xgboost"</span>, <span class="at">nrounds =</span> <span class="fu">to_tune</span>(<span class="dv">10</span>, <span class="dv">100</span>, <span class="at">logscale =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb86-2"><a href="#cb86-2"></a>l_xgb_pre <span class="ot">=</span> <span class="fu">po</span>(<span class="st">"encode"</span>) <span class="sc">%&gt;&gt;%</span> l_xgb <span class="sc">|&gt;</span> <span class="fu">as_learner</span>()</span>
+<span id="cb86-3"><a href="#cb86-3"></a>l_xgb_pre_auto <span class="ot">=</span> <span class="fu">auto_tuner</span>(</span>
+<span id="cb86-4"><a href="#cb86-4"></a>  <span class="at">learner =</span> l_xgb_pre,</span>
+<span id="cb86-5"><a href="#cb86-5"></a>  <span class="at">measure =</span> <span class="fu">msr</span>(<span class="st">"classif.acc"</span>),</span>
+<span id="cb86-6"><a href="#cb86-6"></a>  <span class="at">tuner =</span> <span class="fu">tnr</span>(<span class="st">"random_search"</span>),</span>
+<span id="cb86-7"><a href="#cb86-7"></a>  <span class="at">term_evals =</span> <span class="dv">10</span>,</span>
+<span id="cb86-8"><a href="#cb86-8"></a>  <span class="at">resampling =</span> <span class="fu">rsmp</span>(<span class="st">"cv"</span>, <span class="at">folds =</span> <span class="dv">3</span>)</span>
+<span id="cb86-9"><a href="#cb86-9"></a>)</span>
+<span id="cb86-10"><a href="#cb86-10"></a>t_penguins <span class="ot">=</span> <span class="fu">as_task_classif</span>(penguins, <span class="at">target =</span> <span class="st">"species"</span>, <span class="at">id =</span> <span class="st">"penguins"</span>)</span>
+<span id="cb86-11"><a href="#cb86-11"></a>rr <span class="ot">=</span> <span class="fu">resample</span>(t_penguins, l_xgb_pre_auto, <span class="fu">rsmp</span>(<span class="st">"cv"</span>, <span class="at">folds =</span> <span class="dv">3</span>))</span>
+<span id="cb86-12"><a href="#cb86-12"></a>rr<span class="sc">$</span><span class="fu">aggregate</span>(<span class="fu">msr</span>(<span class="st">"classif.acc"</span>))</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>classif.acc 
+   0.987988 </code></pre>
+</div>
+</div>
+</section>
 <section id="parallelizing-execution" class="slide level2">
 <h2>Parallelizing Execution</h2>
 <ul>
 <li><p>In real-world cases, hyperparameter tuning and benchmarking is computationally expensive</p></li>
 <li><p>Fortunately, <code>mlr3</code> can be conveniently parallelized using the <code>future</code> package</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1"></a>future<span class="sc">::</span><span class="fu">plan</span>(<span class="st">"multicore"</span>)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode numberSource r number-lines"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1"></a>future<span class="sc">::</span><span class="fu">plan</span>(<span class="st">"multicore"</span>)</span></code></pre></div>
 </div></li>
 <li><p>This allows to parallelize everything that internally calls <code>resample()</code> or <code>benchmark()</code></p></li>
 <li><p>Submission on HPC clusters is supported via the <code>batchtools</code> connector <code>mlr3batchmark</code></p></li>
@@ -1551,23 +2006,22 @@ Hidden columns: resample_result</code></pre>
 <section id="we-have-written-a-book" class="slide level2">
 <h2>We have written a book!</h2>
 
-<img data-src="figures/book-flyer.png" width="414" class="r-stretch quarto-figure-center"></section>
-<section id="resources" class="slide level2">
-<h2>Resources</h2>
+<img data-src="figures/book-flyer.png" class="r-stretch quarto-figure-center"></section>
+<section id="want-more" class="slide level2">
+<h2>Want more?</h2>
+<h3 id="resources">Resources</h3>
 <p>We have only shown you a glimpse of what is possible with <code>mlr3</code>!</p>
 <ul>
-<li>Read the <code>mlr3</code> book: https://mlr3book.mlr-org.com/</li>
-<li>Browse our website: https://mlr-org.com/</li>
-<li>Read one of our gallery posts: https://mlr-org.com/gallery.html</li>
-<li>Check us out on GitHub: https://github.com/mlr-org</li>
-<li>This presentation: https://github.com/sebffischer/mlr3_UseR_berlin_2023</li>
+<li>Read the <code>mlr3</code> book: <a href="https://mlr3book.mlr-org.com/">mlr3book.mlr-org.com</a></li>
+<li>Browse our website: <a href="https://mlr-org.com">mlr-org.com</a></li>
+<li>Read one of our gallery posts: <a href="https://mlr-org.com/gallery.html">mlr-org.com/gallery.html</a></li>
+<li>Check us out on GitHub: <a href="https://github.com/mlr-org">github.com/mlr-org</a></li>
+<li>This presentation: <a href="https://github.com/sebffischer/mlr3_UseR_berlin_2023">github.com/sebffischer/mlr3_UseR_berlin_2023</a></li>
 </ul>
-</section>
-<section id="getting-in-touch" class="slide level2">
-<h2>Getting In Touch</h2>
+<h3 id="getting-in-touch">Getting In Touch</h3>
 <ul>
-<li>You can email us directly: sebastian.fischer@stat.uni-muenchen.de</li>
-<li>You our publicly available mattermost channel: https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/</li>
+<li>You can email us directly: <a href="mailto:sebastian.fischer@stat.uni-muenchen.de">sebastian.fischer@stat.uni-muenchen.de</a>, <a href="mailto:code@jakob-r.de">code@jakob-r.de</a></li>
+<li>You our publicly available mattermost channel: <a href="https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/">lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/</a></li>
 <li><strong>We are always looking for new contributors!</strong></li>
 </ul>
 

@@ -1,0 +1,9 @@
+/*-- scss:rules --*/
+
+.kable-table {
+  font-size: $presentation-font-smaller;
+  margin-top: 1em;
+}
+.sourceCode, .cell-output-stdout pre, .cell-output-stderr pre {
+  font-size: $presentation-font-size-root;
+}
