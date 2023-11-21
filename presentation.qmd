@@ -13,8 +13,6 @@ format:
     slide-number: c/t
     center-title-slide: false
     higlight-style: atom-one
-    df-print: kable
-
 ---
 
 ```{r, include = FALSE}
@@ -200,7 +198,7 @@ mlr_learners_table = as.data.table(mlr_learners)
 mlr_learners_table[1:10, c("key", "packages", "predict_types")]
 ```
 
-## Learning Algorithms {.smaller}
+## Learning Algorithms
 
 -   Get a Learner provided by `mlr3`
 
@@ -265,7 +263,7 @@ learner$predict_type = "prob"
 learner$predict_newdata(new_penguins)
 ```
 
-## Success #1! 
+## Success #1!
 
 ```{r}
 #| echo: false
@@ -290,7 +288,7 @@ l_rpart$predict_newdata(new_penguin) |> as.data.table()
 # Performance
 
 
-## Performance Evaluation {.smaller}
+## Performance Evaluation
 
 
 - In order to evaluate the performance of our model we need to split our data into a training and a test set
@@ -301,11 +299,14 @@ split = partition(task)
 
 - We train our learner on the train set and make predictions for the test set
 
+## Performance Evaluation
 ```{r}
 learner$train(task, row_ids = split$train)
 prediction = learner$predict(task, row_ids = split$test)
 prediction
 ```
+
+## Performance Evaluation
 
 - We can evaluate the prediction using an `mlr3::Measure`
 
@@ -335,10 +336,6 @@ knitr::include_graphics("figures/mlr3book_figures-3.svg")
 ## Resampling
 
 
-:::: {.columns}
-
-::: {.column width="50%"}
-
 -   Resample description: How to split the data
 
     ```{r}
@@ -356,20 +353,8 @@ knitr::include_graphics("figures/mlr3book_figures-3.svg")
     ```{r}
     rr
     ```
-:::
 
-::: {.column width="50%"}
-
-```{r}
-#| echo: false
-knitr::include_graphics("figures/mlr3book_figures-8.svg")
-```
-
-:::
-
-::::
-
-## Resample Result {.smaller}
+## Resample Result
 
 -   Calculate performance:
 
@@ -384,6 +369,8 @@ knitr::include_graphics("figures/mlr3book_figures-8.svg")
     predictions[[1]]
     ```
 
+## Resample Result
+
 -   Score of individual folds
 
     ```{r}
@@ -391,7 +378,7 @@ knitr::include_graphics("figures/mlr3book_figures-8.svg")
     scores[1:3, c("iteration", "classif.acc")]
     ```
 
-## Success #2! 
+## Success #2!
 
 ```{r}
 #| echo: false
@@ -408,7 +395,7 @@ rr = resample(t_penguins, l_rpart, rsmp("cv", folds = 3))
 rr$aggregate(msr("classif.acc"))
 ```
 
-## Performance Comparison {.smaller}
+## Performance Comparison
 
 -   We now want to try a glmnet learner from the glmnet package and compare it with the classification tree
 
@@ -538,7 +525,7 @@ rr = resample(
 rr$aggregate(msr("classif.acc"))
 ```
 
-## Success #3! 
+## Success #3!
 
 ```{r}
 #| echo: false
@@ -550,7 +537,7 @@ knitr::include_graphics("figures/partying-face-emoji.svg")
 We can now handle missing values and categorical columns for any learner!
 ```{r}
 l_glment = lrn("classif.glmnet")
-l_preproc = po("scale") %>>% po("encode") %>>% 
+l_preproc = po("scale") %>>% po("encode") %>>%
   po("imputemedian") %>>% l_glment |> as_learner()
 t_penguins = as_task_classif(penguins, target = "species", id = "penguins")
 rr = resample(t_penguins, l_preproc, rsmp("cv", folds = 3))
@@ -622,7 +609,7 @@ What do they look like?
 
 
 <!---
-## PipeOp: Single Unit of Data Operation {.smaller}
+## PipeOp: Single Unit of Data Operation
 
 ```{r}
 po_scale = po("scale")
@@ -778,7 +765,7 @@ instance$archive$data[1:3, 1:3]
 
 -   We can now train a learner on the full dataset using the optimal configuration
     ```{r}
-    (optimal_nrounds = instance$result_learner_param_vals$classif.xgboost.nrounds)
+    optimal_nrounds = instance$result_learner_param_vals$classif.xgboost.nrounds
     lrn_xgb$param_set$set_values(
       classif.xgboost.nrounds = optimal_nrounds
     )
@@ -790,6 +777,7 @@ instance$archive$data[1:3, 1:3]
 
 ```{r}
 #| echo: false
+#| fig-align: "center"
 knitr::include_graphics("figures/mlr3book_figures-9.svg")
 ```
 
@@ -827,12 +815,12 @@ lrn_glmnet_preproc$id = "glmnet"
 ```
 
 
--   We create a benchmark design to compare the tuned XGBoost pipeline with the glmnet pipeline
+-   We run a benchmark that compares the tuned XGBoost pipeline with the glmnet pipeline
 
 ```{r}
 design = benchmark_grid(
-    task, 
-    list(lrn_xgb_tuned, lrn_glmnet_preproc), 
+    task,
+    list(lrn_xgb_tuned, lrn_glmnet_preproc),
     rsmp("cv", folds = 5))
 bmr = benchmark(design)
 bmr$aggregate(msr("classif.acc"))
@@ -844,7 +832,7 @@ bmr$aggregate(msr("classif.acc"))
 autoplot(bmr, measure = msr("classif.acc"))
 ```
 
-## Success #4! 
+## Success #4!
 
 ```{r}
 #| echo: false
@@ -853,7 +841,7 @@ autoplot(bmr, measure = msr("classif.acc"))
 knitr::include_graphics("figures/partying-face-emoji.svg")
 ```
 
-We can now tune hyperparameters automatically!
+We can now tune hyperparameters automagically!
 ```{r}
 l_xgb = lrn("classif.xgboost", nrounds = to_tune(10, 100, logscale = TRUE))
 l_xgb_pre = po("encode") %>>% l_xgb |> as_learner()
